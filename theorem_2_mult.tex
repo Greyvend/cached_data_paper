@@ -1,21 +1,21 @@
 \author{Мосин Сергей, Зыкин Сергей}
 \begin{theorem}
-$P^{\ast} = \pi_{X^{\ast}} ( \sigma_{F^{\ast}[X]} (P_1 \bowtie \dots \bowtie 
-P_n))$, где $X = \bigcupn X_{v}$ если:
+$P^{\ast} = \pi_{X^{\ast}} (P_1 \bowtie \dots \bowtie 
+P_n)$, где $X = \bigcupn X_{v}$ если:
 \\а) $X^{\ast} \subseteq X$, $X_v \supseteq \<\bowtie_{i=1}^{s(v)} R^v_i> \cap (\bigcup\limits_{\substack{w=1\\ w \neq v}}^{n} \<\bowtie_{i=1}^{s(w)} R^w_i> ), v = 1,\dots,n$
 \\б)
 $ \bigcupn \{R^{v}_{1}, \ldots, R^{v}_{s(v)}\} = \{R'_{1}, \ldots, R'_{s'}\}
 = \{R^{\ast}_{1}, \ldots, R^{\ast}_{l}\} $
-\\в) $\bigcupn \<F_v> = \<F^{\ast}> , M (F^{\ast}[\<F_v> ]) = M (F_{v}), v = 1,\dots,n$.
+\\в) $M(F^{\ast}) = M(F_{1} \& \dots \& F_{n})$.
 \label{th_mult_eq}
 \end{theorem} 
 \begin{proof}
 
 Поскольку условия теоремы являются частным случаем теоремы \ref{th_mult}, то
-включение $P^{\ast} \subseteq \pi_{X^{\ast}} ( \sigma_{F^{\ast}[X]} (\bowtie_{v=1}^{n} P_{v}))$
+включение $P^{\ast} \subseteq \pi_{X^{\ast}} (\bowtie_{v=1}^{n} P_{v})$
 доказано. Необходимо показать, что
-$\pi_{X^{\ast}} ( \sigma_{F^{\ast}[X]} (\bowtie_{v=1}^{n} P_{v})) \subseteq P^{\ast}$. Пусть
-кортеж $t \in \pi_{X^{\ast}} ( \sigma_{F^{\ast}[X]}$ $(\bowtie_{v=1}^{n} P_{v}))$. Покажем, что
+$\pi_{X^{\ast}} (\bowtie_{v=1}^{n} P_{v}) \subseteq P^{\ast}$. Пусть
+кортеж $t \in \pi_{X^{\ast}} (\bowtie_{v=1}^{n} P_{v})$. Покажем, что
 $t \in P^{\ast}$. По свойству операции проекции и условию а) имеем
 $\pi_{X^{\ast}}(\pi_{X_1}(R^1_1 \bowtie \dots \bowtie R^1_{s(1)}) \bowtie \dots
 \bowtie \pi_{X_n}(R^n_1 \bowtie \dots \bowtie R^n_{s(n)})) = \pi_{X^{\ast}}
@@ -24,9 +24,6 @@ $t$, получаем, что существует кортеж  $t' \in R'_1 \b
 R'_{s'}$ и $t = t'[X^{\ast}]$, $F_v(t')=\n{TRUE}, v = 1,\dots,n$. По свойству
 операции естественного соединения $R'_1 \bowtie \ldots \bowtie R'_s = R^{\ast}_1
 \bowtie \ldots \bowtie R^{\ast}_l$, следовательно, $t' \in R^{\ast}_1 \bowtie
-\ldots \bowtie R^{\ast}_l$. В силу условия в) $F^{\ast} (t')=\n{TRUE}$.
-Действительно, $F_v(t) = \n{TRUE} \Rightarrow F^{\ast}[\<F_v> ](t) = \n{TRUE}, v
-= 1,\dots,n $. А в силу $\bigcupn \<F_v> = \<F^{\ast}> $ совместное выполнение
-всех проекций дает истинность $F^{\ast}$. Отсюда следует, что $t \in P^{\ast}$.
+\ldots \bowtie R^{\ast}_l$. В силу условия в) $F^{\ast} (t')=\n{TRUE}$. Отсюда следует, что $t \in P^{\ast}$.
 Теорема доказана.
 \end{proof} 

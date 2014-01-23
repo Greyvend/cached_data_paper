@@ -7,8 +7,7 @@ $P^{\ast} \subseteq \pi_{X^{\ast}} (\sigma_{F^{\ast}[X_v]} (P_{v}))$
 $ \{R^{v}_{1}, \ldots, R^{v}_{s(v)}\}
 \subseteq
 \{R^{\ast}_{1}, \ldots, R^{\ast}_{l}\} $
-\\в) $\<F_v> \subseteq \<F^{\ast}> , M (F^{\ast}[\<F_v> ]) \subseteq
-M (F_{v}) $.
+\\в) $M (F^{\ast}) \subseteq M (F_{v}) $.
 \label{th_base}
 \end{theorem} 
 \begin{proof}
@@ -42,7 +41,9 @@ $X_v \subseteq \langle {\bowtie}_{i=1}^{s(v)} R^v_i \rangle$ получаем
 $t''[X^{\ast}] = t'[X^{\ast}] = t^{\ast}$.
 
 Из условия  $F^{\ast}(t') = \n{TRUE}$, по утверждению
-\ref{proj_property}, получаем, что проекции $F^{\ast}[\<F_v> ]$ и $F^{\ast} [X^{\ast}]$ верны на кортеже $t'$, а следовательно и на $t''$, так как формулы определены на общих атрибутах этих кортежей. Далее, по условию 3, $F_v (t'') = \n{TRUE}$.
+\ref{proj_property_of_inclusion}, получаем, что проекция $F^{\ast} [X^{\ast}]$
+верна на кортеже $t'$, а следовательно и на $t''$, так как формула определена на
+общих атрибутах этих кортежей. Далее, по условию 3, $F_v (t') = \n{TRUE} \Rightarrow F_v (t'') = \n{TRUE}$.
 Это значит, что $t^{\ast} = t''[X^{\ast}] \in \pi_{X^{\ast}} (P_{v})$. Теорема
 доказана.
 \end{proof}
