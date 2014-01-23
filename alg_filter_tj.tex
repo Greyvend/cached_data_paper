@@ -1,0 +1,91 @@
+Следующий алгоритм осуществляет операцию естественного соединения $\sigma_{F^{\ast}[X_v]}(P_v)$ с недостающими в $\{R^v_1, \dots, R^v_{s(v)}\} $ отношениями. Во избежание проведения лишних декартовых произведений также восстанавливаются некоторые отсеянные проекцией атрибуты, которые входят в множество атрибутов недостающих отношений. Затем проверяется полная формула $F^{\ast}$ для устранения оставшихся лишних кортежей.
+
+Обозначим $\mathbf{R^v} = \{R^v_1, \dots, R^v_{s(v)}\} $.
+$\{\overline{R}_{1},\dots,\overline{R}_{m}\} = \{R^{\ast}_1,\dots,R^{\ast}_l\}
+\setminus \mathbf{R^v}$.
+\begin{algorithm}[H]
+\caption{Одномерный случай}
+\begin{algorithmic}
+\REQUIRE
+$P_v$,
+$\{R^v_1,\dots,R^v_{s(v)}\}$,
+$X_v$,
+$\overline{\Re} = \overline{R}_1 \bowtie \overline{R}_2\bowtie\ldots\bowtie \overline{R}_m $,
+$Y = \<\overline{\Re}> $
+$F^{\ast}$,
+$X^{\ast}$
+\ENSURE $R = P^{\ast}$
+\STATE $R \leftarrow \sigma_{F^{\ast}[X_v]}(P_v)$
+
+\WHILE {$R \nsupseteq (Y \cup \<F^{\ast}> )$}
+   \FORALL{$R_{cur} \in \mathbf{R^v}$}
+      \IF{$R_{cur} \cap R \cap (Y \cup \<F^{\ast} > ) \neq \emptyset$}
+         \STATE $ R \leftarrow R \bowtie R_{cur} $
+         \STATE убрать $R_{cur}$ из дальнейшего рассмотрения
+      \ENDIF
+   \ENDFOR
+   
+   \IF{не добавлено ни одного отношения после последнего просмотра}
+     \FORALL{$R_{cur} \in \mathbf{R^v}$}
+         \IF{$R_{cur} \cap (Y \cup \<F^{\ast} > ) \neq \emptyset$}
+            \STATE $ R \leftarrow R \bowtie R_{cur} $
+            \STATE $\mathbf{R^v} \leftarrow \mathbf{R^v} \setminus R_{cur}$
+         \ENDIF
+      \ENDFOR
+   \ENDIF
+\ENDWHILE
+
+\STATE $R \leftarrow R \bowtie \overline{\Re}$
+\STATE $R \leftarrow \pi_{X^{\ast}}(\sigma_{F^{\ast}}(R))$
+\end{algorithmic}
+\end{algorithm}
+
+Многомерный случай аналогичен одномерному. Заметим лишь, что сперва проводится соединение набора промежуточных представлений, а только затем проверяется формула $F^{\ast}[X]$ всвязи с тем, что необходимо обеспечить полный набор указанных в формуле атрибутов.
+Для алгоритма, описывающего многомерный случай, введем следующие обозначения:
+$\mathbf{P} = \{P_1, \dots, P_n\} $.
+$\mathbf{R'} = \{R_1', \dots, R_s'\} $.
+$\{\overline{R}_1,\dots,\overline{R}_m\} = \{R^{\ast}_1,\dots,R^{\ast}_l\}
+\setminus \mathbf{R'} $.
+\begin{algorithm}[H]
+\caption{Многомерный случай}
+\begin{algorithmic}
+\REQUIRE
+$\mathbf{P}$,
+$\mathbf{R'}$,
+$X$,
+$\overline{\Re} = \overline{R}_1 \bowtie \overline{R}_2\bowtie\ldots\bowtie
+\overline{R}_m $,
+$Y = \<\overline{\Re}> $
+$F^{\ast}$,
+$X^{\ast}$
+\ENSURE $R = P^{\ast}$
+\STATE $\mathbf{R_{pool}} \leftarrow \mathbf{R'} \cup \mathbf{P} $
+\STATE $R \leftarrow P_1$
+\STATE $\mathbf{R_{pool}} \leftarrow \mathbf{R_{pool}} \setminus P_1$
+
+\WHILE {$R \nsupseteq (Y \cup \<F^{\ast}> )$}
+   \FORALL{$R_{cur} \in \mathbf{R_{pool}}$}
+      \IF{$R_{cur} \cap R \cap (Y \cup \<F^{\ast} > ) \neq \emptyset$}
+         \STATE $ R \leftarrow R \bowtie R_{cur}$
+         \STATE $\mathbf{R_{pool}} \leftarrow \mathbf{R_{pool}} \setminus
+           R_{cur}$
+      \ENDIF
+   \ENDFOR
+   
+   \IF{не добавлено ни одного отношения после последнего просмотра}
+      \FORALL{$R_{cur} \in \mathbf{R_{pool}}$}
+         \IF{$R_{cur} \cap (Y \cup \<F^{\ast}> ) \neq \emptyset$ or $R_{cur} \in
+           \mathbf{P}$}
+            \STATE $ R \leftarrow R \bowtie R_i $
+            \STATE $\mathbf{R_{pool}} \leftarrow \mathbf{R_{pool}} \setminus
+           R_{cur}$
+         \ENDIF
+      \ENDFOR  
+   \ENDIF
+\ENDWHILE
+
+\STATE $R \leftarrow \sigma_{F^{\ast}[X]}(R)$
+\STATE $R \leftarrow R \bowtie \overline{\Re}$
+\STATE $R \leftarrow \pi_{X^{\ast}}(\sigma_{F^{\ast}}(R))$
+\end{algorithmic}
+\end{algorithm} 
