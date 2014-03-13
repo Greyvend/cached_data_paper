@@ -1,0 +1,49 @@
+\author{Мосин Сергей, Зыкин Сергей}
+\begin{theorem}
+$P^{\ast} \subseteq \pi_{X^{\ast}} (\sigma_{F^{\ast}[X_v]} (P_{v}))$
+, если:
+\\а) $X^{\ast} \subseteq X_{v}$
+\\б) 
+$ \{R^{v}_{1}, \ldots, R^{v}_{s(v)}\}
+\subseteq
+\{R^{\ast}_{1}, \ldots, R^{\ast}_{l}\} $
+\\в) $M (F^{\ast}) \subseteq M (F_{v}) $.
+\label{th_base}
+\end{theorem} 
+\begin{proof}
+Пусть существует кортеж $t^{\ast} \in P^{\ast}$. По условию теоремы надо показать, 
+что $t^{\ast} \in \pi_{X^{\ast}} (P_{v})$. Из условия $t^{\ast} \in P^{\ast}$ следует, 
+что существует кортеж $t' \in R^{\ast}_1 \Join R^{\ast}_2\Join\ldots
+\Join R^{\ast}_l$ и $t^{\ast} = t'[X^{\ast}]$. Заметим, что такой кортеж 
+определяется не единственным образом. Среди возможных вариантов выберем такой, 
+который удовлетворяет $F^{\ast}(t')=TRUE$. Такой кортеж существует, так как иначе
+кортежа $t^{\ast}$ не было бы в $P^{\ast}$. Таким образом, существуют кортежи
+$t^{\ast}_i \in R^{\ast}_i$:
+
+\begin{equation}
+t^{\ast}_i = t'[\langle R^{\ast}_i\rangle], i = 1,\dots,l,
+\label{eval_eq_1}
+\end{equation}
+\def \intersecij {\langle R^{\ast}_i \rangle \cap \langle R^{\ast}_j \rangle}
+и для любых пар $i$ и $j$, для которых $\intersecij \neq \emptyset$, выполнено:
+\begin{equation}
+t^{\ast}_i[\intersecij] = t'_i[\intersecij], i,j = 1,\dots,l,
+\label{eval_eq_2}
+\end{equation}
+
+Поскольку условия (\ref{eval_eq_1}) и (\ref{eval_eq_2}) выполнены для всего множества
+отношений $\{R^{\ast}_{1}, \ldots, R^{\ast}_{l}\}$, то они выполнены и для любого его
+подмножества, в том числе и для $\{R^{v}_{1}, \ldots, R^{v}_{s(v)}\}$.
+Следовательно, кортежи $t^{\ast}_i$ из отношений $R^{v}_j$ при выполнении операции
+естественного соединения образуют кортеж $t''$, для которого выполнено:
+$t'' = t'[\langle {\Join}_{i=1}^{s(v)} R^v_i \rangle]$. В силу условия а) и 
+$X_v \subseteq \langle {\Join}_{i=1}^{s(v)} R^v_i \rangle$ получаем 
+$t''[X^{\ast}] = t'[X^{\ast}] = t^{\ast}$.
+
+Из условия  $F^{\ast}(t') = \n{TRUE}$, по утверждению
+\ref{proj_property_of_inclusion}, получаем, что проекция $F^{\ast} [X^{\ast}]$
+верна на кортеже $t'$, а следовательно и на $t''$, так как формула определена на
+общих атрибутах этих кортежей. Далее, по условию 3, $F_v (t') = \n{TRUE} \Rightarrow F_v (t'') = \n{TRUE}$.
+Это значит, что $t^{\ast} = t''[X^{\ast}] \in \pi_{X^{\ast}} (P_{v})$. Теорема
+доказана.
+\end{proof}
