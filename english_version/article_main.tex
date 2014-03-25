@@ -18,138 +18,112 @@
 \def \n #1{\mathit{#1}}
 \title{Creating table-like applications using cached data}
 \author{
-Мосин С.В., Зыкин С.В. \footnote{Работа выполнена при поддержке гранта РФФИ №
-12-07-00066-а}
-}
+Mosin Sergey, Zykin Sergey \footnote{The paper is supported by RFFI grant
+#12-07-00066-a}
 \date{}
-
+}
 \begin{document}
 \maketitle
+\section{Abstract}
 
-\section{Введение}
+\section{Introduction}
+A lot of nowadays Big Data analysis solutions use Online Analytical Processing
+technologies, formed in early 90s already \cite{codd}. A lot of fundamental
+\cite{lecht,lehner,mazon} and applied \cite{vassi, peder, progressive, giorg}
+results were obtained in this field lately.
 
-Многие современные решения в области анализа больших объемов данных
-используют технологии аналитической обработки данных (Online Analytical
-Processing), сформировавшиеся еще в начале 90-х годов \cite{codd}. За последнее
-время в этой области было получено большое количество фундаментальных
-\cite{lecht,lehner,mazon} и практических результатов \cite{vassi, peder,
-progressive, giorg}.
+The purpose of this paper is the research of the problem of creating Dynamic
+Multidimensional Data Representation from the Relational Database with a help of
+cached data representations on a user computer, supplied with Graphical
+Processing Unit (GPU). We don't require any transformation of the initial
+Database schema, even to the hierarchical model.
 
-Целью данной работы, включая результаты этой статьи, является изучение
-проблемы динамического формирования
-многомерного представления данных из реляционной базы данных с
-помощью зарезервированных представлений на компьютере пользователя, оснащенном
-графическим процессором (GPU). При этом не предполагается какое-либо
-преобразование исходной схемы базы данных, в том числе к иерархическому виду.
+This problem is connected with a field of query optimization, because it aims
+the decrease in data transfer from a Database server. Cached data is actively
+used in Database Management Systems (DBMS). But mostly it is only repeating use
+of data, written in cache, without any prior data analysis to define any partial
+or combined use. The DBMS can only avoid requesting blocks of data from external
+devices while serving the query, if they are present(?ed) in cache. It means
+block number analysis, not their information.
 
-Поставленная проблема связана с областью оптимизации
-запросов, поскольку нацелена на сокращение объема передаваемых данных с сервера
-базы данных. Зарезервированные данные активно используется в системах управления
-базами данных (СУБД). Но в большинстве случаев это касается повторного
-использования данных, записанных в кеш, без предварительного анализа
-содержимого на предмет возможности частичного или комбинированного
-использования. Работа СУБД ограничивается тем, что при выполнении очередного
-запроса блоки данных не запрашиваются с внешних устройств, если они есть в
-кеше, т. е. анализируются номера блоков, а не их содержимое.
+This paper is based on the results, obtained in \cite{zyk_pol}. We removed
+condition that restricted(?) Intermediate Representation (IR) attributes and
+also made some generalizations on multiple IRs case.
 
-Данная работа основывается на результатах, полученных в
-статье \cite{zyk_pol}. Устранено условие, ограничивающее атрибуты промежуточного
-представления, а также сделано обобщение теорем на случай нескольких
-промежуточных представлений.
+\section{Existing solutions overview and comparison}
 
-\section{Обзор публикаций и сравнение}
+In a field of fundamental researches huge amount of publications aim optimal
+query plan generation based on a formal set of rules, that don't use SQL operator
+predicate domains (logical optimization). In other cases those domains are
+taken into account for statistical evaluations to improve physical access to the
+data. Stream data query executing problems, described in
+\cite{Olston03, Denny05}, are related to our problem closer, but different aims
+lead us to different results. The most similar to our work is paper
+\cite{Afrati06}. They analyze conjunctive queries on data domains with
+predicates in a form of arithmetical comparisons and present query computation
+algorithms using IRs. In this paper the special case of universal relational
+query is considered. It is a query on the Database relations, not particular
+domains. Although we had similar aims, the results obtained differ because of
+stated factors. In particular, in our work there is no need to create any
+algorithms of data selection, as they are replaced by Relational Algebra.
 
-В области теоретических исследований ситуация складывается следующим образом.
-Огромное число публикаций посвящено проблеме построения оптимального плана
-запроса на основе формальных правил, в которых не используются области
-определения предикатов в SQL-операторах (логическая оптимизация) либо эти
-области учитываются при вычислении статистических оценок для оптимизации
-физического доступа к базе данных. Близкими по методам решения являются задачи
-выполнения запросов на потоках данных \cite{Olston03, Denny05}, однако
-различные, по сравнению с настоящей работой, цели приводят к различным
-результатам. Наиболее близка к рассматриваемой проблеме работа \cite{Afrati06}.
-В ней рассматриваются конъюнктивные запросы над доменами данных с предикатами
-в виде арифметических сравнений и представлены алгоритмы вычисления запросов с
-использованием существующих представлений. В настоящей работе рассматривается
-специальный вид универсального реляционного запроса над отношениями базы данных,
-а не над отдельными доменами. Хотя цели в обеих работах совпадают, результаты
-различны по указанной причине. В частности, в настоящей работе нет необходимости
-разрабатывать алгоритмы выборки данных из промежуточных представлений, так как
-их замещает реляционная алгебра.
+There are some works, which examine query optimization problem in the case of
+multidimensional warehouse representation with a use of dynamically formed
+representations. Two basic methods are used there: statical \cite{baralis,
+gupta, gupta-mumick} and dynamical one \cite{scheuermann, shim, kalnis, chang}.
+The first one is based on a fixed amount of queries. In the latter one queries
+for reservation are chosen based on appearance statistic and computational cost
+of query execution. As a data source Data Warehouses or Relational Databases in
+the hierarchical form are used. Special queries for data manipulation are
+considered. In this paper we use split dimension generation for the data
+required for current analysis. Hence, we are interested in standard SQL queries
+to the Database and IRs. The resulting representation can then be processed by
+special multidimensional data queries.
 
-Существует ряд работ, в которых рассматривается проблема оптимизации
-запросов к хранилищам данных, имеющих концептуальное многомерное представление,
-с использованием динамически формируемых представлений. При этом
-существуют два основных подхода для резервирования результатов запросов:
-статический \cite{baralis, gupta, gupta-mumick} и динамический \cite{scheuermann, shim,
-kalnis, chang}. Первый базируется на использовании набора фиксированных запросов,
-во втором же предполагается динамический выбор результатов запросов для резервирования на
-основе статистики появления а также вычислительной стоимости выполнения
-запросов. В качестве источника данных используются хранилища данных, либо
-реляционная база данных, преобразованная к иерархическому виду. При этом,
-рассматриваются специальные запросы манипулирования многомерными данными. 
-В этой статье рассматривается технология раздельного формирования размерностей
-представления данных, необходимого для текущего анализа. Поэтому интерес
-представляют стандартные SQL запросы к базе данных и промежуточным представлениям. 
-Результирующее представление может быть затем обработано специальными запросами
-манипулирования многомерными данными.
+In the \cite{Keller96} paper they claim for cache content analysis, and
+predicates correspond to IRs in our approach. Cached data usage problem is solved
+in terms of predicate deduction. In our paper we solve this problem by means of
+computation of cached query results domains that correspond to the IRs. It allows
+us to define IR records that can be used to form new representation and new SQL
+queries that will let us load missing data from Database server. The following
+example demonstrates suggested approach.
 
-В работе \cite{Keller96} решается задача анализа содержимого кеша,
-при этом промежуточным представлениям
-в кеше ставятся в соответствие предикаты. Проблема использования представлений
-решается за счет выводимости предикатов. В данной работе проблему использования
-промежуточных представлений предлагается решать за счет вычисления областей
-определения (доменов) результатов выполнения запросов, находящихся в кеше,
-соответствующих промежуточным представлениям. Это дает возможность
-определить кортежи, которые можно использовать в зарезервированных представлениях
-при формировании нового представления, и на основе вычисления областей определения
-сформировать SQL команды, которые позволят загрузить недостающие данные с сервера
-базы данных. Для демонстрации предлагаемых решений рассмотрим пример.
 
-{\bf Пример 1.} Допустим, что требуется получить представление данных, как показано в
-таблице \ref{def_T_1}. Жирным шрифтом в этой таблице представлены атрибуты размерностей,
-курсивом - атрибуты мер, значения атрибутов - обычным шрифтом.
+{\bf Example 1.} The task is to receive data representation as in the table
+\ref{def_T_1}. Dimension attributes are in bold, measure attributes are italic,
+else are attribute values.
 
 \begin{table}[h!]
-\caption{\label{def_T_1} Фрагмент учебного плана.}
+\caption{\label{def_T_1} Curriculum.}
 \begin{center}
 \begin{tabular}{|c|c||c|c|c|c|}
 \cline{2-6}
-\multicolumn{1}{c|}{} & \multicolumn{1}{|r||}{\bf Семестр} & \multicolumn{2}{|c|}{2} & \multicolumn{2}{|c|}{3}  \\
+\multicolumn{1}{c|}{} & \multicolumn{1}{|r||}{\bf Semester} & \multicolumn{2}{|c|}{2} & \multicolumn{2}{|c|}{3}  \\
 \cline{2-6}
-\multicolumn{1}{c|}{} & {\bf Предмет} & Физика & Химия & Физика & Химия \\
+\multicolumn{1}{c|}{} & {\bf Discipline} & Physics & Chemistry & Physics & Chemistry \\
 \hline \cline{2-6}
-{\bf Факультет} & {\bf Группа} & {\it Часы} & {\it Часы} & {\it Часы} & {\it Часы} \\
+{\bf Department} & {\bf Class} & {\it Hours} & {\it Hours} & {\it Hours} & {\it Hours} \\
 \hline
- & Х-321 & & 36 & 18 & 9 \\
+ & C-321 & & 36 & 18 & 9 \\
 \cline{2-6}
-Химический & Х-322 & & 48 & 18 & 9 \\
+D. of Chemistry & Х-322 & & 48 & 18 & 9 \\
 \cline{2-6}
- & Х-331 & & 24 & 18 & 9 \\
+ & C-331 & & 24 & 18 & 9 \\
 \hline
- & Ф-321 & 48 & & 24 & \\
+ & P-321 & 48 & & 24 & \\
 \cline{2-6}
-Физический & Ф-322 & 48 & & 24 & \\
+D. of Physics & P-322 & 48 & & 24 & \\
 \cline{2-6}
- & Ф-331 & 64 & & 24 & \\
+ & P-331 & 64 & & 24 & \\
 \hline
 \end{tabular}
 \end{center}
 \end{table}
-Пусть на компьютере пользователя имеются следующие таблицы: $P_1$,
-$P_2$, $P_3$, сформированные заранее. Схема таблицы $P_1$=(Номер факультета, Факультет), без ограничений на данные;
-схема таблицы $P_2$=(Номер предмета, Предмет), без ограничений на данные;
-схема таблицы $P_3$=(Номер факультета, Номер предмета, Семестр, Группа, Часы), со следующим ограничением:
-$F_3 =(\mbox{Семестр} \leq 2) \wedge (\mbox{Факультет} = \mbox{Химический})$.
-Пусть при формировании схемы представления данных в таблице \ref{def_T_1} пользователь задал следующее
-ограничение на нее: $F^{\ast} = (\mbox{Семестр} \leq 3)$.
-Сравнение областей истинности формул для ограничений позволит сделать вывод, что $P_1$ и $P_2$ имеют
-достаточно данных для формирования таблицы \ref{def_T_1}, а $P_3$ требует дополнения данных.
-Вычисление областей истинности формул $F^{\ast}$ и $F_3$ позволит сформировать новую формулу:
-$F=((\mbox{Семестр} = 3) \wedge (\mbox{Факультет=Химический}))
-\vee ((\mbox{Семестр} \leq 3) \wedge (\mbox{Факультет} \neq \mbox{Химический}))$. Использую схему $P_3$ и
-формулу $F$ формируется команда SQL, которая передается на сервер для исполнения. В конечном счете,
-по сети передается меньше данных.
+Assume the following precomputed relations on the user PC:  $P_1$,
+$P_2$, $P_3$. Table schemes are the following then: $P_1$=(Department number, Department), without any data constraints; $P_2$=(Discipline number, Discipline), without data constraints; $P_3$=(Department number, Discipline number, Semester, Class, Hours), with the following constraint:
+$F_3 =(\mbox{Semester} \leq 2) \wedge (\mbox{Department} = \mbox{D. of Chemistry})$.
+Assume the user has made the following logical constraint on the data to be represented in the table: $F^{\ast} = (\mbox{Semester} \leq 3)$. Comparing these formulas domains, it's easy to see that $P_1$ and $P_2$ have enough data to form table \ref{def_T_1}, whereas $P_3$ needs to be expanded with data. After defining $F^{\ast}$ and $F_3$ domains we can form a new formula: $F=((\mbox{Semester} = 3) \wedge (\mbox{Deparmtent=D. of Chemistry}))
+\vee ((\mbox{Semester} \leq 3) \wedge (\mbox{Deparmtent} \neq \mbox{D. of Chemistry}))$. Using $P_3$ schema and $F$ formula, we can now make an SQL command to be executed on server. As a result, we transfer less data over the network.
 
 \section{Определение и свойства логических ограничений}
 
