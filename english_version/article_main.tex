@@ -16,15 +16,27 @@
 \def \eval #1#2{\left.#1\right\vert_{#2}}
 \def \<#1> {\langle #1 \rangle}
 \def \n #1{\mathit{#1}}
-\title{Creating table-like applications using cached data}
+\title{Building table-like applications using cached data}
 \author{
-Mosin Sergey, Zykin Sergey \footnote{The paper is supported by RFFI grant
+Mosin Sergey, Zykin Sergey \footnote{The paper is supported by RFBR grant
 #12-07-00066-a}
 \date{}
 }
 \begin{document}
 \maketitle
+
 \section{Abstract}
+We primarily address the usage of cached Database query results in our paper.
+This problem was already discussed and has some software implementations. In our
+work we propose logical formulas Truth spaces usage while querying Database.
+This approach is supposed to help an analyst, who works with dynamically built
+data representations logically described as multidimensional tables. Those
+representations don't take much disk space, so one can use GPU to speed up the
+computations. We consider queries in a form of relational algebra expressions,
+similar to "universal relational query". Logical formulas in the queries are
+presented in Disjunctive Normal Form. They consist of atomic expressions
+consisting of SQL predicates. In the paper we consider single and multiple table
+cases to build new data representations.
 
 \section{Introduction}
 A lot of nowadays Big Data analysis solutions use Online Analytical Processing
@@ -32,9 +44,9 @@ technologies, formed in early 90s already \cite{codd}. A lot of fundamental
 \cite{lecht,lehner,mazon} and applied \cite{vassi, peder, progressive, giorg}
 results were obtained in this field lately.
 
-The purpose of this paper is the research of the problem of creating Dynamic
-Multidimensional Data Representation from the Relational Database with a help of
-cached data representations on a user computer, supplied with Graphical
+The purpose of this paper is to study problem of building Dynamic
+Multidimensional Data Representation from the Relational Database using
+cached data representations on a user computer, equipped with a Graphical
 Processing Unit (GPU). We don't require any transformation of the initial
 Database schema, even to the hierarchical model.
 
@@ -47,25 +59,25 @@ devices while serving the query, if they are present(?ed) in cache. It means
 block number analysis, not their information.
 
 This paper is based on the results, obtained in \cite{zyk_pol}. We removed
-condition that restricted(?) Intermediate Representation (IR) attributes and
-also made some generalizations on multiple IRs case.
+condition that limited Intermediate Data Representation (IDR) attributes and
+also made some generalizations on multiple IDRs case.
 
 \section{Existing solutions overview and comparison}
 
 In a field of fundamental researches huge amount of publications aim optimal
-query plan generation based on a formal set of rules, that don't use SQL operator
-predicate domains (logical optimization). In other cases those domains are
-taken into account for statistical evaluations to improve physical access to the
-data. Stream data query executing problems, described in
-\cite{Olston03, Denny05}, are related to our problem closer, but different aims
-lead us to different results. The most similar to our work is paper
-\cite{Afrati06}. They analyze conjunctive queries on data domains with
-predicates in a form of arithmetical comparisons and present query computation
-algorithms using IRs. In this paper the special case of universal relational
-query is considered. It is a query on the Database relations, not particular
-domains. Although we had similar aims, the results obtained differ because of
-stated factors. In particular, in our work there is no need to create any
-algorithms of data selection, as they are replaced by Relational Algebra.
+query plan generation based on a formal set of rules, that don't use SQL
+operator predicate domains (logical optimization). In other cases those domains
+are taken into account for statistical evaluations to improve physical access to
+the data. Stream data query executing problems, described in \cite{Olston03,
+Denny05}, are related to our problem closer, but different aims lead us to
+different results. The most similar to our work is paper \cite{Afrati06}. They
+analyze conjunctive queries on data domains with predicates in a form of
+arithmetical comparisons and present query computation algorithms using IDRs. In
+this paper the special case of universal relational query is considered. It is a
+query on the Database relations, not particular domains. Although we had similar
+aims, the results obtained differ because of stated factors. In particular, in
+our work there is no need to create any algorithms of data selection, as they
+are replaced by Relational Algebra.
 
 There are some works, which examine query optimization problem in the case of
 multidimensional warehouse representation with a use of dynamically formed
@@ -77,13 +89,13 @@ of query execution. As a data source Data Warehouses or Relational Databases in
 the hierarchical form are used. Special queries for data manipulation are
 considered. In this paper we use split dimension generation for the data
 required for current analysis. Hence, we are interested in standard SQL queries
-to the Database and IRs. The resulting representation can then be processed by
+to the Database and IDRs. The resulting representation can then be processed by
 special multidimensional data queries.
 
 In the \cite{Keller96} paper they claim for cache content analysis, and
-predicates correspond to IRs in our approach. Cached data usage problem is solved
+predicates correspond to IDRs in our approach. Cached data usage problem is solved
 in terms of predicate deduction. In our paper we solve this problem by means of
-computation of cached query results domains that correspond to the IRs. It allows
+computation of cached query results domains that correspond to the IDRs. It allows
 us to define IR records that can be used to form new representation and new SQL
 queries that will let us load missing data from Database server. The following
 example demonstrates suggested approach.
@@ -106,7 +118,7 @@ else are attribute values.
 \hline
  & C-321 & & 36 & 18 & 9 \\
 \cline{2-6}
-D. of Chemistry & Х-322 & & 48 & 18 & 9 \\
+D. of Chemistry & C-322 & & 48 & 18 & 9 \\
 \cline{2-6}
  & C-331 & & 24 & 18 & 9 \\
 \hline
@@ -125,10 +137,10 @@ $F_3 =(\mbox{Semester} \leq 2) \wedge (\mbox{Department} = \mbox{D. of Chemistry
 Assume the user has made the following logical constraint on the data to be represented in the table: $F^{\ast} = (\mbox{Semester} \leq 3)$. Comparing these formulas domains, it's easy to see that $P_1$ and $P_2$ have enough data to form table \ref{def_T_1}, whereas $P_3$ needs to be expanded with data. After defining $F^{\ast}$ and $F_3$ domains we can form a new formula: $F=((\mbox{Semester} = 3) \wedge (\mbox{Deparmtent=D. of Chemistry}))
 \vee ((\mbox{Semester} \leq 3) \wedge (\mbox{Deparmtent} \neq \mbox{D. of Chemistry}))$. Using $P_3$ schema and $F$ formula, we can now make an SQL command to be executed on server. As a result, we transfer less data over the network.
 
-\section{Определение и свойства логических ограничений}
+\section{Logical constraint definition and properties}
 
-Для упрощения вычисления областей истинности будем рассматривать логические формулы в дизъюнктивной
-нормальной форме. В общем случае формула $F$ имеет вид 
+To simplify domain computations we will consider logical formulas in Disjunctive Normal Form (DNF).
+In general case formula $F$ has the following form:
 
 \begin{equation}
 F = K_1 \vee K_2 \vee \dots \vee K_m ,
@@ -138,38 +150,27 @@ F = K_1 \vee K_2 \vee \dots \vee K_m ,
 K_i = T_1 \& T_2 \dots \& T_n, i = 1, \dots, m ,
 \label{def_F_2}
 \end{equation}
-где $T_j, j = 1, \dots, n$ - предикаты, в которых явным образом
-специфицированы расширенные имена атрибутов $R_i.A_j$ (атрибут $A_j$ в отношении
-$R_i$):
+here $T_j, j = 1, \dots, n$ - predicates, where expanded attribute names are specified. $R_i.A_j$ means attribute $A_j$ in relation $R_i$.
+Those predicates can be:
 \begin{itemize}
-  \item	операция сравнения $ \n{Expr}_1 \theta \n{Expr}_2$, $\theta$ – операция
-  сравнения $(\theta \in \{=, \neq, >, <, \leq, \geq\})$, $\n{Expr}_i$ –
-  согласованные по типам допустимые выражения, определенные на множестве
-  расширенных имен атрибутов и констант;
-  \item операция $\n{Expr}_1 \n{[NOT]} \n{BETWEEN} \n{Expr}_2 \n{AND}
-  \n{Expr}_3$ (содержимое в прямоугольных скобках $[*]$ для предиката не
-  является обязательным при написании);
-  \item операция $\n{Expr} \n{[NOT]} \n{IN} S$, где $S$ – список значений либо
-  подзапрос, результатом которого является столбец атрибута $A_j$ в отношении
-  $R_i$;
-  \item операция $\n{Str}_1 \n{[NOT]} \n{LIKE} \n{Str}_2$, где $\n{Str}_i$ –
-  строки;
-  \item операция $\n{Expr} \theta \n{ALL/ANY} S$.
+  \item	comparison operation $ \n{Expr}_1 \theta \n{Expr}_2$, $\theta$ –
+  comparison operator $(\theta \in \{=, \neq, >, <, \leq, \geq\})$, $\n{Expr}_i$
+  – type conformant expressions, defined in a space of expanded attribute names and constants;
+  \item operation $\n{Expr}_1 \n{[NOT]} \n{BETWEEN} \n{Expr}_2 \n{AND}
+  \n{Expr}_3$ (symbols inside square brackets $[*]$ aren't mandatory for the predicate);
+  \item operation $\n{Expr} \n{[NOT]} \n{IN} S$, here $S$ – values list or subquery, having a set of attribute $R_i.A_j$ values as a result;
+  \item operation $\n{Str}_1 \n{[NOT]} \n{LIKE} \n{Str}_2$, here $\n{Str}_i$ –
+  strings;
+  \item operation $\n{Expr} \theta \n{ALL/ANY} S$.
 \end{itemize}
 
 \begin{note}
-Здесь и далее будем полагать, что в формулах отсутствуют тривиальные условия на
-атрибуты, например, условия вида $Expr_1 = Expr_1$ и сводящихся к ним.
-В общем случае будем полагать, что множество возможных значений атрибута $A_l$
-в отношении $R_i$ не включается целиком в область истинности предиката $T_j (\dots , R_i . A_l ,\dots )$. Такие
-условия могут быть удалены из формулы, не меняя области истинности (будет
-определено далее).
+We assume logical formulas have no trivial conditions on attributes, for example, $Expr_1 = Expr_1$ and those reduced to such form. In general, we assume that $A_l$ in $R_i$ domain is not fully contained in $T_j (\dots , R_i . A_l ,\dots )$ predicate truth space. Such conditions can be removed from the formula without a change in the truth space (we will define it later).
 \label{trivial}
 \end{note}
 
 \begin{mydef}
-Множество атрибутов, входящих в формулу, выражает размерность формулы и
-обозначается $\<F> $.
+Space of attributes contained in a formula show the dimension of formula and is denoted as $\<F> $.
 
 \begin{equation}
 \<F> = \{R_1^F.A_1^F, \dots, R_k^F.A_k^F\}
@@ -178,184 +179,91 @@ $R_i$):
 \end{mydef}
 
 
+Listed variants of operations don't use every single SQL capability. For example, we don't use $\n{EXISTS}$ predicate, because it has no expanded attribute names in it. $\n{NULL}$ predicate is used for another purpose in our paper.
 
-Перечисленные варианты операций используют не все возможности языка SQL.
-Например, предикат $\n{EXISTS}$ не используется, поскольку в нем явно не
-специфицированы расширенные имена атрибутов, предикат $\n{NULL}$ используется
-в данной работе для другой цели.
+During logical formula domain calculation if we have some attribute having $NULL$ value on a row $t$, we then get the $\n{UNKNOWN}$ value for the whole formula, because SQL-query results follow Three-valued logic. It leads us to ambiguous interpretations of result of both usual users and experienced programmers. To solve this problem we suggest the following constraint: every attribute in $F^{\ast}$ is supplied with a property <<Use of undefined value>> with two mutually exclusive values: <<Yes>> or <<No>>. The motivation behind this property is the following: if it is assigned <<Yes>>, then we leave rows with $\n{NULL}$ value for further consideration. Otherwise, having <<No>> in that property guarantees us removing all such rows.
 
-При вычислении логического выражения может быть получено значение $\n{UNKNOWN}$,
-если на текущем кортеже $t$ атрибут принимает значение $\n{NULL}$, поскольку
-результаты вычисления логических выражений в SQL-запросах соответствуют
-трехзначной логике. Это приводит к неоднозначной интерпретации результата не только
-обычными пользователями, но и опытными программистами. Для решения этой проблемы
-предлагается ограничение: каждому атрибуту, входящему в $F^{\ast}$, явно присваивается признак
-<<Использование неопределенного значения>> с двумя взаимоисключающими значениями <<Да>> или <<Нет>>.
-Семантика этого признака такова, что если ему присвоено значение <<Да>>, то появление значения $\n{NULL}$
-для указанного атрибута в текущем кортеже $t$ не служит основанием удаления этого кортежа из
-дальнейшего рассмотрения. В противном случае значение признака <<Нет>> гарантирует, что появление
-значения $\n{NULL}$ для указанного атрибута в текущем кортеже $t$ приведет к удалению этого кортежа из
-дальнейшего рассмотрения.
+Let's write expression (\ref{def_F_1}) for $F$ in the following form: $ F ( \dots, T_j , \dots )$, here $T_j$ - predicates of expression (\ref{def_F_2}).
+Then after the modification it will be the following: 
+$F( \dots, T'_j , \dots )\wedge_{i,j}(R_i .A_j \neq  \n{NULL})$, here  $\wedge_{i,j}(R_i .A_j \neq  \n{NULL})$ - conjunction of all $F$ attributes,for which $\n{NULL}$ is not allowed, and $T'_j = (T_j \vee_{i,j}(R_i .A_j = \n{NULL}))$, here  $\vee_{i,j}(R_i .A_j = \n{NULL})$ - disjunction of all $F$ attributes,for which $\n{NULL}$ is allowed. Outer brackets for $T'_j$ predicate define operation priority. We can see that this logical formula can only have $\n{TRUE}$ and $\n{FALSE}$ values when considering it in Three-valued logic. We also can note that if rows don't have undefined values, the initial formula $F$ will be equivalent to the transformed one. There can be some cases when the meaning of $P$ IR changes with such a transformation. For example, assume $F = R_1 .A_2 > 3 \vee R_3 .A_4 < 4$. Let row $t$ has $R_1 .A_2$ value set to $\n{NULL}$, with a property <<Use of undefined value>> set to <<Yes>>, and $R_3 .A_4$ value set to 5, so $R_3 .A_4 < 4$ predicate is $\n{FALSE}$. Then $F$ transformation on $t$ row will be $\n{TRUE}$, what is not so obvious indeed.
 
-Запишем формулу (\ref{def_F_1}) для $F$ в следующем виде: $ F ( \dots, T_j , \dots )$, где $T_j$ - предикаты
-формулы (\ref{def_F_2}). Тогда после предложенного преобразования она примет следующий вид:
-$F( \dots, T'_j , \dots )\wedge_{i,j}(R_i .A_j \neq  \n{NULL})$, где  $\wedge_{i,j}(R_i .A_j \neq  \n{NULL})$ - конъюнкция
-по всем атрибутам формулы $F$, для которых не допустимо значение $\n{NULL}$.
-Операция $T'_j = (T_j \vee_{i,j}(R_i .A_j = \n{NULL}))$, где  $\vee_{i,j}(R_i .A_j = \n{NULL})$ - дизъюнкция
-по всем атрибутам предиката $T_j$, для которых допустимо значение $\n{NULL}$. Внешние скобки для предиката
-$T'_j$ определяют приоритет выполнения операций. Несложно убедиться, что в рамках трехзначной логики
-преобразованная формула принимает только значения $\n{TRUE}$ и $\n{FALSE}$. Кроме того, несложно убедиться,
-что в рамках двузначной логики, когда в кортежах отсутствуют неопределенные значения, исходная формула $F$
-будет эквивалентна преобразованной формуле, поэтому семантика представления $P$ практически не искажается.
-Для раскрытия термина "практически" рассмотрим наиболее неудобный пример: пусть $F = R_1 .A_2 > 3 \vee R_3 .A_4 < 4$
-и на кортеже $t$ атрибут $R_1 .A_2$ принимает допустимое значение $\n{NULL}$, а предикат $R_3 .A_4 < 4$ принимает
-значение $\n{FALSE}$. Тогда преобразование формулы $F$ на кортеже $t$ будет иметь значение $\n{TRUE}$,
-что не совсем очевидно. Далее будем предполагать, что все формулы $F$ являются преобразованными.
+Hereafter we will suppose all the $F$ formulas to be transformed.
 
-Введем в рассмотрение множество $\mathcal{A} =$ $\{(a_1, \dots, a_n)
-\mid a_i \in Dom(A_i), i=1,\dots,n\}$, где $Dom(A_i)$ - множество всех допустимых значений атрибута $A_i$.
-Декартово прозведение $Dom(A_1)\times Dom(A_2)\times \dots \times Dom(A_n)$ - $n$-мерное пространство
-значений всех атрибутов базы данных. Текущее состояние базы данных соответствует точке в этом пространстве.
-Допустимые состояния образуют некоторую область в этом пространстве, соответствующую ограничениям целостности на данные.
-В замечании \ref{trivial} речь идет о всем пространстве состояний, а не только допустимых состояниях.
+We consider $\mathcal{A} =$ $\{(a_1, \dots, a_n)
+\mid a_i \in Dom(A_i), i=1,\dots,n\}$ set, here $Dom(A_i)$ - is a domain of $A_i$.
+Cartesian product $Dom(A_1)\times Dom(A_2)\times \dots \times Dom(A_n)$ is an $n$-dimensional space of all values for all Database attributes. Data constraints bound this space to some set of points that represents available Database states. In the Note \ref{trivial} we consider the whole space, not only the available states.
 
 \begin{mydef}
-Областью истинности логической формулы $F$, заданной (\ref{def_F_1}),
-(\ref{def_F_2}), (\ref{def_F_3}), является множество, определяемое по следующему
-правилу: $M (F) = \{a \in \mathcal{A} \mid F(a) = \n {TRUE}\}$.
+Truth space of logical formula $F$, defined by (\ref{def_F_1}),
+(\ref{def_F_2}), (\ref{def_F_3}), is a set $M (F) = \{a \in \mathcal{A} \mid F(a) = \n {TRUE}\}$.
 \end{mydef}
 
 \begin{note}
-Размерность формулы $F$ может быть меньше
-размерности $\mathcal{A}$, при этом атрибуты, не входящие в формулу, могут
-принимать любые значения.
+$F$ formula dimension can be smaller than $\mathcal{A}$ dimension. In this case attributes that aren't presented in formula, can take any values in their domains.
 \end{note}
 
 \begin{note}
-Сложность компонентов предикатов $\n{Expr}$, $S$ и $\n{Str}$ определяется
-возможностями программного обеспечения по вычислению областей истинности
-$F$, как это показано в примере 1.
+The complexity of $\n{Expr}$, $S$ and $\n{Str}$ predicates is defined by software ability to compute Truth spaces of formulas, as it is shown in example 1.
 \end{note}
 
-В соответствии с данными определениями легко понять, как будут устроены операции
-над областями истинности, соответствующими формулам. $M (F)$ для некоторой формулы
-$F$, заданной своей ДНФ, является объединением областей истинности, представленных
-отдельными конъюнктами формулы. Область истинности каждого конъюнкта определяется
-определяется как пересечение областей истинности предикатов, входящих в него.
-
-Далее введем определения, касающиеся модификации вхождения атрибутов в
-логические формулы.
+We now see how can Truth space operations be handled with respect to the corresponding formulas. $M (F)$ for a given formula $F$, written in DNF, is nothing but a union of Truth spaces of distinct conjunctive clauses. Truth space of a single conjunctive clause is an intersection of Truth spaces of it's predicates.
 
 \begin{mydef}
-Проекцей логической формулы $F$, заданной (\ref{def_F_1}), (\ref{def_F_2}),
-(\ref{def_F_3}), на множество атрибутов $X$ называется логическая
-формула $F[X], \<F[X]> $
-$= X$, в которой все термы, содержащие
-атрибуты $R_i^F.A_i^F \notin X$, заменены на тривиальный терм $\n{TRUE}$.
+Given a logical formula $F$, defined by (\ref{def_F_1}), (\ref{def_F_2}),
+(\ref{def_F_3}), the projection of $F$ on the $X$ attribute set is a logical formula $F[X], \<F[X]> = X$, that has all its predicates with $R_i^F.A_i^F \notin X$ replaced with trivial predicate $\n{TRUE}$.
 \label{projection}
 \end{mydef}
 
-\begin{statement}[Свойство включения]
+\begin{statement}[Inclusion property]
 $\forall X \subseteq \<F> \quad M(F) \subseteq M(F[X])$
 \label{proj_property_of_inclusion}
 \end{statement}
 \begin{proof}
-Если $X = \<F> $, то $F = F[X]$ и $M(F) = M(F[X])$. Пусть $X \subset \<F> $. Рассмотрим
-произвольную точку $a \in M(F)$, то есть $F(a)=\n{TRUE}$. Преобразование формулы $F$
-к виду $F[X]$ выполняется заменой предикатов $T_j$ значением $\n{TRUE}$, если они содержат
-атрибут $A_j \in \<F> $ и $A_j \notin X$. Учитывая соотношения  (\ref{def_F_1}) и (\ref{def_F_2}),
-получим $F([X])=\n{TRUE}$. Следовательно, $a \in M(F[X])$, что и требовалось показать.
+If $X = \<F> $, then $F = F[X]$ and $M(F) = M(F[X])$. Assume $X \subset \<F> $. Consider arbitrary point $a \in M(F)$, i.e. $F(a)=\n{TRUE}$. $F$ to $F[X]$ transformation is made by replacing $T_j$ predicates that contain $A_j \in \<F> $ attribute, such that $A_j \notin X$ with $\n{TRUE}$ value. We get $F([X])=\n{TRUE}$ according to (\ref{def_F_1}) and (\ref{def_F_2}). Therefore, $a \in M(F[X])$.
 \end{proof}
 
-Данное свойство логических ограничений, заданных на состояниях базы
-данных, в дальнейшем используется при формировании нового представления данных
-из существующих сохраненных представлений.
+This property of logical formulas is used while building new data representation from given IDRs.
 
-\section{Исследование свойств промежуточных представлений данных}
+\section{Intermediate Data Representation properties research}
 
-Сохраненные промежуточные представления данных обозначим $P$=$\{ P_1$, $P_2$, $\dots$, $P_m \}$,
-где $P_v = \pi_{X_v}(\sigma_{F_v} (R^v_1 \Join R^v_2 \Join \dots \Join R^v_{s(v)} ))$,
-$s(v)$ – количество отношений в базе данных, использованных при формировании представления $P_v$,
-$\pi_{X_v}$ - операция проекции по множеству атрибутов $X_v$, $\sigma_{F_v}$ - операция селекции
-с логическим ограничением на кортежи $F_v$.
-Целевое выражение, которое надо будет получить из представлений $P$, запишем в виде:
+We denote saved IDRs as $P$=$\{ P_1$, $P_2$, $\dots$, $P_m \}$, here $P_v = \pi_{X_v}(\sigma_{F_v} (R^v_1 \Join R^v_2 \Join \dots \Join R^v_{s(v)} ))$,
+$s(v)$ – amount of relations in Database that were used while building $P_v$ IDR,
+$\pi_{X_v}$ - projection on $X_v$ attributes, $\sigma_{F_v}$ - selection with $F_v$ logical formula. We need to get the following representation out of $P$ IDRs:
 $$P^{\ast} = \pi_{X^{\ast}}(\sigma_{F^{\ast}} (R^{\ast}_1 \Join R^{\ast}_2\Join \dots \Join R^{\ast}_l )$$
 
-Рассмотрим проблему формирования представления данных $P^{\ast}$ из существующих промежуточных
-представлений $P_v$.
+Lets study the problem of building data representation $P^{\ast}$ using existing $P_v$ IDRs.
 
 \input{theorem_1}
 
-Предложенные в теореме условия гарантируют, что данные, необходимые для формирования
-представления $P^{\ast}$, содержатся в промежуточном представлении $P_v$. Однако в нем
-могут быть лишние кортежи, которые дают значение $\n{TRUE}$ при подстановке в формулу
-$F^{\ast}$. Дело в том, что эти кортежи будут удалены при выполнении операции естественного
-соединения с отношениями, которых не хватает в множестве $R^v_1 \Join R^v_2 \Join \dots \Join R^v_{s(v)} $
-для совпадения с множеством $R^{\ast}_1 \Join R^{\ast}_2\Join \dots \Join R^{\ast}_l $.
-Используя области области истинности логических выражений у СУБД можно запросить
-минимально необходимый набор данных для определения лишних кортежей.
+The conditions given in theorem guarantee the data to build $P^{\ast}$ to be contained in $P_v$ IDR. However, there can be excess rows that make $F^{\ast}$ take $\n{TRUE}$ value. They appear because there are some relations in $R^{\ast}_1 \Join R^{\ast}_2\Join \dots \Join R^{\ast}_l $ that aren't presented in $R^v_1 \Join R^v_2 \Join \dots \Join R^v_{s(v)} $ and will be deleted if we join those missing relations. Using Truth spaces of logical formulas we can query DBMS to get a minimal required data set to define excess rows.
 
-Следующая теорема соответствует частному случаю, однако проблема лишних кортежей не возникает.
+In the next theorem we describe the case of coinciding relation sets.
 
 \input{theorem_2}
 
-Для формирования результирующего представления возможно использование
-не одного, а нескольких промежуточных представлений $P_v$. Для этого
-рассмотрим достаточно очевидное свойство операции естественного соединения.
+It is possible to use several IRs to build resulting representation. But at first let's consider the following simple property of natural join.
 
 \begin{statement}
-Пусть $\Re_1 = R_1 \Join \dots \Join R_k$ - результат естественного
-соединения некоторых $k$ отношений. Пусть также $\Re_2 = R_1 \Join \dots
-\Join R_k \Join R_{k+1} \Join \dots \Join R_{n}$. 
-Тогда $\Re_2 [\langle \Join_{i=1}^{k} R_i \rangle] \subseteq \Re_1$
+Assume $\Re_1 = R_1 \Join \dots \Join R_k$ - natural join of some $k$ relations. Also assume $\Re_2 = R_1 \Join \dots \Join R_k \Join R_{k+1} \Join \dots \Join R_{n}$. Then $\Re_2 [\langle \Join_{i=1}^{k} R_i \rangle] \subseteq \Re_1$
 \label{join_property}
 \end{statement}
-
-Это действительно так, поскольку после проведения операции естественного соединения
-с дополнительными отношениями исходные кортежи, содержавшиеся в $\Re_1$, могут
-лишь ''отсеяться'' операцией естественного соединения. Тогда, взяв вырезку по
-исходным атрибутам, получим как максимум то же самое отношение $\Re_1$. Поскольку
-операция естественного соединения коммутативна, то порядок присоединения отношений
-не имеет значения.
+\begin{proof}
+It is so indeed, because joining additional relations to $\Re_1$ can only remove some rows that were presented there. After the projection we will get the same relation $\Re_1$ if no rows were deleted or some subset otherwise. The order of joins doesn't matter thanks to commutativity property of this operation.
+\end{proof}
 
 \input{theorem_1_mult}
 
-Как и в предыдущем случае существуют условия, при которых целевое представление
-данных можно вычислить точно.
+Just like in previous case, there are some additional conditions that allow us to get precise data presentation from IRs.
 
 \input{theorem_2_mult}
 
-Выполнение условий рассмотренных теорем не представляет собой  исключительный случай,
-поскольку набор размерностей при формировании гиперкубов изменяется редко, что позволит
-формировать эти размерности из промежуточных представлений без обращения к СУБД.
+The conditions listed above aren't exceptional in any case, because the set of dimensions that form hypercube changes rarely, so we can create new dimensions (data representations) from IRs with much less DB interaction.
 
-\section{Заключение}
+\section{Conclusion}
+The prime result of our paper is the justification of IR usage conditions for new hypercube creation. Those IRs can be stored on an analyst PC and decrease the time of getting the required data drastically.
 
-Основной результат данной работы состоит в обосновании условий использования
-зарезервированных представлений данных для формирования новых гиперкубов.
-Эти представления данных могут храниться на компьютере пользователя-аналитика
-и существенно сократить время на формирование данных, необходимых для принятия решений.
+The common problem of systems that don't use any DBMS is the data refreshing. In MOLAP approach technical support stuff is responsible for periodical refreshing of data. The same method can be used to refresh $P_v$ representations. To decrease the refresh time period it is possible to get access to the DBMS's DB modification log and refresh only modified data. But let's notice again that those dimensions don't change often.
 
-Традиционная проблема в системах, работающих не под управлением СУБД, заключается
-в актуализации данных, полученных из БД. В технологии MOLAP она решается путем периодической
-актуализации содержимого гиперкуба службой сопровождения. Аналогичный способ может быть
-применен для актуализации представлений $P_v$. Для сокращения времени актуализации возможно
-получить доступ к журналу изменений, который сопровождает СУБД, и актуализировать только те
-представления, для которых изменились исходные данные в БД. Однако еще раз отметим, что данные,
-используемые в размерностях гиперкуба, обычно редко модифицируются в БД.
-
-Предлагаемый подход подразумевает в дальнейшем применение графических процессоров
-для выполнения промежуточных операций фильтрации и соединения различных представлений данных.
-Исследования в этой области показали, что операции на графическом процессоре выполняются
-существенно быстрее, чем на центральном процессоре, для небольших объемов данных. При увеличении
-объемов производительность падает. Причина очевидна: пока данные помещаются в быструю память
-графического процессора, операции с ними выполняются быстро. При увеличении объемов данных появляется
-необходимость их многократного перемещения между различными видами памяти, что снижает
-производительность. С одной стороны, производители графических процессоров постоянно наращивают
-быструю память, с другой – повторное использование данных наиболее актуально для размерностей
-многомерных таблиц, для которых требуется сравнительно небольшой объем памяти, что в совокупности
-делает целесообразным применение графических процессоров при решении указанной проблемы.
-
-
+We assume the usage of GPU to implement intermediate filtration and union of different data representations. The researches in this field show that GPU operations are much faster than those on CPU for small data. There is a decrease in perfomance with data scale. The reason is obvious: big amount of data leads to a much more frequent data transfer between different memory types and increases the overall time spent. But the constant GPU memory growth and the fact that data amount required for multidimensional data dimensions building is comparatively small make the usage of graphical processors quite a good choice for these purposes.
 \input{bibliography}
 \end{document}
