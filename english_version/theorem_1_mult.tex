@@ -1,32 +1,33 @@
-\author{Мосин Сергей, Зыкин Сергей}
+%\author{Mosin Sergey, Zykin Sergey}
 \def \bigcupn {\bigcup\limits_{v=1}^{n}}
 \begin{theorem}
-$P^{\ast} \subseteq \pi_{X^{\ast}} ( \sigma_{F^{\ast}[X]} (P_1 \Join \dots \Join P_n))$, где $X = \bigcupn X_{v}$ если:
-\\а) $X^{\ast} \subseteq X$
-\\б)
+$P^{\ast} \subseteq \pi_{X^{\ast}} ( \sigma_{F^{\ast}[X]} (P_1 \Join \dots \Join P_n))$, where $X = \bigcupn X_{v}$ if:
+\\a) $X^{\ast} \subseteq X$
+\\b)
 $ \bigcupn \{R^{v}_{1}, \ldots, R^{v}_{s(v)}\} = \{R'_{1}, \ldots, R'_{s'}\}
 \subseteq
 \{R^{\ast}_{1}, \ldots, R^{\ast}_{l}\} $
-\\в) $M(F^{\ast}) \subseteq M(F_{v}), v = 1,\dots,n $.
+\\c) $M(F^{\ast}) \subseteq M(F_{v}), v = 1,\dots,n $.
 
 \label{th_mult}
 \end{theorem}
 \begin{proof}
-Аналогично, выберем некий кортеж $t^{\ast} \in P^{\ast}$ и покажем, 
-что $t^{\ast} \in \pi_{X^{\ast}} ( \sigma_{F^{\ast}[X]} (\Join_{v=1}^{n} P_{v}))$. Строим кортежи
-$t', t'' = t'[\langle {\Join}_{i=1}^{s'} R'_i \rangle]$ таким же образом,
-как в Теореме \ref{th_base}. Заметим, что $\bigcupn X_{v} \subseteq 
-{\Join}_{i=1}^{s'} \langle R'_i \rangle$, следовательно, получим
+Again, we will choose an arbitrary tuple $t^{\ast} \in P^{\ast}$
+and show that $t^{\ast} \in \pi_{X^{\ast}} ( \sigma_{F^{\ast}[X]}
+(\Join_{v=1}^{n} P_{v}))$. By analogy to theorem \ref{th_base}, the tuples $t',
+t'' = t'[\langle {\Join}_{i=1}^{s'} R'_i \rangle]$ are built.
+Note that  $\bigcupn X_{v} \subseteq {\Join}_{i=1}^{s'} \langle R'_i \rangle$, hence
 $t''[X^{\ast}] = t'[X^{\ast}] = t^{\ast}$.
-Дальнейшие рассуждения также повторяются, распространяясь на все промежуточные представления. Получаем $F^{\ast} [X] (t'') = \n{TRUE}$ и $F_v (t'') = \n{TRUE}, v = 1,\dots,n $.
-По утверждению \ref{join_property} $t''[\langle \Join_{i=1}^{s(v)} R^v_i \rangle]
+The further reasonings also repeat being spread to all IRs.
+We get $F^{\ast} [X] (t'') = \n{TRUE}$ and $F_v (t'') = \n{TRUE}, v = 1,\dots,n $.
+Considering statement \ref{join_property} we have $t''[\langle \Join_{i=1}^{s(v)} R^v_i \rangle]
 \in 
 R^v_1 \Join \dots \Join R^v_{s(v)}, v = 1, \dots, n
 \Rightarrow   
 t''[X_v] \in P_v, v = 1, \dots, n
 \Rightarrow
 t''[\bigcupn X_{v}] \in P_1 \Join \dots \Join P_n$.
-А это значит, что $t^{\ast} = t''[X^{\ast}] \in 
+It means that $t^{\ast} = t''[X^{\ast}] \in 
 \pi_{X^{\ast}} ( \sigma_{F^{\ast}[X]} (P_1 \Join \dots \Join P_n))$.
-Теорема доказана.
+The theorem is proved.
 \end{proof}

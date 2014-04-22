@@ -7,6 +7,7 @@
 \usepackage{algorithmic}
 \usepackage{algorithm}
 \usepackage{xcolor}
+\usepackage{textcomp}
 \floatname{algorithm}{Algorithm}
 \newtheorem{theorem}{Theorem}
 \newtheorem{mydef}{Definition}
@@ -18,9 +19,8 @@
 \def \n #1{\mathit{#1}}
 \title{Building table-like applications using cached data}
 \author{
-Mosin Sergey, Zykin Sergey \footnote{The paper is supported by RFBR grant
-#12-07-00066-a}
-\date{}
+Mosin Sergey, Zykin Sergey
+\footnote{The paper is supported by RFBR grant \#12-07-00066-a}
 }
 \begin{document}
 \maketitle
@@ -28,7 +28,7 @@ Mosin Sergey, Zykin Sergey \footnote{The paper is supported by RFBR grant
 \section{Abstract}
 We primarily address the usage of cached Database query results in our paper.
 This problem was already discussed and has some software implementations. In our
-work we propose logical formulas Truth spaces usage while querying Database.
+work, we propose Truth spaces usage in logical formulas while querying a Database.
 This approach is supposed to help an analyst, who works with dynamically built
 data representations logically described as multidimensional tables. Those
 representations don't take much disk space, so one can use GPU to speed up the
@@ -39,24 +39,24 @@ consisting of SQL predicates. In the paper we consider single and multiple table
 cases to build new data representations.
 
 \section{Introduction}
-A lot of nowadays Big Data analysis solutions use Online Analytical Processing
-technologies, formed in early 90s already \cite{codd}. A lot of fundamental
+A lot of current Big Data analysis solutions use Online Analytical Processing
+technologies, formed in early 90s \cite{codd}. A lot of fundamental
 \cite{lecht,lehner,mazon} and applied \cite{vassi, peder, progressive, giorg}
 results were obtained in this field lately.
 
-The purpose of this paper is to study problem of building Dynamic
+The purpose of this paper is to study the problem of building Dynamic
 Multidimensional Data Representation from the Relational Database using
 cached data representations on a user computer, equipped with a Graphical
 Processing Unit (GPU). We don't require any transformation of the initial
 Database schema, even to the hierarchical model.
 
-This problem is connected with a field of query optimization, because it aims
-the decrease in data transfer from a Database server. Cached data is actively
-used in Database Management Systems (DBMS). But mostly it is only repeating use
+This problem is connected with a field of query optimization, because it aims to
+decrease the data transfer from a Database server. Cached data is actively
+used in Database Management Systems (DBMS), but mostly, it is only repeating use
 of data, written in cache, without any prior data analysis to define any partial
 or combined use. The DBMS can only avoid requesting blocks of data from external
-devices while serving the query, if they are present(?ed) in cache. It means
-block number analysis, not their information.
+devices while serving the query, if they are present in the cache. So, the
+block numbers are analyzed, not their information.
 
 This paper is based on the results, obtained in \cite{zyk_pol}. We removed
 condition that limited Intermediate Data Representation (IDR) attributes and
@@ -64,26 +64,26 @@ also made some generalizations on multiple IDRs case.
 
 \section{Existing solutions overview and comparison}
 
-In a field of fundamental researches huge amount of publications aim optimal
-query plan generation based on a formal set of rules, that don't use SQL
-operator predicate domains (logical optimization). In other cases those domains
+In a field of fundamental researches, huge amounts of publications aim at optimal
+query plan generation based on a formal set of rules that don't use SQL
+operator predicate domains (logical optimization). In other cases, those domains
 are taken into account for statistical evaluations to improve physical access to
 the data. Stream data query executing problems, described in \cite{Olston03,
 Denny05}, are related to our problem closer, but different aims lead us to
 different results. The most similar to our work is paper \cite{Afrati06}. They
-analyze conjunctive queries on data domains with predicates in a form of
-arithmetical comparisons and present query computation algorithms using IDRs. In
-this paper the special case of universal relational query is considered. It is a
+analyze conjunctive queries on data domains with predicates in the form of
+arithmetical comparisons, and present query computation algorithms using IDRs. In
+our paper, the special case of universal relational query is considered. It is a
 query on the Database relations, not particular domains. Although we had similar
-aims, the results obtained differ because of stated factors. In particular, in
-our work there is no need to create any algorithms of data selection, as they
+aims, the results obtained differ because of stated factors. In particular,
+there is no need to create any algorithms of data selection in our work, as they
 are replaced by Relational Algebra.
 
-There are some works, which examine query optimization problem in the case of
-multidimensional warehouse representation with a use of dynamically formed
+There are some works, which examine the query optimization problem in the case of
+multidimensional warehouse representation with the use of dynamically formed
 representations. Two basic methods are used there: statical \cite{baralis,
 gupta, gupta-mumick} and dynamical one \cite{scheuermann, shim, kalnis, chang}.
-The first one is based on a fixed amount of queries. In the latter one queries
+The former is based on a fixed amount of queries, whereas in the latter queries
 for reservation are chosen based on appearance statistic and computational cost
 of query execution. As a data source Data Warehouses or Relational Databases in
 the hierarchical form are used. Special queries for data manipulation are
@@ -92,11 +92,11 @@ required for current analysis. Hence, we are interested in standard SQL queries
 to the Database and IDRs. The resulting representation can then be processed by
 special multidimensional data queries.
 
-In the \cite{Keller96} paper they claim for cache content analysis, and
-predicates correspond to IDRs in our approach. Cached data usage problem is solved
-in terms of predicate deduction. In our paper we solve this problem by means of
+In the \cite{Keller96} paper, they analyze the cache content,
+and predicates in their work correspond to IDRs in our approach. Cached data
+usage problem is resolved in terms of predicate deduction. In our paper, we address this problem by means of
 computation of cached query results domains that correspond to the IDRs. It allows
-us to define IR records that can be used to form new representation and new SQL
+us to define IR records that can be used to form a new representation and new SQL
 queries that will let us load missing data from Database server. The following
 example demonstrates suggested approach.
 
@@ -131,11 +131,11 @@ D. of Physics & P-322 & 48 & & 24 & \\
 \end{tabular}
 \end{center}
 \end{table}
-Assume the following precomputed relations on the user PC:  $P_1$,
-$P_2$, $P_3$. Table schemes are the following then: $P_1$=(Department number, Department), without any data constraints; $P_2$=(Discipline number, Discipline), without data constraints; $P_3$=(Department number, Discipline number, Semester, Class, Hours), with the following constraint:
+Assume the precomputed relations on the user PC:  $P_1$,
+$P_2$, $P_3$ with the following schemes: $P_1$=(Department number, Department), without any data constraints; $P_2$=(Discipline number, Discipline), without data constraints; $P_3$=(Department number, Discipline number, Semester, Class, Hours), with the following constraint:
 $F_3 =(\mbox{Semester} \leq 2) \wedge (\mbox{Department} = \mbox{D. of Chemistry})$.
 Assume the user has made the following logical constraint on the data to be represented in the table: $F^{\ast} = (\mbox{Semester} \leq 3)$. Comparing these formulas domains, it's easy to see that $P_1$ and $P_2$ have enough data to form table \ref{def_T_1}, whereas $P_3$ needs to be expanded with data. After defining $F^{\ast}$ and $F_3$ domains we can form a new formula: $F=((\mbox{Semester} = 3) \wedge (\mbox{Deparmtent=D. of Chemistry}))
-\vee ((\mbox{Semester} \leq 3) \wedge (\mbox{Deparmtent} \neq \mbox{D. of Chemistry}))$. Using $P_3$ schema and $F$ formula, we can now make an SQL command to be executed on server. As a result, we transfer less data over the network.
+\vee ((\mbox{Semester} \leq 3) \wedge (\mbox{Deparmtent} \neq \mbox{D. of Chemistry}))$. Using $P_3$ schema and $F$ formula, we can now make an SQL command to be executed on the server. As a result, we transfer less data over the network.
 
 \section{Logical constraint definition and properties}
 
@@ -165,12 +165,17 @@ Those predicates can be:
 \end{itemize}
 
 \begin{note}
-We assume logical formulas have no trivial conditions on attributes, for example, $Expr_1 = Expr_1$ and those reduced to such form. In general, we assume that $A_l$ in $R_i$ domain is not fully contained in $T_j (\dots , R_i . A_l ,\dots )$ predicate truth space. Such conditions can be removed from the formula without a change in the truth space (we will define it later).
+We assume logical formulas have no trivial conditions on attributes, for example
+, $Expr_1 = Expr_1$ and those reduced to such form. In general, we assume that
+$R_i.A_l$ domain is not fully contained in $T_j (\dots , R_i . A_l ,\dots )$
+predicate truth space. Such conditions can be removed from the formula without a
+change in the truth space (we will define it later).
 \label{trivial}
 \end{note}
 
 \begin{mydef}
-Space of attributes contained in a formula show the dimension of formula and is denoted as $\<F> $.
+Space of attributes contained in a formula show the dimension of the formula and
+is denoted as $\<F> $.
 
 \begin{equation}
 \<F> = \{R_1^F.A_1^F, \dots, R_k^F.A_k^F\}
@@ -179,34 +184,66 @@ Space of attributes contained in a formula show the dimension of formula and is 
 \end{mydef}
 
 
-Listed variants of operations don't use every single SQL capability. For example, we don't use $\n{EXISTS}$ predicate, because it has no expanded attribute names in it. $\n{NULL}$ predicate is used for another purpose in our paper.
+Listed variants of operations don't use every single SQL capability. For example
+, we don't use $\n{EXISTS}$ predicate, because it has no expanded attribute
+names in it. $\n{NULL}$ predicate is used for another purpose in our paper.
 
-During logical formula domain calculation if we have some attribute having $NULL$ value on a row $t$, we then get the $\n{UNKNOWN}$ value for the whole formula, because SQL-query results follow Three-valued logic. It leads us to ambiguous interpretations of result of both usual users and experienced programmers. To solve this problem we suggest the following constraint: every attribute in $F^{\ast}$ is supplied with a property <<Use of undefined value>> with two mutually exclusive values: <<Yes>> or <<No>>. The motivation behind this property is the following: if it is assigned <<Yes>>, then we leave rows with $\n{NULL}$ value for further consideration. Otherwise, having <<No>> in that property guarantees us removing all such rows.
+During logical formula domain calculation if we have some attribute having
+$NULL$ value on a row $t$, we then get the $\n{UNKNOWN}$ value for the whole
+formula, because SQL-query results follow the Three-valued logic. It leads us to
+ambiguous interpretations of result of both usual users and experienced
+programmers. To solve this problem we suggest the following constraint: every
+attribute in $F^{\ast}$ is supplied with a property ``Use of undefined value''
+with two mutually exclusive values: ``Yes'' or ``No''. The reasoning behind
+this property is the following: if it is assigned ``Yes'', then we leave rows
+with $\n{NULL}$ value for further consideration. Otherwise, having ``No'' in
+that property guarantees us removing all such rows.
 
-Let's write expression (\ref{def_F_1}) for $F$ in the following form: $ F ( \dots, T_j , \dots )$, here $T_j$ - predicates of expression (\ref{def_F_2}).
+Let's write expression (\ref{def_F_1}) for $F$ in the following form: $ F (\dots
+, T_j , \dots )$, here $T_j$ - predicates of expression (\ref{def_F_2}).
 Then after the modification it will be the following: 
-$F( \dots, T'_j , \dots )\wedge_{i,j}(R_i .A_j \neq  \n{NULL})$, here  $\wedge_{i,j}(R_i .A_j \neq  \n{NULL})$ - conjunction of all $F$ attributes,for which $\n{NULL}$ is not allowed, and $T'_j = (T_j \vee_{i,j}(R_i .A_j = \n{NULL}))$, here  $\vee_{i,j}(R_i .A_j = \n{NULL})$ - disjunction of all $F$ attributes,for which $\n{NULL}$ is allowed. Outer brackets for $T'_j$ predicate define operation priority. We can see that this logical formula can only have $\n{TRUE}$ and $\n{FALSE}$ values when considering it in Three-valued logic. We also can note that if rows don't have undefined values, the initial formula $F$ will be equivalent to the transformed one. There can be some cases when the meaning of $P$ IR changes with such a transformation. For example, assume $F = R_1 .A_2 > 3 \vee R_3 .A_4 < 4$. Let row $t$ has $R_1 .A_2$ value set to $\n{NULL}$, with a property <<Use of undefined value>> set to <<Yes>>, and $R_3 .A_4$ value set to 5, so $R_3 .A_4 < 4$ predicate is $\n{FALSE}$. Then $F$ transformation on $t$ row will be $\n{TRUE}$, what is not so obvious indeed.
+$F( \dots, T'_j , \dots )\wedge_{i,j}(R_i .A_j \neq  \n{NULL})$, here
+$\wedge_{i,j}(R_i .A_j \neq  \n{NULL})$ - conjunction of all $F$ attributes,for
+which $\n{NULL}$ is not allowed, and $T'_j = (T_j \vee_{i,j}(R_i .A_j =
+\n{NULL}))$, here  $\vee_{i,j}(R_i .A_j = \n{NULL})$ - disjunction of all $F$
+attributes, for which $\n{NULL}$ is allowed. Outer brackets for $T'_j$ predicate
+define operation priority. We can see that this logical formula can only have
+$\n{TRUE}$ and $\n{FALSE}$ values when considering it in Three-valued logic. We
+also can note that if rows don't have undefined values, the initial formula $F$
+will be equivalent to the transformed one. There can be some cases when the
+meaning of $P$ IR changes with such a transformation. For example, assume $F =
+R_1 .A_2 > 3 \vee R_3 .A_4 < 4$. Let row $t$ has $R_1 .A_2$ value set to
+$\n{NULL}$, with a property ``Use of undefined value'' set to ``Yes'', and $R_3
+.A_4$ value set to 5, so $R_3 .A_4 < 4$ predicate is $\n{FALSE}$. Then $F$
+transformation on $t$ row will be $\n{TRUE}$, what is not so obvious indeed.
 
 Hereafter we will suppose all the $F$ formulas to be transformed.
 
 We consider $\mathcal{A} =$ $\{(a_1, \dots, a_n)
-\mid a_i \in Dom(A_i), i=1,\dots,n\}$ set, here $Dom(A_i)$ - is a domain of $A_i$.
-Cartesian product $Dom(A_1)\times Dom(A_2)\times \dots \times Dom(A_n)$ is an $n$-dimensional space of all values for all Database attributes. Data constraints bound this space to some set of points that represents available Database states. In the Note \ref{trivial} we consider the whole space, not only the available states.
+\mid a_i \in Dom(A_i), i=1,\dots,n\}$ set, here $Dom(A_i)$ - is a domain of
+$A_i$. Cartesian product $Dom(A_1)\times Dom(A_2)\times \dots \times Dom(A_n)$
+is an $n$-dimensional space of all values for all Database attributes. Data
+constraints bound this space to some set of points that represents available
+Database states. In the Note \ref{trivial} we consider the whole space, not only
+the available states.
 
 \begin{mydef}
 Truth space of logical formula $F$, defined by (\ref{def_F_1}),
-(\ref{def_F_2}), (\ref{def_F_3}), is a set $M (F) = \{a \in \mathcal{A} \mid F(a) = \n {TRUE}\}$.
+(\ref{def_F_2}), (\ref{def_F_3}), is a set $M (F) = \{a \in \mathcal{A} \mid
+F(a) = \n {TRUE}\}$.
 \end{mydef}
 
 \begin{note}
-$F$ formula dimension can be smaller than $\mathcal{A}$ dimension. In this case attributes that aren't presented in formula, can take any values in their domains.
+$F$ formula dimension can be smaller than $\mathcal{A}$ dimension. In this case
+attributes that aren't presented in formula can take any values in their
+domains.
 \end{note}
 
 \begin{note}
 The complexity of $\n{Expr}$, $S$ and $\n{Str}$ predicates is defined by software ability to compute Truth spaces of formulas, as it is shown in example 1.
 \end{note}
 
-We now see how can Truth space operations be handled with respect to the corresponding formulas. $M (F)$ for a given formula $F$, written in DNF, is nothing but a union of Truth spaces of distinct conjunctive clauses. Truth space of a single conjunctive clause is an intersection of Truth spaces of it's predicates.
+We now see how Truth space operations can be handled with respect to the corresponding formulas. $M (F)$ for a given formula $F$, written in DNF, is nothing but a union of Truth spaces of distinct conjunctive clauses. Truth space of a single conjunctive clause is an intersection of Truth spaces of it's predicates.
 
 \begin{mydef}
 Given a logical formula $F$, defined by (\ref{def_F_1}), (\ref{def_F_2}),
@@ -219,19 +256,30 @@ $\forall X \subseteq \<F> \quad M(F) \subseteq M(F[X])$
 \label{proj_property_of_inclusion}
 \end{statement}
 \begin{proof}
-If $X = \<F> $, then $F = F[X]$ and $M(F) = M(F[X])$. Assume $X \subset \<F> $. Consider arbitrary point $a \in M(F)$, i.e. $F(a)=\n{TRUE}$. $F$ to $F[X]$ transformation is made by replacing $T_j$ predicates that contain $A_j \in \<F> $ attribute, such that $A_j \notin X$ with $\n{TRUE}$ value. We get $F([X])=\n{TRUE}$ according to (\ref{def_F_1}) and (\ref{def_F_2}). Therefore, $a \in M(F[X])$.
+If $X = \<F> $, then $F = F[X]$ and $M(F) = M(F[X])$. Assume $X \subset \<F> $.
+Consider arbitrary point $a \in M(F)$, i.e. $F(a)=\n{TRUE}$. $F$ to $F[X]$
+transformation is made by replacing $T_j$ predicates that contain $A_j \in \<F> 
+$ attribute, such that $A_j \notin X$ with $\n{TRUE}$ value. We get
+$F([X])=\n{TRUE}$ according to (\ref{def_F_1}) and (\ref{def_F_2}). Therefore,
+$a \in M(F[X])$.
 \end{proof}
 
-This property of logical formulas is used while building new data representation from given IDRs.
+This property of logical formulas is used while building new data representation
+from given IDRs.
 
 \section{Intermediate Data Representation properties research}
 
-We denote saved IDRs as $P$=$\{ P_1$, $P_2$, $\dots$, $P_m \}$, here $P_v = \pi_{X_v}(\sigma_{F_v} (R^v_1 \Join R^v_2 \Join \dots \Join R^v_{s(v)} ))$,
+We denote saved IDRs as $P$=$\{ P_1$, $P_2$, $\dots$, $P_m \}$, here $P_v =
+\pi_{X_v}(\sigma_{F_v} (R^v_1 \Join R^v_2 \Join \dots \Join R^v_{s(v)} ))$,
 $s(v)$ – amount of relations in Database that were used while building $P_v$ IDR,
-$\pi_{X_v}$ - projection on $X_v$ attributes, $\sigma_{F_v}$ - selection with $F_v$ logical formula. We need to get the following representation out of $P$ IDRs:
-$$P^{\ast} = \pi_{X^{\ast}}(\sigma_{F^{\ast}} (R^{\ast}_1 \Join R^{\ast}_2\Join \dots \Join R^{\ast}_l )$$
+$\pi_{X_v}$ - projection on $X_v$ attributes, $\sigma_{F_v}$ - selection with
+$F_v$ logical formula. We need to get the following representation out of $P$
+IDRs:
+$$P^{\ast} = \pi_{X^{\ast}}(\sigma_{F^{\ast}} (R^{\ast}_1 \Join R^{\ast}_2\Join
+\dots \Join R^{\ast}_l )$$
 
-Lets study the problem of building data representation $P^{\ast}$ using existing $P_v$ IDRs.
+Lets study the problem of building data representation $P^{\ast}$ using existing
+$P_v$ IDRs.
 
 \input{theorem_1}
 
@@ -241,14 +289,15 @@ In the next theorem we describe the case of coinciding relation sets.
 
 \input{theorem_2}
 
-It is possible to use several IRs to build resulting representation. But at first let's consider the following simple property of natural join.
+It is possible to use several IRs to build resulting representation. At first,
+let's consider the following simple property of natural join.
 
 \begin{statement}
 Assume $\Re_1 = R_1 \Join \dots \Join R_k$ - natural join of some $k$ relations. Also assume $\Re_2 = R_1 \Join \dots \Join R_k \Join R_{k+1} \Join \dots \Join R_{n}$. Then $\Re_2 [\langle \Join_{i=1}^{k} R_i \rangle] \subseteq \Re_1$
 \label{join_property}
 \end{statement}
 \begin{proof}
-It is so indeed, because joining additional relations to $\Re_1$ can only remove some rows that were presented there. After the projection we will get the same relation $\Re_1$ if no rows were deleted or some subset otherwise. The order of joins doesn't matter thanks to commutativity property of this operation.
+It is so indeed, because joining additional relations to $\Re_1$ can only remove some rows that were presented there. After the projection, we will get the same relation $\Re_1$ if no rows were deleted or some subset otherwise. The order of joins doesn't matter thanks to commutativity property of this operation.
 \end{proof}
 
 \input{theorem_1_mult}
@@ -260,10 +309,25 @@ Just like in previous case, there are some additional conditions that allow us t
 The conditions listed above aren't exceptional in any case, because the set of dimensions that form hypercube changes rarely, so we can create new dimensions (data representations) from IRs with much less DB interaction.
 
 \section{Conclusion}
-The prime result of our paper is the justification of IR usage conditions for new hypercube creation. Those IRs can be stored on an analyst PC and decrease the time of getting the required data drastically.
+The prime result of our paper is the justification of IR usage conditions for
+new hypercube creation. Those IRs can be stored on an analyst's PC and
+drastically shorten the time of getting the required data.
 
-The common problem of systems that don't use any DBMS is the data refreshing. In MOLAP approach technical support stuff is responsible for periodical refreshing of data. The same method can be used to refresh $P_v$ representations. To decrease the refresh time period it is possible to get access to the DBMS's DB modification log and refresh only modified data. But let's notice again that those dimensions don't change often.
+The common problem of systems that don't use any DBMS is the data refreshing. In
+MOLAP approach, the technical support staff is responsible for periodical
+refreshing of data. The same method can be used to refresh $P_v$
+representations. The access to the DMBS's DB modification log and refreshing
+only modified data decreases the refresh time period. However, let's notice
+again that those dimensions don't change often.
 
-We assume the usage of GPU to implement intermediate filtration and union of different data representations. The researches in this field show that GPU operations are much faster than those on CPU for small data. There is a decrease in perfomance with data scale. The reason is obvious: big amount of data leads to a much more frequent data transfer between different memory types and increases the overall time spent. But the constant GPU memory growth and the fact that data amount required for multidimensional data dimensions building is comparatively small make the usage of graphical processors quite a good choice for these purposes.
+We assume the usage of GPU to implement intermediate filtration and union of
+different data representations. The research in this field shows that GPU
+operations are much faster than those on CPU for small data. There is a decrease
+in performance with data scale. The reason is obvious: big amount of data leads
+to a much more frequent data transfer between different memory types and
+increases the overall time elapsed. But the constant GPU memory growth and the
+fact that data amount required for multidimensional data dimensions building is
+comparatively small make the usage of graphical processors quite a good choice
+for these purposes.
 \input{bibliography}
 \end{document}

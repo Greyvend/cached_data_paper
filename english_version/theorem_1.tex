@@ -1,23 +1,20 @@
-\author{Мосин Сергей, Зыкин Сергей}
 \begin{theorem}
 $P^{\ast} \subseteq \pi_{X^{\ast}} (\sigma_{F^{\ast}[X_v]} (P_{v}))$
-, если:
-\\а) $X^{\ast} \subseteq X_{v}$
-\\б) 
+, if:
+\\a) $X^{\ast} \subseteq X_{v}$
+\\b) 
 $ \{R^{v}_{1}, \ldots, R^{v}_{s(v)}\}
 \subseteq
 \{R^{\ast}_{1}, \ldots, R^{\ast}_{l}\} $
-\\в) $M (F^{\ast}) \subseteq M (F_{v}) $.
+\\c) $M (F^{\ast}) \subseteq M (F_{v}) $.
 \label{th_base}
 \end{theorem} 
 \begin{proof}
-Пусть существует кортеж $t^{\ast} \in P^{\ast}$. По условию теоремы надо показать, 
-что $t^{\ast} \in \pi_{X^{\ast}} (P_{v})$. Из условия $t^{\ast} \in P^{\ast}$ следует, 
-что существует кортеж $t' \in R^{\ast}_1 \Join R^{\ast}_2\Join\ldots
-\Join R^{\ast}_l$ и $t^{\ast} = t'[X^{\ast}]$. Заметим, что такой кортеж 
-определяется не единственным образом. Среди возможных вариантов выберем такой, 
-который удовлетворяет $F^{\ast}(t')=TRUE$. Такой кортеж существует, так как иначе
-кортежа $t^{\ast}$ не было бы в $P^{\ast}$. Таким образом, существуют кортежи
+Let $t^{\ast}$ be any tuple in $P^{\ast}$. We need to show that
+$t^{\ast} \in \pi_{X^{\ast}} (P_{v})$. From condition  $t^{\ast} \in P^{\ast}$,
+there is the tuple $t' \in R^{\ast}_1 \Join R^{\ast}_2\Join\ldots
+\Join R^{\ast}_l$ and $t^{\ast} = t'[X^{\ast}]$. There may be several such tuples. We will choose the one that satisfies $F^{\ast}(t')=TRUE$.
+This tuple exists indeed, because otherwise $t^{\ast}$ would not be in $P^{\ast}$. Thus, there are tuples
 $t^{\ast}_i \in R^{\ast}_i$:
 
 \begin{equation}
@@ -25,25 +22,23 @@ t^{\ast}_i = t'[\langle R^{\ast}_i\rangle], i = 1,\dots,l,
 \label{eval_eq_1}
 \end{equation}
 \def \intersecij {\langle R^{\ast}_i \rangle \cap \langle R^{\ast}_j \rangle}
-и для любых пар $i$ и $j$, для которых $\intersecij \neq \emptyset$, выполнено:
+and for any pair $i$ and $j$, such that  $\intersecij \neq \emptyset$, equality is held:
 \begin{equation}
 t^{\ast}_i[\intersecij] = t'_i[\intersecij], i,j = 1,\dots,l,
 \label{eval_eq_2}
 \end{equation}
 
-Поскольку условия (\ref{eval_eq_1}) и (\ref{eval_eq_2}) выполнены для всего множества
-отношений $\{R^{\ast}_{1}, \ldots, R^{\ast}_{l}\}$, то они выполнены и для любого его
-подмножества, в том числе и для $\{R^{v}_{1}, \ldots, R^{v}_{s(v)}\}$.
-Следовательно, кортежи $t^{\ast}_i$ из отношений $R^{v}_j$ при выполнении операции
-естественного соединения образуют кортеж $t''$, для которого выполнено:
-$t'' = t'[\langle {\Join}_{i=1}^{s(v)} R^v_i \rangle]$. В силу условия а) и 
-$X_v \subseteq \langle {\Join}_{i=1}^{s(v)} R^v_i \rangle$ получаем 
-$t''[X^{\ast}] = t'[X^{\ast}] = t^{\ast}$.
+Whereas conditions (\ref{eval_eq_1}) and (\ref{eval_eq_2}) are held for the
+whole set of relations $\{R^{\ast}_{1}, \ldots, R^{\ast}_{l}\}$, they are
+true for any its subset also, including $\{R^{v}_{1}, \ldots, R^{v}_{s(v)}\}$.
+Hence, after joining tuples $t^{\ast}_i$ from relations $R^{v}_j$ we get a tuple
+$t''$, such that $t'' = t'[\langle {\Join}_{i=1}^{s(v)} R^v_i \rangle]$.
+Equality $t''[X^{\ast}] = t'[X^{\ast}] = t^{\ast}$ follows from a) and $X_v
+\subseteq \langle {\Join}_{i=1}^{s(v)} R^v_i \rangle$.
 
-Из условия  $F^{\ast}(t') = \n{TRUE}$, по утверждению
-\ref{proj_property_of_inclusion}, получаем, что проекция $F^{\ast} [X^{\ast}]$
-верна на кортеже $t'$, а следовательно и на $t''$, так как формула определена на
-общих атрибутах этих кортежей. Далее, по условию 3, $F_v (t') = \n{TRUE} \Rightarrow F_v (t'') = \n{TRUE}$.
-Это значит, что $t^{\ast} = t''[X^{\ast}] \in \pi_{X^{\ast}} (P_{v})$. Теорема
-доказана.
+Condition  $F^{\ast}(t') = \n{TRUE}$ and statement 
+\ref{proj_property_of_inclusion} imply the truth of the projection $F^{\ast}
+[X^{\ast}]$ on a tuple $t'$, and consequently on $t''$, as the formula is defined at common attributes of these tuples. Furthermore, according to condition 3, we have $F_v (t') = \n{TRUE} \Rightarrow F_v (t'') = \n{TRUE}$.
+It means $t^{\ast} = t''[X^{\ast}] \in \pi_{X^{\ast}} (P_{v})$. The theorem is
+proved.
 \end{proof}
