@@ -1,0 +1,1146 @@
+
+%% bare_jrnl_compsoc.tex
+%% V1.3
+%% 2007/01/11
+%% by Michael Shell
+%% See:
+%% http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.7 or later) with an IEEE Computer
+%% Society journal paper.
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/
+%% and
+%% http://www.ieee.org/
+
+%%*************************************************************************
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE! 
+%% User assumes all risk.
+%% In no event shall IEEE or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%%
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%
+%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
+%% distributed and modified. A copy of the LPPL, version 1.3, is included
+%% in the base LaTeX documentation of all distributions of LaTeX released
+%% 2003/12/01 or later.
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%
+%% File list of work: IEEEtran.cls, IEEEtran_HOWTO.pdf, bare_adv.tex,
+%%                    bare_conf.tex, bare_jrnl.tex, bare_jrnl_compsoc.tex
+%%*************************************************************************
+
+% *** Authors should verify (and, if needed, correct) their LaTeX system  ***
+% *** with the testflow diagnostic prior to trusting their LaTeX platform ***
+% *** with production work. IEEE's font choices can trigger bugs that do  ***
+% *** not appear when using other class files.                            ***
+% The testflow support page is at:
+% http://www.michaelshell.org/tex/testflow/
+
+
+
+
+% Note that the a4paper option is mainly intended so that authors in
+% countries using A4 can easily print to A4 and see how their papers will
+% look in print - the typesetting of the document will not typically be
+% affected with changes in paper size (but the bottom and side margins will).
+% Use the testflow package mentioned above to verify correct handling of
+% both paper sizes by the user's LaTeX system.
+%
+% Also note that the "draftcls" or "draftclsnofoot", not "draft", option
+% should be used if it is desired that the figures are to be displayed in
+% draft mode.
+%
+% The Computer Society usually requires 10pt for submissions.
+%
+\documentclass[10pt,journal,cspaper,compsoc]{IEEEtran}
+%
+% If IEEEtran.cls has not been installed into the LaTeX system files,
+% manually specify the path to it like:
+% \documentclass[12pt,journal,compsoc]{../sty/IEEEtran}
+
+
+
+
+
+% Some very useful LaTeX packages include:
+% (uncomment the ones you want to load)
+
+
+% *** MISC UTILITY PACKAGES ***
+%
+%\usepackage{ifpdf}
+% Heiko Oberdiek's ifpdf.sty is very useful if you need conditional
+% compilation based on whether the output is pdf or dvi.
+% usage:
+% \ifpdf
+%   % pdf code
+% \else
+%   % dvi code
+% \fi
+% The latest version of ifpdf.sty can be obtained from:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/
+% Also, note that IEEEtran.cls V1.7 and later provides a builtin
+% \ifCLASSINFOpdf conditional that works the same way.
+% When switching from latex to pdflatex and vice-versa, the compiler may
+% have to be run twice to clear warning/error messages.
+
+
+
+
+
+
+% *** CITATION PACKAGES ***
+%
+\ifCLASSOPTIONcompsoc
+  % IEEE Computer Society needs nocompress option
+  % requires cite.sty v4.0 or later (November 2003)
+  % \usepackage[nocompress]{cite}
+\else
+  % normal IEEE
+  % \usepackage{cite}
+\fi
+% cite.sty was written by Donald Arseneau
+% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
+% \cite{} output to follow that of IEEE. Loading the cite package will
+% result in citation numbers being automatically sorted and properly
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
+% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% \cite will automatically add leading space, if needed. Use cite.sty's
+% noadjust option (cite.sty V3.8 and later) if you want to turn this off.
+% cite.sty is already installed on most LaTeX systems. Be sure and use
+% version 4.0 (2003-05-27) and later if using hyperref.sty. cite.sty does
+% not currently provide for hyperlinked citations.
+% The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/cite/
+% The documentation is contained in the cite.sty file itself.
+%
+% Note that some packages require special options to format as the Computer
+% Society requires. In particular, Computer Society  papers do not use
+% compressed citation ranges as is done in typical IEEE papers
+% (e.g., [1]-[4]). Instead, they list every citation separately in order
+% (e.g., [1], [2], [3], [4]). To get the latter we need to load the cite
+% package with the nocompress option which is supported by cite.sty v4.0
+% and later. Note also the use of a CLASSOPTION conditional provided by
+% IEEEtran.cls V1.7 and later.
+
+
+
+
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+\ifCLASSINFOpdf
+  % \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../pdf/}{../jpeg/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+% graphicx was written by David Carlisle and Sebastian Rahtz. It is
+% required if you want graphics, photos, etc. graphicx.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at: 
+% http://www.ctan.org/tex-archive/macros/latex/required/graphics/
+% Another good source of documentation is "Using Imported Graphics in
+% LaTeX2e" by Keith Reckdahl which can be found as epslatex.ps or
+% epslatex.pdf at: http://www.ctan.org/tex-archive/info/
+%
+% latex, and pdflatex in dvi mode, support graphics in encapsulated
+% postscript (.eps) format. pdflatex in pdf mode supports graphics
+% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
+% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
+% not a bitmapped formats (.jpeg, .png). IEEE frowns on bitmapped formats
+% which can result in "jaggedy"/blurry rendering of lines and letters as
+% well as large increases in file sizes.
+%
+% You can find documentation about the pdfTeX application at:
+% http://www.tug.org/applications/pdftex
+
+
+
+
+
+% *** MATH PACKAGES ***
+%
+%\usepackage[cmex10]{amsmath}
+% A popular package from the American Mathematical Society that provides
+% many useful and powerful commands for dealing with mathematics. If using
+% it, be sure to load this package with the cmex10 option to ensure that
+% only type 1 fonts will utilized at all point sizes. Without this option,
+% it is possible that some math symbols, particularly those within
+% footnotes, will be rendered in bitmap form which will result in a
+% document that can not be IEEE Xplore compliant!
+%
+% Also, note that the amsmath package sets \interdisplaylinepenalty to 10000
+% thus preventing page breaks from occurring within multiline equations. Use:
+%\interdisplaylinepenalty=2500
+% after loading amsmath to restore such page breaks as IEEEtran.cls normally
+% does. amsmath.sty is already installed on most LaTeX systems. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/amslatex/math/
+
+
+
+
+
+% *** SPECIALIZED LIST PACKAGES ***
+%
+%\usepackage{algorithmic}
+% algorithmic.sty was written by Peter Williams and Rogerio Brito.
+% This package provides an algorithmic environment fo describing algorithms.
+% You can use the algorithmic environment in-text or within a figure
+% environment to provide for a floating algorithm. Do NOT use the algorithm
+% floating environment provided by algorithm.sty (by the same authors) or
+% algorithm2e.sty (by Christophe Fiorio) as IEEE does not use dedicated
+% algorithm float types and packages that provide these will not provide
+% correct IEEE style captions. The latest version and documentation of
+% algorithmic.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithms/
+% There is also a support site at:
+% http://algorithms.berlios.de/index.html
+% Also of interest may be the (relatively newer and more customizable)
+% algorithmicx.sty package by Szasz Janos:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithmicx/
+
+
+
+
+% *** ALIGNMENT PACKAGES ***
+%
+%\usepackage{array}
+% Frank Mittelbach's and David Carlisle's array.sty patches and improves
+% the standard LaTeX2e array and tabular environments to provide better
+% appearance and additional user controls. As the default LaTeX2e table
+% generation code is lacking to the point of almost being broken with
+% respect to the quality of the end results, all users are strongly
+% advised to use an enhanced (at the very least that provided by array.sty)
+% set of table tools. array.sty is already installed on most systems. The
+% latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/tools/
+
+
+%\usepackage{mdwmath}
+%\usepackage{mdwtab}
+% Also highly recommended is Mark Wooding's extremely powerful MDW tools,
+% especially mdwmath.sty and mdwtab.sty which are used to format equations
+% and tables, respectively. The MDWtools set is already installed on most
+% LaTeX systems. The lastest version and documentation is available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/mdwtools/
+
+
+% IEEEtran contains the IEEEeqnarray family of commands that can be used to
+% generate multiline equations as well as matrices, tables, etc., of high
+% quality.
+
+
+%\usepackage{eqparbox}
+% Also of notable interest is Scott Pakin's eqparbox package for creating
+% (automatically sized) equal width boxes - aka "natural width parboxes".
+% Available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/eqparbox/
+
+
+
+
+
+% *** SUBFIGURE PACKAGES ***
+%\ifCLASSOPTIONcompsoc
+%\usepackage[tight,normalsize,sf,SF]{subfigure}
+%\else
+%\usepackage[tight,footnotesize]{subfigure}
+%\fi
+% subfigure.sty was written by Steven Douglas Cochran. This package makes it
+% easy to put subfigures in your figures. e.g., "Figure 1a and 1b". For IEEE
+% work, it is a good idea to load it with the tight package option to reduce
+% the amount of white space around the subfigures. Computer Society papers
+% use a larger font and \sffamily font for their captions, hence the
+% additional options needed under compsoc mode. subfigure.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at:
+% http://www.ctan.org/tex-archive/obsolete/macros/latex/contrib/subfigure/
+% subfigure.sty has been superceeded by subfig.sty.
+
+
+%\ifCLASSOPTIONcompsoc
+%  \usepackage[caption=false]{caption}
+%  \usepackage[font=normalsize,labelfont=sf,textfont=sf]{subfig}
+%\else
+%  \usepackage[caption=false]{caption}
+%  \usepackage[font=footnotesize]{subfig}
+%\fi
+% subfig.sty, also written by Steven Douglas Cochran, is the modern
+% replacement for subfigure.sty. However, subfig.sty requires and
+% automatically loads Axel Sommerfeldt's caption.sty which will override
+% IEEEtran.cls handling of captions and this will result in nonIEEE style
+% figure/table captions. To prevent this problem, be sure and preload
+% caption.sty with its "caption=false" package option. This is will preserve
+% IEEEtran.cls handing of captions. Version 1.3 (2005/06/28) and later 
+% (recommended due to many improvements over 1.2) of subfig.sty supports
+% the caption=false option directly:
+%\ifCLASSOPTIONcompsoc
+%  \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+%\else
+%  \usepackage[caption=false,font=footnotesize]{subfig}
+%\fi
+%
+% The latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/
+% The latest version and documentation of caption.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/caption/
+
+
+
+
+% *** FLOAT PACKAGES ***
+%
+\usepackage{fixltx2e}
+% fixltx2e, the successor to the earlier fix2col.sty, was written by
+% Frank Mittelbach and David Carlisle. This package corrects a few problems
+% in the LaTeX2e kernel, the most notable of which is that in current
+% LaTeX2e releases, the ordering of single and double column floats is not
+% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
+% single column figure to be placed prior to an earlier double column
+% figure. The latest version and documentation can be found at:
+% http://www.ctan.org/tex-archive/macros/latex/base/
+
+
+
+%\usepackage{stfloats}
+% stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
+% the ability to do double column floats at the bottom of the page as well
+% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
+% LaTeX2e). It also provides a command:
+%\fnbelowfloat
+% to enable the placement of footnotes below bottom floats (the standard
+% LaTeX2e kernel puts them above bottom floats). This is an invasive package
+% which rewrites many portions of the LaTeX2e float routines. It may not work
+% with other packages that modify the LaTeX2e float routines. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/sttools/
+% Documentation is contained in the stfloats.sty comments as well as in the
+% presfull.pdf file. Do not use the stfloats baselinefloat ability as IEEE
+% does not allow \baselineskip to stretch. Authors submitting work to the
+% IEEE should note that IEEE rarely uses double column equations and
+% that authors should try to avoid such use. Do not be tempted to use the
+% cuted.sty or midfloat.sty packages (also by Sigitas Tolusis) as IEEE does
+% not format its papers in such ways.
+
+
+
+
+%\ifCLASSOPTIONcaptionsoff
+%  \usepackage[nomarkers]{endfloat}
+% \let\MYoriglatexcaption\caption
+% \renewcommand{\caption}[2][\relax]{\MYoriglatexcaption[#2]{#2}}
+%\fi
+% endfloat.sty was written by James Darrell McCauley and Jeff Goldberg.
+% This package may be useful when used in conjunction with IEEEtran.cls'
+% captionsoff option. Some IEEE journals/societies require that submissions
+% have lists of figures/tables at the end of the paper and that
+% figures/tables without any captions are placed on a page by themselves at
+% the end of the document. If needed, the draftcls IEEEtran class option or
+% \CLASSINPUTbaselinestretch interface can be used to increase the line
+% spacing as well. Be sure and use the nomarkers option of endfloat to
+% prevent endfloat from "marking" where the figures would have been placed
+% in the text. The two hack lines of code above are a slight modification of
+% that suggested by in the endfloat docs (section 8.3.1) to ensure that
+% the full captions always appear in the list of figures/tables - even if
+% the user used the short optional argument of \caption[]{}.
+% IEEE papers do not typically make use of \caption[]'s optional argument,
+% so this should not be an issue. A similar trick can be used to disable
+% captions of packages such as subfig.sty that lack options to turn off
+% the subcaptions:
+% For subfig.sty:
+% \let\MYorigsubfloat\subfloat
+% \renewcommand{\subfloat}[2][\relax]{\MYorigsubfloat[]{#2}}
+% For subfigure.sty:
+% \let\MYorigsubfigure\subfigure
+% \renewcommand{\subfigure}[2][\relax]{\MYorigsubfigure[]{#2}}
+% However, the above trick will not work if both optional arguments of
+% the \subfloat/subfig command are used. Furthermore, there needs to be a
+% description of each subfigure *somewhere* and endfloat does not add
+% subfigure captions to its list of figures. Thus, the best approach is to
+% avoid the use of subfigure captions (many IEEE journals avoid them anyway)
+% and instead reference/explain all the subfigures within the main caption.
+% The latest version of endfloat.sty and its documentation can obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/endfloat/
+%
+% The IEEEtran \ifCLASSOPTIONcaptionsoff conditional can also be used
+% later in the document, say, to conditionally put the References on a 
+% page by themselves.
+
+
+
+
+% *** PDF, URL AND HYPERLINK PACKAGES ***
+%
+%\usepackage{url}
+% url.sty was written by Donald Arseneau. It provides better support for
+% handling and breaking URLs. url.sty is already installed on most LaTeX
+% systems. The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/misc/
+% Read the url.sty source comments for usage information. Basically,
+% \url{my_url_here}.
+
+
+
+
+
+% *** Do not adjust lengths that control margins, column widths, etc. ***
+% *** Do not use packages that alter fonts (such as pslatex).         ***
+% There should be no need to do such things with IEEEtran.cls V1.6 and later.
+% (Unless specifically asked to do so by the journal or conference you plan
+% to submit to, of course. )
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+\author{Mosin Sergey, Zykin Sergey}
+\usepackage{amssymb,amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{xcolor}
+\usepackage{textcomp}
+\newtheorem{theorem}{Theorem}
+\newtheorem{mydef}{Definition}
+\newtheorem{statement}{Statement}
+\newtheorem*{consequence}{Consequence}
+\newtheorem{note}{Note}
+\def \eval #1#2{\left.#1\right\vert_{#2}}
+\def \<#1> {\langle #1 \rangle}
+\def \n #1{\mathit{#1}}
+\begin{document}
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+\title{Building table-like applications using cached data}
+%
+%
+% author names and IEEE memberships
+% note positions of commas and nonbreaking spaces ( ~ ) LaTeX will not break
+% a structure at a ~ so this keeps an author's name from being broken across
+% two lines.
+% use \thanks{} to gain access to the first footnote area
+% a separate \thanks must be used for each paragraph as LaTeX2e's \thanks
+% was not built to handle multiple paragraphs
+%
+%
+%\IEEEcompsocitemizethanks is a special \thanks that produces the bulleted
+% lists the Computer Society journals use for "first footnote" author
+% affiliations. Use \IEEEcompsocthanksitem which works much like \item
+% for each affiliation group. When not in compsoc mode,
+% \IEEEcompsocitemizethanks becomes like \thanks and
+% \IEEEcompsocthanksitem becomes a line break with idention. This
+% facilitates dual compilation, although admittedly the differences in the
+% desired content of \author between the different types of papers makes a
+% one-size-fits-all approach a daunting prospect. For instance, compsoc 
+% journal papers have the author affiliations above the "Manuscript
+% received ..."  text while in non-compsoc journals this is reversed. Sigh.
+
+\author{Sergey~Mosin,
+        Sergey~Zykin % <-this % stops a space
+\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem S. Mosin, S. Zykin are with the
+Omsk Department of Sobolev Institute of Mathematics, Omsk, Russia. The paper is
+supported by RFBR grant \#12-07-00066-a.\protect\\
+% note need leading \protect in front of \\ to get a newline within \thanks as
+% \\ is fragile and will error, could use \hfil\break instead.
+E-mail: svmosin@gmail.com, szykin@mail.ru}% <-this % stops a space
+\thanks{}}
+
+% note the % following the last \IEEEmembership and also \thanks - 
+% these prevent an unwanted space from occurring between the last author name
+% and the end of the author line. i.e., if you had this:
+% 
+% \author{....lastname \thanks{...} \thanks{...} }
+%                     ^------------^------------^----Do not want these spaces!
+%
+% a space would be appended to the last name and could cause every name on that
+% line to be shifted left slightly. This is one of those "LaTeX things". For
+% instance, "\textbf{A} \textbf{B}" will typeset as "A B" not "AB". To get
+% "AB" then you have to do: "\textbf{A}\textbf{B}"
+% \thanks is no different in this regard, so shield the last } of each \thanks
+% that ends a line with a % and do not let a space in before the next \thanks.
+% Spaces after \IEEEmembership other than the last one are OK (and needed) as
+% you are supposed to have spaces between the names. For what it is worth,
+% this is a minor point as most people would not even notice if the said evil
+% space somehow managed to creep in.
+
+
+
+% The paper headers
+\markboth{Journal of \LaTeX\ Class Files,~Vol.~6, No.~1, January~2007}%
+{Shell \MakeLowercase{\textit{et al.}}: Building table-like applications using
+cached data}
+% The only time the second header will appear is for the odd numbered pages
+% after the title page when using the twoside option.
+% 
+% *** Note that you probably will NOT want to include the author's ***
+% *** name in the headers of peer review papers.                   ***
+% You can use \ifCLASSOPTIONpeerreview for conditional compilation here if
+% you desire.
+
+
+
+% The publisher's ID mark at the bottom of the page is less important with
+% Computer Society journal papers as those publications place the marks
+% outside of the main text columns and, therefore, unlike regular IEEE
+% journals, the available text space is not reduced by their presence.
+% If you want to put a publisher's ID mark on the page you can do it like
+% this:
+%\IEEEpubid{0000--0000/00\$00.00~\copyright~2007 IEEE}
+% or like this to get the Computer Society new two part style.
+%\IEEEpubid{\makebox[\columnwidth]{\hfill 0000--0000/00/\$00.00~\copyright~2007 IEEE}%
+%\hspace{\columnsep}\makebox[\columnwidth]{Published by the IEEE Computer Society\hfill}}
+% Remember, if you use this you must call \IEEEpubidadjcol in the second
+% column for its text to clear the IEEEpubid mark (Computer Society jorunal
+% papers don't need this extra clearance.)
+
+
+
+
+% for Computer Society papers, we must declare the abstract and index terms
+% PRIOR to the title within the \IEEEcompsoctitleabstractindextext IEEEtran
+% command as these need to go into the title area created by \maketitle.
+\IEEEcompsoctitleabstractindextext{%
+\begin{abstract}
+%\boldmath
+We primarily address the usage of cached Database query results in our paper.
+This problem was already discussed and has some software implementations. In our
+work, we propose Truth spaces usage in logical formulas while querying a Database.
+This approach is supposed to help an analyst, who works with dynamically built
+data representations logically described as multidimensional tables. Those
+representations don't take much disk space, so one can use GPU to speed up the
+computations. We consider queries in a form of relational algebra expressions,
+similar to "universal relational query". Logical formulas in the queries are
+presented in Disjunctive Normal Form. They consist of atomic expressions
+consisting of SQL predicates. In the paper we consider single and multiple table
+cases to build new data representations.
+\end{abstract}
+% IEEEtran.cls defaults to using nonbold math in the Abstract.
+% This preserves the distinction between vectors and scalars. However,
+% if the journal you are submitting to favors bold math in the abstract,
+% then you can use LaTeX's standard command \boldmath at the very start
+% of the abstract to achieve this. Many IEEE journals frown on math
+% in the abstract anyway. In particular, the Computer Society does
+% not want either math or citations to appear in the abstract.
+
+% Note that keywords are not normally used for peer review papers.
+\begin{keywords}
+Database, OLAP, cache, Data Warehouse, predicate
+\end{keywords}}
+
+
+% make the title area
+\maketitle
+
+
+% To allow for easy dual compilation without having to reenter the
+% abstract/keywords data, the \IEEEcompsoctitleabstractindextext text will
+% not be used in maketitle, but will appear (i.e., to be "transported")
+% here as \IEEEdisplaynotcompsoctitleabstractindextext when compsoc mode
+% is not selected <OR> if conference mode is selected - because compsoc
+% conference papers position the abstract like regular (non-compsoc)
+% papers do!
+\IEEEdisplaynotcompsoctitleabstractindextext
+% \IEEEdisplaynotcompsoctitleabstractindextext has no effect when using
+% compsoc under a non-conference mode.
+
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peerreview papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+
+
+\section{Introduction}
+% Computer Society journal papers do something a tad strange with the very
+% first section heading (almost always called "Introduction"). They place it
+% ABOVE the main text! IEEEtran.cls currently does not do this for you.
+% However, You can achieve this effect by making LaTeX jump through some
+% hoops via something like:
+%
+%\ifCLASSOPTIONcompsoc
+%  \noindent\raisebox{2\baselineskip}[0pt][0pt]%
+%  {\parbox{\columnwidth}{\section{Introduction}\label{sec:introduction}%
+%  \global\everypar=\everypar}}%
+%  \vspace{-1\baselineskip}\vspace{-\parskip}\par
+%\else
+%  \section{Introduction}\label{sec:introduction}\par
+%\fi
+%
+% Admittedly, this is a hack and may well be fragile, but seems to do the
+% trick for me. Note the need to keep any \label that may be used right
+% after \section in the above as the hack puts \section within a raised box.
+
+
+
+% The very first letter is a 2 line initial drop letter followed
+% by the rest of the first word in caps (small caps for compsoc).
+% 
+% form to use if the first word consists of a single letter:
+% \IEEEPARstart{A}{demo} file is ....
+% 
+% form to use if you need the single drop letter followed by
+% normal text (unknown if ever used by IEEE):
+% \IEEEPARstart{A}{}demo file is ....
+% 
+% Some journals put the first two words in caps:
+% \IEEEPARstart{T}{his demo} file is ....
+% 
+% Here we have the typical use of a "T" for an initial drop letter
+% and "HIS" in caps to complete the first word.
+\IEEEPARstart{A}{lot} of current Big Data analysis solutions use Online
+Analytical Processing technologies, formed in early 90s \cite{codd}. A lot of
+fundamental \cite{lecht,lehner,mazon} and applied \cite{vassi, peder,
+progressive, giorg} results were obtained in this field lately.
+
+The purpose of this paper is to study the problem of building Dynamic
+Multidimensional Data Representation from the Relational Database using
+cached data representations on a user computer, equipped with a Graphical
+Processing Unit (GPU). We don't require any transformation of the initial
+Database schema, even to the hierarchical model.
+
+This problem is connected with a field of query optimization, because it aims to
+decrease the data transfer from a Database server. Cached data is actively
+used in Database Management Systems (DBMS), but mostly, it is only repeating use
+of data, written in cache, without any prior data analysis to define any partial
+or combined use. The DBMS can only avoid requesting blocks of data from external
+devices while serving the query, if they are present in the cache. So, the
+block numbers are analyzed, not their information.
+
+This paper is based on the results, obtained in \cite{zyk_pol}. We removed
+condition that limited Intermediate Data Representation (IDR) attributes and
+also made some generalizations on multiple IDRs case.
+
+\hfill mds
+ 
+\hfill April 22, 2014
+
+\section{Existing solutions overview and comparison}
+In a field of fundamental researches, huge amounts of publications aim at optimal
+query plan generation based on a formal set of rules that don't use SQL
+operator predicate domains (logical optimization). In other cases, those domains
+are taken into account for statistical evaluations to improve physical access to
+the data. Stream data query executing problems, described in \cite{Olston03,
+Denny05}, are related to our problem closer, but different aims lead us to
+different results. The most similar to our work is paper \cite{Afrati06}. They
+analyze conjunctive queries on data domains with predicates in the form of
+arithmetical comparisons, and present query computation algorithms using IDRs. In
+our paper, the special case of universal relational query is considered. It is a
+query on the Database relations, not particular domains. Although we had similar
+aims, the results obtained differ because of stated factors. In particular,
+there is no need to create any algorithms of data selection in our work, as they
+are replaced by Relational Algebra.
+
+There are some works, which examine the query optimization problem in the case of
+multidimensional warehouse representation with the use of dynamically formed
+representations. Two basic methods are used there: statical \cite{baralis,
+gupta, gupta-mumick} and dynamical one \cite{scheuermann, shim, kalnis, chang}.
+The former is based on a fixed amount of queries, whereas in the latter queries
+for reservation are chosen based on appearance statistic and computational cost
+of query execution. As a data source Data Warehouses or Relational Databases in
+the hierarchical form are used. Special queries for data manipulation are
+considered. In this paper we use split dimension generation for the data
+required for current analysis. Hence, we are interested in standard SQL queries
+to the Database and IDRs. The resulting representation can then be processed by
+special multidimensional data queries.
+
+In the \cite{Keller96} paper, they analyze the cache content,
+and predicates in their work correspond to IDRs in our approach. Cached data
+usage problem is resolved in terms of predicate deduction. In our paper, we address this problem by means of
+computation of cached query results domains that correspond to the IDRs. It allows
+us to define IR records that can be used to form a new representation and new SQL
+queries that will let us load missing data from Database server. The following
+example demonstrates suggested approach.
+
+
+{\bf Example 1.} The task is to receive data representation as in the table
+\ref{def_T_1}. Dimension attributes are in bold, measure attributes are italic,
+else are attribute values.
+
+\begin{table*}[h!]
+\renewcommand{\arraystretch}{1.3}
+\caption{\label{def_T_1} Curriculum.}
+\centering
+\begin{tabular}{|c|c||c|c|c|c|}
+\cline{2-6}
+\multicolumn{1}{c|}{} & \multicolumn{1}{|r||}{\bf Semester} & \multicolumn{2}{|c|}{2} & \multicolumn{2}{|c|}{3}  \\
+\cline{2-6}
+\multicolumn{1}{c|}{} & {\bf Discipline} & Physics & Chemistry & Physics & Chemistry \\
+\hline \cline{2-6}
+{\bf Department} & {\bf Class} & {\it Hours} & {\it Hours} & {\it Hours} & {\it Hours} \\
+\hline
+ & C-321 & & 36 & 18 & 9 \\
+\cline{2-6}
+D. of Chemistry & C-322 & & 48 & 18 & 9 \\
+\cline{2-6}
+ & C-331 & & 24 & 18 & 9 \\
+\hline
+ & P-321 & 48 & & 24 & \\
+\cline{2-6}
+D. of Physics & P-322 & 48 & & 24 & \\
+\cline{2-6}
+ & P-331 & 64 & & 24 & \\
+\hline
+\end{tabular}
+\end{table*}
+Assume the precomputed relations on the user PC:  $P_1$,
+$P_2$, $P_3$ with the following schemes: $P_1$=(Department number, Department), without any data constraints; $P_2$=(Discipline number, Discipline), without data constraints; $P_3$=(Department number, Discipline number, Semester, Class, Hours), with the following constraint:
+$F_3 =(\mbox{Semester} \leq 2) \wedge (\mbox{Department} = \mbox{D. of Chemistry})$.
+Assume the user has made the following logical constraint on the data to be represented in the table: $F^{\ast} = (\mbox{Semester} \leq 3)$. Comparing these formulas domains, it's easy to see that $P_1$ and $P_2$ have enough data to form table \ref{def_T_1}, whereas $P_3$ needs to be expanded with data. After defining $F^{\ast}$ and $F_3$ domains we can form a new formula: $F=((\mbox{Semester} = 3) \wedge (\mbox{Deparmtent=D. of Chemistry}))
+\vee ((\mbox{Semester} \leq 3) \wedge (\mbox{Deparmtent} \neq \mbox{D. of Chemistry}))$. Using $P_3$ schema and $F$ formula, we can now make an SQL command to be executed on the server. As a result, we transfer less data over the network.
+
+% needed in second column of first page if using \IEEEpubid
+%\IEEEpubidadjcol
+
+\section{Logical constraint definition and properties}
+
+To simplify domain computations we will consider logical formulas in Disjunctive Normal Form (DNF).
+In general case formula $F$ has the following form:
+
+\begin{equation}
+F = K_1 \vee K_2 \vee \dots \vee K_m ,
+\label{def_F_1}
+\end{equation}
+\begin{equation}
+K_i = T_1 \& T_2 \dots \& T_n, i = 1, \dots, m ,
+\label{def_F_2}
+\end{equation}
+here $T_j, j = 1, \dots, n$ - predicates, where expanded attribute names are specified. $R_i.A_j$ means attribute $A_j$ in relation $R_i$.
+Those predicates can be:
+\begin{itemize}
+  \item	comparison operation $ \n{Expr}_1 \theta \n{Expr}_2$, $\theta$ ?
+  comparison operator $(\theta \in \{=, \neq, >, <, \leq, \geq\})$, $\n{Expr}_i$
+  ? type conformant expressions, defined in a space of expanded attribute names and constants;
+  \item operation $\n{Expr}_1 \n{[NOT]} \n{BETWEEN} \n{Expr}_2 \n{AND}
+  \n{Expr}_3$ (symbols inside square brackets $[*]$ aren't mandatory for the predicate);
+  \item operation $\n{Expr} \n{[NOT]} \n{IN} S$, here $S$ ? values list or subquery, having a set of attribute $R_i.A_j$ values as a result;
+  \item operation $\n{Str}_1 \n{[NOT]} \n{LIKE} \n{Str}_2$, here $\n{Str}_i$ ?
+  strings;
+  \item operation $\n{Expr} \theta \n{ALL/ANY} S$.
+\end{itemize}
+
+\begin{note}
+We assume logical formulas have no trivial conditions on attributes, for example
+, $Expr_1 = Expr_1$ and those reduced to such form. In general, we assume that
+$R_i.A_l$ domain is not fully contained in $T_j (\dots , R_i . A_l ,\dots )$
+predicate truth space. Such conditions can be removed from the formula without a
+change in the truth space (we will define it later).
+\label{trivial}
+\end{note}
+
+\begin{mydef}
+Space of attributes contained in a formula show the dimension of the formula and
+is denoted as $\<F> $.
+
+\begin{equation}
+\<F> = \{R_1^F.A_1^F, \dots, R_k^F.A_k^F\}
+\label{def_F_3}
+\end{equation}
+\end{mydef}
+
+
+Listed variants of operations don't use every single SQL capability. For example
+, we don't use $\n{EXISTS}$ predicate, because it has no expanded attribute
+names in it. $\n{NULL}$ predicate is used for another purpose in our paper.
+
+During logical formula domain calculation if we have some attribute having
+$NULL$ value on a row $t$, we then get the $\n{UNKNOWN}$ value for the whole
+formula, because SQL-query results follow the Three-valued logic. It leads us to
+ambiguous interpretations of result of both usual users and experienced
+programmers. To solve this problem we suggest the following constraint: every
+attribute in $F^{\ast}$ is supplied with a property ``Use of undefined value''
+with two mutually exclusive values: ``Yes'' or ``No''. The reasoning behind
+this property is the following: if it is assigned ``Yes'', then we leave rows
+with $\n{NULL}$ value for further consideration. Otherwise, having ``No'' in
+that property guarantees us removing all such rows.
+
+Let's write expression (\ref{def_F_1}) for $F$ in the following form: $ F (\dots
+, T_j , \dots )$, here $T_j$ - predicates of expression (\ref{def_F_2}).
+Then after the modification it will be the following: 
+$F( \dots, T'_j , \dots )\wedge_{i,j}(R_i .A_j \neq  \n{NULL})$, here
+$\wedge_{i,j}(R_i .A_j \neq  \n{NULL})$ - conjunction of all $F$ attributes,for
+which $\n{NULL}$ is not allowed, and $T'_j = (T_j \vee_{i,j}(R_i .A_j =
+\n{NULL}))$, here  $\vee_{i,j}(R_i .A_j = \n{NULL})$ - disjunction of all $F$
+attributes, for which $\n{NULL}$ is allowed. Outer brackets for $T'_j$ predicate
+define operation priority. We can see that this logical formula can only have
+$\n{TRUE}$ and $\n{FALSE}$ values when considering it in Three-valued logic. We
+also can note that if rows don't have undefined values, the initial formula $F$
+will be equivalent to the transformed one. There can be some cases when the
+meaning of $P$ IR changes with such a transformation. For example, assume $F =
+R_1 .A_2 > 3 \vee R_3 .A_4 < 4$. Let row $t$ has $R_1 .A_2$ value set to
+$\n{NULL}$, with a property ``Use of undefined value'' set to ``Yes'', and $R_3
+.A_4$ value set to 5, so $R_3 .A_4 < 4$ predicate is $\n{FALSE}$. Then $F$
+transformation on $t$ row will be $\n{TRUE}$, what is not so obvious indeed.
+
+Hereafter we will suppose all the $F$ formulas to be transformed.
+
+We consider $\mathcal{A} =$ $\{(a_1, \dots, a_n)
+\mid a_i \in Dom(A_i), i=1,\dots,n\}$ set, here $Dom(A_i)$ - is a domain of
+$A_i$. Cartesian product $Dom(A_1)\times Dom(A_2)\times \dots \times Dom(A_n)$
+is an $n$-dimensional space of all values for all Database attributes. Data
+constraints bound this space to some set of points that represents available
+Database states. In the Note \ref{trivial} we consider the whole space, not only
+the available states.
+
+\begin{mydef}
+Truth space of logical formula $F$, defined by (\ref{def_F_1}),
+(\ref{def_F_2}), (\ref{def_F_3}), is a set $M (F) = \{a \in \mathcal{A} \mid
+F(a) = \n {TRUE}\}$.
+\end{mydef}
+
+\begin{note}
+$F$ formula dimension can be smaller than $\mathcal{A}$ dimension. In this case
+attributes that aren't presented in formula can take any values in their
+domains.
+\end{note}
+
+\begin{note}
+The complexity of $\n{Expr}$, $S$ and $\n{Str}$ predicates is defined by software ability to compute Truth spaces of formulas, as it is shown in example 1.
+\end{note}
+
+We now see how Truth space operations can be handled with respect to the corresponding formulas. $M (F)$ for a given formula $F$, written in DNF, is nothing but a union of Truth spaces of distinct conjunctive clauses. Truth space of a single conjunctive clause is an intersection of Truth spaces of it's predicates.
+
+\begin{mydef}
+Given a logical formula $F$, defined by (\ref{def_F_1}), (\ref{def_F_2}),
+(\ref{def_F_3}), the projection of $F$ on the $X$ attribute set is a logical formula $F[X], \<F[X]> = X$, that has all its predicates with $R_i^F.A_i^F \notin X$ replaced with trivial predicate $\n{TRUE}$.
+\label{projection}
+\end{mydef}
+
+\begin{statement}[Inclusion property]
+$\forall X \subseteq \<F> \quad M(F) \subseteq M(F[X])$
+\label{proj_property_of_inclusion}
+\end{statement}
+\begin{proof}
+If $X = \<F> $, then $F = F[X]$ and $M(F) = M(F[X])$. Assume $X \subset \<F> $.
+Consider arbitrary point $a \in M(F)$, i.e. $F(a)=\n{TRUE}$. $F$ to $F[X]$
+transformation is made by replacing $T_j$ predicates that contain $A_j \in \<F> 
+$ attribute, such that $A_j \notin X$ with $\n{TRUE}$ value. We get
+$F([X])=\n{TRUE}$ according to (\ref{def_F_1}) and (\ref{def_F_2}). Therefore,
+$a \in M(F[X])$.
+\end{proof}
+
+This property of logical formulas is used while building new data representation
+from given IDRs.
+
+\section{Intermediate Data Representation properties research}
+
+We denote saved IDRs as $P$=$\{ P_1$, $P_2$, $\dots$, $P_m \}$, here $P_v =
+\pi_{X_v}(\sigma_{F_v} (R^v_1 \Join R^v_2 \Join \dots \Join R^v_{s(v)} ))$,
+$s(v)$ ? amount of relations in Database that were used while building $P_v$
+IDR, $\pi_{X_v}$ - projection on $X_v$ attributes, $\sigma_{F_v}$ - selection
+with $F_v$ logical formula. We need to get the following representation out of
+$P$ IDRs: $$P^{\ast} = \pi_{X^{\ast}}(\sigma_{F^{\ast}} (R^{\ast}_1 \Join
+R^{\ast}_2\Join\dots \Join R^{\ast}_l )$$
+
+Lets study the problem of building data representation $P^{\ast}$ using existing
+$P_v$ IDRs.
+
+\input{theorem_1}
+
+The conditions given in theorem guarantee the data to build $P^{\ast}$ to be
+contained in $P_v$ IDR. However, there can be excess rows that make $F^{\ast}$
+take $\n{TRUE}$ value. They appear because there are some relations in
+$R^{\ast}_1 \Join R^{\ast}_2\Join \dots \Join R^{\ast}_l $ that aren't
+presented in $R^v_1 \Join R^v_2 \Join \dots \Join R^v_{s(v)} $ and will be
+deleted if we join those missing relations. Using Truth spaces of logical
+formulas we can query DBMS to get a minimal required data set to define excess
+rows.
+
+In the next theorem we describe the case of coinciding relation sets.
+
+\input{theorem_2}
+
+It is possible to use several IRs to build resulting representation. At first,
+let's consider the following simple property of natural join.
+
+\begin{statement}
+Assume $\Re_1 = R_1 \Join \dots \Join R_k$ - natural join of some $k$ relations.
+Also assume $\Re_2 = R_1 \Join \dots \Join R_k \Join R_{k+1} \Join \dots \Join
+R_{n}$. Then $\Re_2 [\langle \Join_{i=1}^{k} R_i \rangle] \subseteq \Re_1$
+\label{join_property}
+\end{statement}
+\begin{proof}
+It is so indeed, because joining additional relations to $\Re_1$ can only
+remove some rows that were presented there. After the projection, we will get
+the same relation $\Re_1$ if no rows were deleted or some subset otherwise. The
+order of joins doesn't matter thanks to commutativity property of this
+operation.
+\end{proof}
+
+\input{theorem_1_mult}
+
+Just like in previous case, there are some additional conditions that allow us
+to get precise data presentation from IRs.
+
+\input{theorem_2_mult}
+
+The conditions listed above aren't exceptional in any case, because the set of
+dimensions that form hypercube changes rarely, so we can create new dimensions
+(data representations) from IRs with much less DB interaction.
+
+% An example of a floating figure using the graphicx package.
+% Note that \label must occur AFTER (or within) \caption.
+% For figures, \caption should occur after the \includegraphics.
+% Note that IEEEtran v1.7 and later has special internal code that
+% is designed to preserve the operation of \label within \caption
+% even when the captionsoff option is in effect. However, because
+% of issues like this, it may be the safest practice to put all your
+% \label just after \caption rather than within \caption{}.
+%
+% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
+% option should be used if it is desired that the figures are to be
+% displayed while in draft mode.
+%
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=2.5in]{myfigure}
+% where an .eps filename suffix will be assumed under latex, 
+% and a .pdf suffix will be assumed for pdflatex; or what has been declared
+% via \DeclareGraphicsExtensions.
+%\caption{Simulation Results}
+%\label{fig_sim}
+%\end{figure}
+
+% Note that IEEE CS typically puts floats only at the top, even when this
+% results in a large percentage of a column being occupied by floats.
+% However, the Computer Society has been known to put floats at the bottom.
+
+
+% An example of a double column floating figure using two subfigures.
+% (The subfig.sty package must be loaded for this to work.)
+% The subfigure \label commands are set within each subfloat command, the
+% \label for the overall figure must come after \caption.
+% \hfil must be used as a separator to get equal spacing.
+% The subfigure.sty package works much the same way, except \subfigure is
+% used instead of \subfloat.
+%
+%\begin{figure*}[!t]
+%\centerline{\subfloat[Case I]\includegraphics[width=2.5in]{subfigcase1}%
+%\label{fig_first_case}}
+%\hfil
+%\subfloat[Case II]{\includegraphics[width=2.5in]{subfigcase2}%
+%\label{fig_second_case}}}
+%\caption{Simulation results}
+%\label{fig_sim}
+%\end{figure*}
+%
+% Note that often IEEE CS papers with subfigures do not employ subfigure
+% captions (using the optional argument to \subfloat), but instead will
+% reference/describe all of them (a), (b), etc., within the main caption.
+
+
+% An example of a floating table. Note that, for IEEE style tables, the 
+% \caption command should come BEFORE the table. Table text will default to
+% \footnotesize as IEEE normally uses this smaller font for tables.
+% The \label must come after \caption as always.
+%
+%\begin{table}[!t]
+%% increase table row spacing, adjust to taste
+%\renewcommand{\arraystretch}{1.3}
+% if using array.sty, it might be a good idea to tweak the value of
+% \extrarowheight as needed to properly center the text within the cells
+%\caption{An Example of a Table}
+%\label{table_example}
+%\centering
+%% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+%\begin{tabular}{|c||c|}
+%\hline
+%One & Two\\
+%\hline
+%Three & Four\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+
+% Note that IEEE does not put floats in the very first column - or typically
+% anywhere on the first page for that matter. Also, in-text middle ("here")
+% positioning is not used. Most IEEE journals use top floats exclusively.
+% However, Computer Society journals sometimes do use bottom floats - bear
+% this in mind when choosing appropriate optional arguments for the
+% figure/table environments.
+% Note that, LaTeX2e, unlike IEEE journals, places footnotes above bottom
+% floats. This can be corrected via the \fnbelowfloat command of the
+% stfloats package.
+
+
+
+\section{Conclusion}
+The prime result of our paper is the justification of IR usage conditions for
+new hypercube creation. Those IRs can be stored on an analyst's PC and
+drastically shorten the time of getting the required data.
+
+The common problem of systems that don't use any DBMS is the data refreshing. In
+MOLAP approach, the technical support staff is responsible for periodical
+refreshing of data. The same method can be used to refresh $P_v$
+representations. The access to the DMBS's DB modification log and refreshing
+only modified data decreases the refresh time period. However, let's notice
+again that those dimensions don't change often.
+
+We assume the usage of GPU to implement intermediate filtration and union of
+different data representations. The research in this field shows that GPU
+operations are much faster than those on CPU for small data. There is a decrease
+in performance with data scale. The reason is obvious: big amount of data leads
+to a much more frequent data transfer between different memory types and
+increases the overall time elapsed. But the constant GPU memory growth and the
+fact that data amount required for multidimensional data dimensions building is
+comparatively small make the usage of graphical processors quite a good choice
+for these purposes.
+
+
+
+
+
+% if have a single appendix:
+%\appendix[Proof of the Zonklar Equations]
+% or
+%\appendix  % for no appendix heading
+% do not use \section anymore after \appendix, only \section*
+% is possibly needed
+
+% use appendices with more than one appendix
+% then use \section to start each appendix
+% you must declare a \section before using any
+% \subsection or using \label (\appendices by itself
+% starts a section numbered zero.)
+%
+
+
+
+% Can use something like this to put references on a page
+% by themselves when using endfloat and the captionsoff option.
+\ifCLASSOPTIONcaptionsoff
+  \newpage
+\fi
+
+
+
+% trigger a \newpage just before the given reference
+% number - used to balance the columns on the last page
+% adjust value as needed - may need to be readjusted if
+% the document is modified later
+%\IEEEtriggeratref{8}
+% The "triggered" command can be changed if desired:
+%\IEEEtriggercmd{\enlargethispage{-5in}}
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+\begin{thebibliography}{2}
+%\input{bibliography}
+\bibitem{IEEEhowto:kopka}
+%This is an example of a book reference
+H. Kopka and P.W. Daly, \emph{A Guide to {\LaTeX}}, third ed. Harlow, U.K.: Addison-Wesley, 1999.
+%
+%\bibitem{IEEEhowto:coming}
+%%This is an example of a Transactions article reference
+%D.S. Coming and O.G. Staadt, "Velocity-Aligned Discrete Oriented Polytopes for
+%Dynamic Collision Detection," IEEE Trans. Visualization and Computer Graphics,
+%vol. 14,  no. 1,  pp. 1-12,  Jan/Feb  2008, doi:10.1109/TVCG.2007.70405.
+
+%This is an example of a article from a conference proceeding
+%H. Goto, Y. Hasegawa, and M. Tanaka, "Efficient Scheduling Focusing on the Duality of MPL Representation," Proc. IEEE Symp. Computational Intelligence in Scheduling (SCIS '07), pp. 57-64, Apr. 2007, doi:10.1109/SCIS.2007.367670.
+
+%This is an example of a PrePrint reference
+%J.M.P. Martinez, R.B. Llavori, M.J.A. Cabo, and T.B. Pedersen, "Integrating Data Warehouses with Web Data: A Survey," IEEE Trans. Knowledge and Data Eng., preprint, 21 Dec. 2007, doi:10.1109/TKDE.2007.190746.
+
+%Again, see the IEEEtrans_HOWTO.pdf for several more bibliographical examples. Also, more style examples
+%can be seen at http://www.computer.org/author/style/transref.htm
+\end{thebibliography}
+
+% biography section
+% 
+% If you have an EPS/PDF photo (graphicx package needed) extra braces are
+% needed around the contents of the optional argument to biography to prevent
+% the LaTeX parser from getting confused when it sees the complicated
+% \includegraphics command within an optional argument. (You could create
+% your own custom macro containing the \includegraphics command to make things
+% simpler here.)
+%\begin{biography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
+% or if you just want to reserve a space for a photo:
+
+\begin{IEEEbiography}{Michael Shell}
+Biography text here.
+\end{IEEEbiography}
+
+% if you will not have a photo at all:
+\begin{IEEEbiographynophoto}{John Doe}
+Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.
+\end{IEEEbiographynophoto}
+
+% insert where needed to balance the two columns on the last page with
+% biographies
+%\newpage
+
+\begin{IEEEbiographynophoto}{Jane Doe}
+Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.
+\end{IEEEbiographynophoto}
+
+% You can push biographies down or up by placing
+% a \vfill before or after them. The appropriate
+% use of \vfill depends on what kind of text is
+% on the last page and whether or not the columns
+% are being equalized.
+
+%\vfill
+
+% Can be used to pull up biographies so that the bottom of the last one
+% is flush with the other column.
+%\enlargethispage{-5in}
+
+
+
+% that's all folks
+\end{document}
+
+
+
