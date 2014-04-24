@@ -425,6 +425,7 @@
 \author{Mosin Sergey, Zykin Sergey}
 \usepackage{amssymb,amsmath}
 \usepackage[utf8]{inputenc}
+%\usepackage[russian]{babel}
 \usepackage{amsthm}
 \usepackage{amsfonts}
 \usepackage{algorithmic}
@@ -626,7 +627,7 @@ Database, OLAP, cache, Data Warehouse, predicate
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
 \IEEEPARstart{A}{lot} of current Big Data analysis solutions use Online
-Analytical Processing technologies, formed in early 90s \cite{codd}. A lot of
+Analytical Processing technologies, formed in early 90s \cite{codd}. Many
 fundamental \cite{lecht,lehner,mazon} and applied \cite{vassi, peder,
 progressive, giorg} results were obtained in this field lately.
 
@@ -647,10 +648,6 @@ block numbers are analyzed, not their information.
 This paper is based on the results, obtained in \cite{zyk_pol}. We removed
 condition that limited Intermediate Data Representation (IDR) attributes and
 also made some generalizations on multiple IDRs case.
-
-\hfill mds
- 
-\hfill April 22, 2014
 
 \section{Existing solutions overview and comparison}
 In a field of fundamental researches, huge amounts of publications aim at optimal
@@ -721,10 +718,20 @@ D. of Physics & P-322 & 48 & & 24 & \\
 \end{tabular}
 \end{table*}
 Assume the precomputed relations on the user PC:  $P_1$,
-$P_2$, $P_3$ with the following schemes: $P_1$=(Department number, Department), without any data constraints; $P_2$=(Discipline number, Discipline), without data constraints; $P_3$=(Department number, Discipline number, Semester, Class, Hours), with the following constraint:
-$F_3 =(\mbox{Semester} \leq 2) \wedge (\mbox{Department} = \mbox{D. of Chemistry})$.
-Assume the user has made the following logical constraint on the data to be represented in the table: $F^{\ast} = (\mbox{Semester} \leq 3)$. Comparing these formulas domains, it's easy to see that $P_1$ and $P_2$ have enough data to form table \ref{def_T_1}, whereas $P_3$ needs to be expanded with data. After defining $F^{\ast}$ and $F_3$ domains we can form a new formula: $F=((\mbox{Semester} = 3) \wedge (\mbox{Deparmtent=D. of Chemistry}))
-\vee ((\mbox{Semester} \leq 3) \wedge (\mbox{Deparmtent} \neq \mbox{D. of Chemistry}))$. Using $P_3$ schema and $F$ formula, we can now make an SQL command to be executed on the server. As a result, we transfer less data over the network.
+$P_2$, $P_3$ with the following schemes: $P_1$=(Department number, Department),
+without any data constraints; $P_2$=(Discipline number, Discipline), without
+data constraints; $P_3$=(Department number, Discipline number, Semester, Class,
+Hours), with the following constraint: $F_3 =(\mbox{Semester} \leq 2) \wedge
+(\mbox{Department} = \mbox{D. of Chemistry})$. Assume the user has made the
+following logical constraint on the data to be represented in the table:
+$F^{\ast} = (\mbox{Semester} \leq 3)$. Comparing these formulas domains, it's
+easy to see that $P_1$ and $P_2$ have enough data to form table \ref{def_T_1},
+whereas $P_3$ needs to be expanded with data. After defining $F^{\ast}$ and
+$F_3$ domains we can form a new formula: $F=((\mbox{Semester} = 3) \wedge
+(\mbox{Deparmtent=D. of Chemistry})) \vee ((\mbox{Semester} \leq 3) \wedge
+(\mbox{Deparmtent} \neq \mbox{D. of Chemistry}))$. Using $P_3$ schema and $F$
+formula, we can now make an SQL command to be executed on the server. As a
+result, we transfer less data over the network.
 
 % needed in second column of first page if using \IEEEpubid
 %\IEEEpubidadjcol
@@ -832,14 +839,22 @@ domains.
 \end{note}
 
 \begin{note}
-The complexity of $\n{Expr}$, $S$ and $\n{Str}$ predicates is defined by software ability to compute Truth spaces of formulas, as it is shown in example 1.
+The complexity of $\n{Expr}$, $S$ and $\n{Str}$ predicates is defined by
+software ability to compute Truth spaces of formulas, as it is shown in example
+1.
 \end{note}
 
-We now see how Truth space operations can be handled with respect to the corresponding formulas. $M (F)$ for a given formula $F$, written in DNF, is nothing but a union of Truth spaces of distinct conjunctive clauses. Truth space of a single conjunctive clause is an intersection of Truth spaces of it's predicates.
+We now see how Truth space operations can be handled with respect to the
+corresponding formulas. $M (F)$ for a given formula $F$, written in DNF, is
+nothing but a union of Truth spaces of distinct conjunctive clauses. Truth space
+of a single conjunctive clause is an intersection of Truth spaces of it's
+predicates.
 
 \begin{mydef}
 Given a logical formula $F$, defined by (\ref{def_F_1}), (\ref{def_F_2}),
-(\ref{def_F_3}), the projection of $F$ on the $X$ attribute set is a logical formula $F[X], \<F[X]> = X$, that has all its predicates with $R_i^F.A_i^F \notin X$ replaced with trivial predicate $\n{TRUE}$.
+(\ref{def_F_3}), the projection of $F$ on the $X$ attribute set is a logical
+formula $F[X], \<F[X]> = X$, that has all its predicates with $R_i^F.A_i^F
+\notin X$ replaced with trivial predicate $\n{TRUE}$.
 \label{projection}
 \end{mydef}
 
@@ -1069,18 +1084,21 @@ for these purposes.
 % The IEEEtran BibTeX style support page is at:
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
 \bibliographystyle{IEEEtran}
+\bibliography{references}
 % argument is your BibTeX string definitions and bibliography database(s)
 %\bibliography{IEEEabrv,../bib/paper}
 %
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-\begin{thebibliography}{2}
+
+%\begin{thebibliography}{2}
 %\input{bibliography}
-\bibitem{IEEEhowto:kopka}
-%This is an example of a book reference
-H. Kopka and P.W. Daly, \emph{A Guide to {\LaTeX}}, third ed. Harlow, U.K.: Addison-Wesley, 1999.
-%
+%\bibitem{IEEEhowto:kopka}
+%%This is an example of a book reference
+%H. Kopka and P.W. Daly, \emph{A Guide to {\LaTeX}}, third ed. Harlow, U.K.:
+%Addison-Wesley, 1999.
+
 %\bibitem{IEEEhowto:coming}
 %%This is an example of a Transactions article reference
 %D.S. Coming and O.G. Staadt, "Velocity-Aligned Discrete Oriented Polytopes for
@@ -1095,7 +1113,7 @@ H. Kopka and P.W. Daly, \emph{A Guide to {\LaTeX}}, third ed. Harlow, U.K.: Addi
 
 %Again, see the IEEEtrans_HOWTO.pdf for several more bibliographical examples. Also, more style examples
 %can be seen at http://www.computer.org/author/style/transref.htm
-\end{thebibliography}
+%\end{thebibliography}
 
 % biography section
 % 
@@ -1108,20 +1126,26 @@ H. Kopka and P.W. Daly, \emph{A Guide to {\LaTeX}}, third ed. Harlow, U.K.: Addi
 %\begin{biography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
 % or if you just want to reserve a space for a photo:
 
-\begin{IEEEbiography}{Michael Shell}
-Biography text here.
-\end{IEEEbiography}
+%\begin{IEEEbiography}{Michael Shell}
+%Biography text here.
+%\end{IEEEbiography}
+
+\newpage
 
 % if you will not have a photo at all:
-\begin{IEEEbiographynophoto}{John Doe}
-Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.
+\begin{IEEEbiographynophoto}{Sergey Mosin}
+is a PhD student in an Omsk Department of Sobolev Institute of Mathematics. His
+research interests include Databases, Data analysis, Algorithm Theory and
+Internet technologies. Mosin received a Specialist degree in Applied Mathematics
+and Computer Science from Omsk F. M. Dostoevsky State University. Contact him at
+svmosin@gmail.com
 \end{IEEEbiographynophoto}
 
 % insert where needed to balance the two columns on the last page with
 % biographies
 %\newpage
 
-\begin{IEEEbiographynophoto}{Jane Doe}
+\begin{IEEEbiographynophoto}{Sergey Zykin}
 Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.
 \end{IEEEbiographynophoto}
 
@@ -1131,7 +1155,7 @@ Biography text here.Biography text here.Biography text here.Biography text here.
 % on the last page and whether or not the columns
 % are being equalized.
 
-%\vfill
+\vfill
 
 % Can be used to pull up biographies so that the bottom of the last one
 % is flush with the other column.
