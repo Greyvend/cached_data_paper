@@ -667,18 +667,18 @@ are replaced by Relational Algebra.
 
 There are some works, which examine the query optimization problem in the case of
 multidimensional warehouse representation with the use of dynamically formed
-representations. Two basic methods are used there: statical \cite{baralis,
-gupta, gupta-mumick} and dynamical one \cite{scheuermann, shim, kalnis, chang}.
-The former is based on a fixed amount of queries, whereas in the latter queries
+representations. Two basic methods are used: statical \cite{baralis,
+gupta, gupta-mumick} and dynamical \cite{scheuermann, shim, kalnis, chang}.
+The former is based on a fixed amount of queries, whereas in the latter, queries
 for reservation are chosen based on appearance statistic and computational cost
-of query execution. As a data source Data Warehouses or Relational Databases in
-the hierarchical form are used. Special queries for data manipulation are
-considered. In this paper we use split dimension generation for the data
+of query execution. Data Warehouses or Relational Databases in
+the hierarchical form are used as a data source. Special queries for data manipulation are
+considered. In our paper, we use split dimension generation for the data
 required for current analysis. Hence, we are interested in standard SQL queries
 to the Database and IDRs. The resulting representation can then be processed by
 special multidimensional data queries.
 
-In the \cite{Keller96} paper, they analyze the cache content,
+In the \cite{Keller96} paper, the authors analyze the cache content,
 and predicates in their work correspond to IDRs in our approach. Cached data
 usage problem is resolved in terms of predicate deduction. In our paper, we address this problem by means of
 computation of cached query results domains that correspond to the IDRs. It allows
@@ -689,7 +689,7 @@ example demonstrates suggested approach.
 
 {\bf Example 1.} The task is to receive data representation as in the table
 \ref{def_T_1}. Dimension attributes are in bold, measure attributes are italic,
-else are attribute values.
+the rest are attribute values.
 
 \begin{table*}[h!]
 \renewcommand{\arraystretch}{1.3}
@@ -724,7 +724,7 @@ data constraints; $P_3$=(Department number, Discipline number, Semester, Class,
 Hours), with the following constraint: $F_3 =(\mbox{Semester} \leq 2) \wedge
 (\mbox{Department} = \mbox{D. of Chemistry})$. Assume the user has made the
 following logical constraint on the data to be represented in the table:
-$F^{\ast} = (\mbox{Semester} \leq 3)$. Comparing these formulas domains, it's
+$F^{\ast} = (\mbox{Semester} \leq 3)$. Comparing these formulas' domains, it's
 easy to see that $P_1$ and $P_2$ have enough data to form table \ref{def_T_1},
 whereas $P_3$ needs to be expanded with data. After defining $F^{\ast}$ and
 $F_3$ domains we can form a new formula: $F=((\mbox{Semester} = 3) \wedge
@@ -783,14 +783,14 @@ is denoted as $\<F> $.
 \end{mydef}
 
 
-Listed variants of operations don't use every single SQL capability. For example
-, we don't use $\n{EXISTS}$ predicate, because it has no expanded attribute
-names in it. $\n{NULL}$ predicate is used for another purpose in our paper.
+Listed variants of operations don't use every single SQL capability. For
+example, we don't use the $\n{EXISTS}$ predicate, because it has no expanded attribute
+names in it. The $\n{NULL}$ predicate is used for another purpose in our paper.
 
-During logical formula domain calculation if we have some attribute having
-$NULL$ value on a row $t$, we then get the $\n{UNKNOWN}$ value for the whole
+During logical formula domain calculation, if we have some attribute having
+$NULL$ value on a row $t$, we then get $\n{UNKNOWN}$ value for the whole
 formula, because SQL-query results follow the Three-valued logic. It leads us to
-ambiguous interpretations of result of both usual users and experienced
+ambiguous interpretations of results of both usual users and experienced
 programmers. To solve this problem we suggest the following constraint: every
 attribute in $F^{\ast}$ is supplied with a property ``Use of undefined value''
 with two mutually exclusive values: ``Yes'' or ``No''. The reasoning behind
@@ -800,7 +800,7 @@ that property guarantees us removing all such rows.
 
 Let's write expression (\ref{def_F_1}) for $F$ in the following form: $ F (\dots
 , T_j , \dots )$, here $T_j$ - predicates of expression (\ref{def_F_2}).
-Then after the modification it will be the following: 
+After the modification it will be the following: 
 $F( \dots, T'_j , \dots )\wedge_{i,j}(R_i .A_j \neq  \n{NULL})$, here
 $\wedge_{i,j}(R_i .A_j \neq  \n{NULL})$ - conjunction of all $F$ attributes,for
 which $\n{NULL}$ is not allowed, and $T'_j = (T_j \vee_{i,j}(R_i .A_j =
@@ -808,15 +808,15 @@ which $\n{NULL}$ is not allowed, and $T'_j = (T_j \vee_{i,j}(R_i .A_j =
 attributes, for which $\n{NULL}$ is allowed. Outer brackets for $T'_j$ predicate
 define operation priority. We can see that this logical formula can only have
 $\n{TRUE}$ and $\n{FALSE}$ values when considering it in Three-valued logic. We
-also can note that if rows don't have undefined values, the initial formula $F$
+can also note that if rows don't have undefined values, the initial formula $F$
 will be equivalent to the transformed one. There can be some cases when the
 meaning of $P$ IR changes with such a transformation. For example, assume $F =
 R_1 .A_2 > 3 \vee R_3 .A_4 < 4$. Let row $t$ has $R_1 .A_2$ value set to
 $\n{NULL}$, with a property ``Use of undefined value'' set to ``Yes'', and $R_3
 .A_4$ value set to 5, so $R_3 .A_4 < 4$ predicate is $\n{FALSE}$. Then $F$
-transformation on $t$ row will be $\n{TRUE}$, what is not so obvious indeed.
+transformation on $t$ row will be $\n{TRUE}$, which is, indeed, not so obvious.
 
-Hereafter we will suppose all the $F$ formulas to be transformed.
+Hereafter we will assume all the $F$ formulas to be transformed.
 
 We consider $\mathcal{A} =$ $\{(a_1, \dots, a_n)
 \mid a_i \in Dom(A_i), i=1,\dots,n\}$ set, here $Dom(A_i)$ - is a domain of
@@ -833,14 +833,14 @@ F(a) = \n {TRUE}\}$.
 \end{mydef}
 
 \begin{note}
-$F$ formula dimension can be smaller than $\mathcal{A}$ dimension. In this case
+$F$ formula dimension can be smaller than $\mathcal{A}$ dimension. In this case,
 attributes that aren't presented in formula can take any values in their
 domains.
 \end{note}
 
 \begin{note}
-The complexity of $\n{Expr}$, $S$ and $\n{Str}$ predicates is defined by
-software ability to compute Truth spaces of formulas, as it is shown in example
+The complexity of $\n{Expr}$, $S$ and $\n{Str}$ predicates is defined by the
+software's ability to compute Truth spaces of formulas, as it is shown in example
 1.
 \end{note}
 
@@ -889,7 +889,7 @@ $P_v$ IDRs.
 
 \input{theorem_1}
 
-The conditions given in theorem guarantee the data to build $P^{\ast}$ to be
+The conditions given in the aforementioned theorem guarantee the data to build $P^{\ast}$ to be
 contained in $P_v$ IDR. However, there can be excess rows that make $F^{\ast}$
 take $\n{TRUE}$ value. They appear because there are some relations in
 $R^{\ast}_1 \Join R^{\ast}_2\Join \dots \Join R^{\ast}_l $ that aren't
@@ -902,7 +902,7 @@ In the next theorem we describe the case of coinciding relation sets.
 
 \input{theorem_2}
 
-It is possible to use several IRs to build resulting representation. At first,
+It is possible to use several IRs to build a resulting representation. First,
 let's consider the following simple property of natural join.
 
 \begin{statement}
@@ -921,13 +921,13 @@ operation.
 
 \input{theorem_1_mult}
 
-Just like in previous case, there are some additional conditions that allow us
+Just like in the previous case, there are some additional conditions that allow us
 to get precise data presentation from IRs.
 
 \input{theorem_2_mult}
 
 The conditions listed above aren't exceptional in any case, because the set of
-dimensions that form hypercube changes rarely, so we can create new dimensions
+dimensions that form a hypercube changes rarely, so we can create new dimensions
 (data representations) from IRs with much less DB interaction.
 
 % An example of a floating figure using the graphicx package.
@@ -1024,23 +1024,20 @@ new hypercube creation. Those IRs can be stored on an analyst's PC and
 drastically shorten the time of getting the required data.
 
 The common problem of systems that don't use any DBMS is the data refreshing. In
-MOLAP approach, the technical support staff is responsible for periodical
+the MOLAP approach, the technical support staff is responsible for periodical
 refreshing of data. The same method can be used to refresh $P_v$
 representations. The access to the DMBS's DB modification log and refreshing
-only modified data decreases the refresh time period. However, let's notice
-again that those dimensions don't change often.
+only modified data decreases the refresh time period. However, it should be
+noted again that those dimensions don't change often.
 
 We assume the usage of GPU to implement intermediate filtration and union of
 different data representations. The research in this field shows that GPU
 operations are much faster than those on CPU for small data. There is a decrease
 in performance with data scale. The reason is obvious: big amount of data leads
 to a much more frequent data transfer between different memory types and
-increases the overall time elapsed. But the constant GPU memory growth and the
-fact that data amount required for multidimensional data dimensions building is
-comparatively small make the usage of graphical processors quite a good choice
-for these purposes.
-
-
+increases the overall time elapsed. But the constant GPU memory growth and
+comparatively small data amount required for dimensions building make the usage
+of graphical processors quite a good choice for these purposes.
 
 
 
