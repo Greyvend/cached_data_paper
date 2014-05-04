@@ -471,8 +471,7 @@
 \author{Sergey~Mosin,
         Sergey~Zykin % <-this % stops a space
 \IEEEcompsocitemizethanks{\IEEEcompsocthanksitem S. Mosin, S. Zykin are with the
-Omsk Department of Sobolev Institute of Mathematics, Omsk, Russia. The paper is
-supported by RFBR grant \#12-07-00066-a.\protect\\
+the Siberian Branch of the Russian Academy of Sciences, Omsk, Russia.\protect\\
 % note need leading \protect in front of \\ to get a newline within \thanks as
 % \\ is fragile and will error, could use \hfil\break instead.
 E-mail: svmosin@gmail.com, szykin@mail.ru}% <-this % stops a space
@@ -539,10 +538,9 @@ We primarily address the usage of cached Database query results in our paper.
 This problem was already discussed and has some software implementations. In our
 work, we propose Truth spaces usage in logical formulas while querying a Database.
 This approach is supposed to help an analyst, who works with dynamically built
-data representations logically described as multidimensional tables. Those
-representations don't take much disk space, so one can use GPU to speed up the
-computations. We consider queries in a form of relational algebra expressions,
-similar to "universal relational query". Logical formulas in the queries are
+data representations logically described as multidimensional tables. We consider
+queries in a form of relational algebra expressions, similar to "universal
+relational query". Logical formulas in the queries are
 presented in Disjunctive Normal Form. They consist of atomic expressions
 consisting of SQL predicates. In the paper we consider single and multiple table
 cases to build new data representations.
@@ -1055,7 +1053,17 @@ of graphical processors quite a good choice for these purposes.
 % starts a section numbered zero.)
 %
 
+% use section* for acknowledgement
+\ifCLASSOPTIONcompsoc
+  % The Computer Society usually uses the plural form
+  \section*{Acknowledgments}
+\else
+  % regular IEEE prefers the singular form
+  \section*{Acknowledgment}
+\fi
 
+The authors would like to thank the Russian Foundation for Basic Research for the
+grant \#12-07-00066-a.
 
 % Can use something like this to put references on a page
 % by themselves when using endfloat and the captionsoff option.
@@ -1130,7 +1138,7 @@ of graphical processors quite a good choice for these purposes.
 \newpage
 
 % if you will not have a photo at all:
-\begin{IEEEbiographynophoto}{Sergey Mosin}
+\begin{IEEEbiographynophoto}{Sergey Vladimirovich Mosin}
 is a PhD student in an Omsk Department of Sobolev Institute of Mathematics. His
 research interests include Databases, Data analysis, Algorithm Theory and
 Internet technologies. Mosin received a Specialist degree in Applied Mathematics
@@ -1142,8 +1150,12 @@ svmosin@gmail.com
 % biographies
 %\newpage
 
-\begin{IEEEbiographynophoto}{Sergey Zykin}
-Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.Biography text here.
+\begin{IEEEbiographynophoto}{Sergey Vladimirovich Zykin}
+is a professor, doctor of science (informatics) with a focus on theory of
+databases designing and head of the laboratory at the Sobolev Institute of
+Mathematics of the Siberian Branch of the Russian Academy of Sciences. He has
+published some 70 scientific papers as conference-, journal-, and book
+contributions. Contact him at szykin@mail.ru
 \end{IEEEbiographynophoto}
 
 % You can push biographies down or up by placing
