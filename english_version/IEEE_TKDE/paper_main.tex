@@ -1028,16 +1028,6 @@ representations. The access to the DMBS's DB modification log and refreshing
 only modified data decreases the refresh time period. However, it should be
 noted again that those dimensions don't change often.
 
-We assume the usage of GPU to implement intermediate filtration and union of
-different data representations. The research in this field shows that GPU
-operations are much faster than those on CPU for small data. There is a decrease
-in performance with data scale. The reason is obvious: big amount of data leads
-to a much more frequent data transfer between different memory types and
-increases the overall time elapsed. But the constant GPU memory growth and
-comparatively small data amount required for dimensions building make the usage
-of graphical processors quite a good choice for these purposes.
-
-
 
 % if have a single appendix:
 %\appendix[Proof of the Zonklar Equations]
