@@ -752,13 +752,13 @@ K_i = T_1 \& T_2 \dots \& T_n, i = 1, \dots, m ,
 here $T_j, j = 1, \dots, n$ - predicates, where expanded attribute names are specified. $R_i.A_j$ means attribute $A_j$ in relation $R_i$.
 Those predicates can be:
 \begin{itemize}
-  \item	comparison operation $ \n{Expr}_1 \theta \n{Expr}_2$, $\theta$ ?
+  \item	comparison operation $ \n{Expr}_1 \theta \n{Expr}_2$, $\theta$ -
   comparison operator $(\theta \in \{=, \neq, >, <, \leq, \geq\})$, $\n{Expr}_i$
-  ? type conformant expressions, defined in a space of expanded attribute names and constants;
+  - type conformant expressions, defined in a space of expanded attribute names and constants;
   \item operation $\n{Expr}_1 \n{[NOT]} \n{BETWEEN} \n{Expr}_2 \n{AND}
   \n{Expr}_3$ (symbols inside square brackets $[*]$ aren't mandatory for the predicate);
-  \item operation $\n{Expr} \n{[NOT]} \n{IN} S$, here $S$ ? values list or subquery, having a set of attribute $R_i.A_j$ values as a result;
-  \item operation $\n{Str}_1 \n{[NOT]} \n{LIKE} \n{Str}_2$, here $\n{Str}_i$ ?
+  \item operation $\n{Expr} \n{[NOT]} \n{IN} S$, here $S$ - values list or subquery, having a set of attribute $R_i.A_j$ values as a result;
+  \item operation $\n{Str}_1 \n{[NOT]} \n{LIKE} \n{Str}_2$, here $\n{Str}_i$ -
   strings;
   \item operation $\n{Expr} \theta \n{ALL/ANY} S$.
 \end{itemize}
@@ -878,7 +878,7 @@ from given IDRs.
 
 We denote saved IDRs as $P$=$\{ P_1$, $P_2$, $\dots$, $P_m \}$, here $P_v =
 \pi_{X_v}(\sigma_{F_v} (R^v_1 \Join R^v_2 \Join \dots \Join R^v_{s(v)} ))$,
-$s(v)$ ? amount of relations in Database that were used while building $P_v$
+$s(v)$ - amount of relations in Database that were used while building $P_v$
 IDR, $\pi_{X_v}$ - projection on $X_v$ attributes, $\sigma_{F_v}$ - selection
 with $F_v$ logical formula. We need to get the following representation out of
 $P$ IDRs: $$P^{\ast} = \pi_{X^{\ast}}(\sigma_{F^{\ast}} (R^{\ast}_1 \Join
