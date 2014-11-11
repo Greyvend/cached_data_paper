@@ -1,7 +1,8 @@
 %\author{Mosin Sergey, Zykin Sergey}
 \def \bigcupn {\bigcup\limits_{v=1}^{n}}
 \begin{theorem}
-$P^{\ast} \subseteq \pi_{X^{\ast}} ( \sigma_{F^{\ast}[X]} (P_1 \Join \dots \Join P_n))$, where $X = \bigcupn X_{v}$ if:
+$P^{\ast} \subseteq \pi_{X^{\ast}} ( \sigma_{F^{\ast}[X]} (P_1 \Join \dots \Join
+P_n))$, where $X = \bigcupn X_{v}$ if:
 \\a) $X^{\ast} \subseteq X$
 \\b)
 $ \bigcupn \{R^{v}_{1}, \ldots, R^{v}_{s(v)}\} = \{R'_{1}, \ldots, R'_{s'}\}
@@ -18,9 +19,10 @@ and show that $t^{\ast} \in \pi_{X^{\ast}} ( \sigma_{F^{\ast}[X]}
 t'' = t'[\langle {\Join}_{i=1}^{s'} R'_i \rangle]$ are built.
 Note that  $\bigcupn X_{v} \subseteq {\Join}_{i=1}^{s'} \langle R'_i \rangle$, hence
 $t''[X^{\ast}] = t'[X^{\ast}] = t^{\ast}$.
-The further reasonings also apply to all IRs.
+The further reasonings also apply to all IDVs.
 We get $F^{\ast} [X] (t'') = \n{TRUE}$ and $F_v (t'') = \n{TRUE}, v = 1,\dots,n $.
-Considering statement \ref{join_property}, we have $t''[\langle \Join_{i=1}^{s(v)} R^v_i \rangle]
+Considering statement \ref{join_property}, we have $t''[\langle
+\Join_{i=1}^{s(v)} R^v_i \rangle]
 \in 
 R^v_1 \Join \dots \Join R^v_{s(v)}, v = 1, \dots, n
 \Rightarrow   

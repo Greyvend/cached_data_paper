@@ -1,21 +1,19 @@
 \begin{theorem}
-$P^{\ast} \subseteq \pi_{X^{\ast}} (\sigma_{F^{\ast}[X_v]} (P_{v}))$
-, if:
+$P^{\ast} \subseteq \pi_{X^{\ast}} (\sigma_{F^{\ast}[X_v]} (P_{v}))$, if:
 \\a) $X^{\ast} \subseteq X_{v}$
-\\b) 
-$ \{R^{v}_{1}, \ldots, R^{v}_{s(v)}\}
-\subseteq
-\{R^{\ast}_{1}, \ldots, R^{\ast}_{l}\} $
+\\b) $ \{R^{v}_{1}, \ldots, R^{v}_{s(v)}\} \subseteq \{R^{\ast}_{1}, \ldots,
+R^{\ast}_{l}\} $
 \\c) $M (F^{\ast}) \subseteq M (F_{v}) $.
 \label{th_base}
-\end{theorem} 
+\end{theorem}
 \begin{proof}
 Let $t^{\ast}$ be any tuple in $P^{\ast}$. We need to show that
 $t^{\ast} \in \pi_{X^{\ast}} (P_{v})$. From condition  $t^{\ast} \in P^{\ast}$,
 there is the tuple $t' \in R^{\ast}_1 \Join R^{\ast}_2\Join\ldots
-\Join R^{\ast}_l$ and $t^{\ast} = t'[X^{\ast}]$. There may be several such tuples. We will choose the one that satisfies $F^{\ast}(t')=TRUE$.
-This tuple exists indeed, because otherwise $t^{\ast}$ would not be in $P^{\ast}$. Thus, there are tuples
-$t^{\ast}_i \in R^{\ast}_i$:
+\Join R^{\ast}_l$ and $t^{\ast} = t'[X^{\ast}]$. There may be several such tuples.
+We will choose the one that satisfies $F^{\ast}(t')=TRUE$. This tuple exists
+indeed, because otherwise $t^{\ast}$ would not be in $P^{\ast}$. Thus, there
+are tuples $t^{\ast}_i \in R^{\ast}_i$:
 
 \begin{equation}
 t^{\ast}_i = t'[\langle R^{\ast}_i\rangle], i = 1,\dots,l,
@@ -38,7 +36,7 @@ Equality $t''[X^{\ast}] = t'[X^{\ast}] = t^{\ast}$ follows from a) and $X_v
 
 Condition  $F^{\ast}(t') = \n{TRUE}$ and statement 
 \ref{proj_property_of_inclusion} imply the truth of the projection $F^{\ast}
-[X^{\ast}]$ on a tuple $t'$, and consequently on $t''$, as the formula is defined at common attributes of these tuples. Furthermore, according to condition 3, we have $F_v (t') = \n{TRUE} \Rightarrow F_v (t'') = \n{TRUE}$.
+[X^{\ast}]$ on a tuple $t'$, and consequently on $t''$, as the formula is defined at common attributes of these tuples. Furthermore, according to condition c), we have $F_v (t') = \n{TRUE} \Rightarrow F_v (t'') = \n{TRUE}$.
 It means $t^{\ast} = t''[X^{\ast}] \in \pi_{X^{\ast}} (P_{v})$.
 The theorem has been proven.
 \end{proof}
