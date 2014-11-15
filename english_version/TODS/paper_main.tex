@@ -1,0 +1,478 @@
+% This document is created with a help of
+% v2-acmsmall-sample.tex sample file, v1.3 - March 2012
+
+\documentclass[prodmode,acmtods]{acmsmall} % Aptara syntax
+
+\author{Mosin Sergey, Zykin Sergey}
+\usepackage{amssymb,amsmath}
+%\usepackage{amsfonts}
+%\usepackage{algorithm}
+%\usepackage{xcolor}
+%\usepackage{textcomp}
+\newtheorem{note}{Note}
+\newtheorem{statement}{Statement}
+\def \eval #1#2{\left.#1\right\vert_{#2}}
+\def \<#1> {\langle #1 \rangle}
+\def \n #1{\mathit{#1}}
+
+% Package to generate and customize Algorithm as per ACM style
+\usepackage[ruled]{algorithm2e}
+\renewcommand{\algorithmcfname}{ALGORITHM}
+\SetAlFnt{\small}
+\SetAlCapFnt{\small}
+\SetAlCapNameFnt{\small}
+\SetAlCapHSkip{0pt}
+\IncMargin{-\parindent}
+
+% Metadata Information
+\acmVolume{9}
+\acmNumber{4}
+\acmArticle{39}
+\acmYear{2010}
+\acmMonth{3}
+
+% Document starts
+\begin{document}
+
+% Page heads
+\markboth{S.~V. Mosin, S.~V. Zykin}{Truth space method for caching database
+queries}
+
+% Title portion
+\title{Truth space method for caching database queries}
+\author{SERGEY V. MOSIN
+\affil{Sobolev Institute of Mathematics of the Siberian Branch
+of the Russian Academy of Sciences}
+SERGEY V. ZYKIN
+\affil{Sobolev Institute of Mathematics of the Siberian Branch
+of the Russian Academy of Sciences}
+}
+
+\begin{abstract}
+We propose a new method of client-side data caching for relational databases
+with a central server and distant clients. Data is loaded into client cache
+based on queries executed on the central database at the server. These
+queries have a special form - "universal relational query". The majority of
+search queries to database can be expressed in such form. Besides, this form
+allows us to analyze query correctness by checking lossless join property. A
+subsequent query may be executed in client's local cache if we can determine
+that the query result is entirely contained in the cache. For this we compare
+truth spaces of the logical restrictions in new user's query and results of
+the queries execution in cache. This method may be used to define lacking data
+in cache and execute the query on server for this data only. Problem of data
+actualizations in cache is not discussed in this paper. However, it can be
+solved by cataloging of queries on server and their serving by triggers in
+background mode.
+\end{abstract}
+
+\category{C.2.2}{Computer-Communication Networks}{Network Protocols}
+
+\terms{Caching, Optimization}
+
+\keywords{Relational database, Truth space, Intermediate Data View, Logical
+formula}
+
+\acmformat{Sergey V. Mosin and Sergey V. Zykin, 2014. Truth space method for
+caching database queries}
+
+\begin{bottomstuff}
+This work is supported by the Russian Foundation for Basic Research under
+grant \#12-07-00066-a.
+
+Author's addresses: S.V. Mosin, Laboratory of information transformation and
+representations methods, Sobolev Institute of Mathematics of the Siberian Branch
+of the Russian Academy of Sciences; S.V. Zykin, Laboratory of information
+transformation and representations methods, Sobolev Institute of Mathematics of
+the Siberian Branch of the Russian Academy of Sciences.
+\end{bottomstuff}
+
+\maketitle
+
+
+\section{Introduction}
+In this paper we discuss the use of data views that are
+cached on the client's computer. We assume client-server environment with
+server based Relational Database (RDB). The cache stores query results in order
+to provide maximum usage of saved data in subsequent queries.
+
+The purpose of this paper is to study the problem of building and using data
+views on a client's computer. This problem is similar to query optimization
+because it aims to decrease the data transfer from a Database server. Cached
+data is actively used in Database Management Systems (DBMS), but mostly it is
+only repeating use of data written in cache, without any prior data analysis
+aimed to define any partial or combined use. The DBMS can only avoid requesting
+blocks of data from external devices, while serving the query, if they are
+present in the cache. So, only block numbers are analyzed, not their information.
+
+This paper is based on the results, obtained in \cite{zyk_pol}. We have removed
+a constraint that limits the choice of attributes for Intermediate Data View
+(IDV) and also made some generalizations on multiple IDVs case.
+\cite{codd}
+The second section provides an overview of publications on the subject of this
+paper. We have considered only those closest to the problem at hand. In the end
+of this section we present an example to explain our approach for solving the
+problem.
+
+In the third section we provide a formalization of the problem. We also present
+the approach for removing the uncertainties in database queries and present
+auxiliary properties and definitions that are used later.
+
+The main results are presented in Section 4. We research the possibility of
+using cached results of previous queries when performing a new one. The results
+are presented in the form of theorems.
+
+% Head 1
+\section{Existing solutions overview and comparison}
+One of the main research problems of queries optimization to database is the
+construction of an optimal query plan. Queries are transformed without content
+analysis of the database content and cache. In other cases, this information is
+taken into account for calculation statistical estimations to improve physical
+access to data. These problems are the subject of many studies, but they are
+outside of our approach.
+
+A lot of publications are devoted to the problem of cache content management.
+For example, the heuristic algorithms update the cache with regards to user data
+\cite{chang}, storage of important user queries in a cache
+\cite{baralis}, storage of the cached data on multiple servers \cite{kalnis}.
+This paper solves the problem of the best use of a cache for execution of the
+user's queries. Cache content management and the best use of the cache are two
+complementary problem.
+
+The most similar to our work is paper \cite{Afrati06}. The authors analyze
+conjunctive queries on data domains with predicates in the form of arithmetical
+comparisons, and present query computation algorithms using IDVs. In our paper,
+the special case of universal relational query is considered. It is a query on
+the Database relations, not particular domains. Although we had similar aims,
+the results obtained differ because of stated factors. In particular, there is
+no need to create any algorithms of data selection in our work, as they are
+replaced by Relational Algebra.
+
+In papers \cite{Keller96, shim} similar problem is discussed. In our paper we
+make correspondence between cache contents and predicates. Cached data usage
+problem is resolved in terms of truth spaces. We compute the truth spaces of
+query results in the cache. It allows us to define records in IDV that can be
+used to form a new view and new SQL queries that will let us load missing data
+from Database server. The following example demonstrates suggested approach.
+
+{\bf Example 1.} Let's assume the following database schema fragment, which
+represents the University Study plan:\\
+$R_1 =\mbox{\it Students}\ (\mbox{\bf Stud\_ID}, \mbox{Stud\_Name},
+\mbox{Group})$\\
+$R_2 =\mbox{\it Schedule}\ (\mbox{\bf Group}, \mbox{\bf Room\_ID},
+\mbox{Course})$\\
+$R_3 =\mbox{\it Progress}\ (\mbox{\bf Stud\_ID}, \mbox{\bf Course},
+\mbox{Score})$,\\
+relation names are italic, Primary Key attributes are in bold. Assume that on 
+he user's computer the following queries are cached:
+
+Query 1: List of students studying physics, whose ID is bigger than 210:
+$$P_1 = \pi_{X_1}(\sigma_{F_1} (R_1 \Join R_2)),$$
+where $\pi_{X_1}$ -- projection operation over the set of attributes
+$X_1 = \{\text{Stud\_ID}, \text{Stud\_Name}, \text{Group}, \text{Course}\}$,
+$\sigma$ -- selecting operation,
+$F_1$ -- logical formula: $(\text{Stud\_ID} > 210\ \&\ \text{Course} =
+\text{Physics})$, $\Join$ --natural join.
+
+Query 2: Examination sheets of the group M10:
+$$P_2 = \pi_{X_2}(\sigma_{F_2} (R_1 \Join R_3)),$$
+where
+$X_2 = \{\text{Stud\_ID}, \text{Group}, \text{Course}, \text{Score}\}$, $F_2$
+-- logical condition: $(\text{Group}=\text{M10})$.
+
+Let us assume that the user has requested information formalized with the
+following query:
+$$P^{\ast} = \pi_{X^{\ast}}(\sigma_{F^{\ast}} (R_1 \Join R_2 \Join R_3 )),$$
+where $X^{\ast}= \{\text{Stud\_ID}, \text{Group}, \text{Score}\}$, $F^{\ast}$
+-- logical condition: $(\text{Stud\_ID} > 300\ \&\ \text{Group} =
+\text{M10}\ \&\ \text{Course} = \text{Physics})$.
+
+Using the calculation and comparison of the truth domains $P_1$, $P_2$ and
+$P^{\ast}$, we obtain that the query can be executed in the cache:
+$P^{\ast} =\pi_{X^{\ast}}(\sigma_{F_3} (P_1 \Join P_2 ))$, where $F_3$
+-- logical condition: $(\text{Stud\_ID} > 300)$. Requesting the server in this
+case is not required.
+
+
+\section{Logical constraint definition and properties}
+To simplify domain computations we will consider logical formulas in
+Disjunctive Normal Form (DNF). In general case formula $F$ has the following
+form:
+
+\begin{equation}
+F = K_1 \vee K_2 \vee \dots \vee K_m ,
+\label{def_F_1}
+\end{equation}
+\begin{equation}
+K_i = T_1 \&\ T_2 \dots \&\ T_n, i = 1, \dots, m ,
+\label{def_F_2}
+\end{equation}
+here $T_j, j = 1, \dots, n$ - predicates, where expanded attribute names are
+specified. $R_i.A_j$ means attribute $A_j$ in relation $R_i$.
+Those predicates can be:
+\begin{itemize}
+\item comparison operation $ \n{Expr}_1\ \theta\ \n{Expr}_2\ $, $\theta$
+-- comparison operator $(\theta \in \{=, \neq, >, <, \leq, \geq\})$,
+$\n{Expr}_i$ -- type conformant expressions, defined in a space of expanded
+attribute names and constants;
+\item operation $\n{Expr}_1\ \n{[NOT]}\ \n{BETWEEN}\ \n{Expr}_2\ \n{AND}\
+\n{Expr}_3$
+(symbols inside square brackets $[*]$ are optional);
+\item operation $\n{Expr}\ \n{[NOT]}\ \n{IN}\ S$, here $S$ - values list or
+subquery, having a set of attribute $R_i.A_j$ values as a result;
+\item operation $\n{Str}_1\ \n{[NOT]}\ \n{LIKE}\ \n{Str}_2$, here $\n{Str}_i$
+-- strings;
+\item operation $\n{Expr}\ \theta\ \n{ALL/ANY}\ S$.
+\end{itemize}
+
+\begin{note}
+We assume logical formulas have no trivial conditions on attributes, for
+example, $Expr_1 = Expr_1$ and those reduced to such form. In general, we assume
+that $R_i.A_l$ domain is not fully contained in
+$T_j (\dots , R_i . A_l ,\dots )$ predicate truth space. Such conditions can be
+removed from the formula without a change in the truth space (we will define it
+later).
+\label{trivial}
+\end{note}
+
+\begin{definition}
+Space of attributes contained in a formula show the dimension of the formula and
+is denoted as $\<F> $.
+
+\begin{equation}
+\<F> = \{R_1^F.A_1^F, \dots, R_k^F.A_k^F\} .
+\label{def_F_3}
+\end{equation}
+\end{definition}
+
+Listed variants of operations don't use every single SQL capability. For example,
+we don't use the $\n{EXISTS}$ predicate, because it has no expanded attribute
+names in it. The $\n{NULL}$ predicate is used for another purpose in our paper.
+
+During logical formula domain calculation, if we have some attribute having 
+$NULL$ value on a tuple $t$, we then get $\n{UNKNOWN}$ value for the whole
+formula, because SQL-query results follow the Three-valued logic. It leads us to
+ambiguous interpretations of results of both usual users and experienced
+programmers. To solve this problem we suggest the following constraint: every
+attribute in $F^{\ast}$ is supplied with a property ``Use of undefined value''
+with two mutually exclusive values: ``Yes'' or ``No''. The reasoning behind this
+property is the following: if it is assigned ``Yes'', then we leave tuples with
+$\n{NULL}$ value for further consideration. Otherwise, having ``No'' in that
+property guarantees us removing all such tuples.
+
+Let's write expression (\ref{def_F_1}) for $F$ in the following form: $ F (\dots
+, T_j , \dots )$, here $T_j$ -- predicates of expression (\ref{def_F_2}). After
+the modification it will be the following: $F( \dots, T'_j , \dots )\wedge_{i,j}
+(R_i .A_j \neq \n{NULL})$, here $\wedge_{i,j}(R_i .A_j \neq \n{NULL})$
+-- conjunction of all $F$ attributes,for which $\n{NULL}$ is not allowed, and
+$T'_j = (T_j \vee_{i,j}(R_i .A_j = \n{NULL}))$, here $\vee_{i,j}(R_i .A_j =
+\n{NULL})$ -- disjunction of all $F$ attributes, for which $\n{NULL}$ is allowed.
+Outer brackets for $T'_j$ predicate define operation priority. We can see that
+this logical formula can only have $\n{TRUE}$ and $\n{FALSE}$ values when
+considering it in Three-valued logic. We can also note that if tuples don't have
+undefined values, the initial formula $F$ will be equivalent to the transformed
+one, so semantics of view $P$ almost undistorted. For the disclosure of the term
+"almost" we consider example. Assume $F = R_1.A_2 > 3 \vee R_3.A_4 < 4$. Let
+tuple $t$ for $R_1.A_2$ has value $\n{NULL}$, with a property ``Use of undefined
+value'' equal to ``Yes'', and $R_3.A_4$ value equal to 5, so value of
+$R_3.A_4 < 4$ is $\n{FALSE}$. Then transform of formula $F$ on tuple $t$ will be
+equal $\n{TRUE}$, which is not obvious.
+
+Hereafter we will assume all the $F$ formulas to be transformed.
+
+We consider set $\mathcal{A} =$ $\{(a_1, \dots, a_n) \mid a_i \in Dom(A_i),
+i=1,\dots,n\}$, here $Dom(A_i)$ -- is a domain of $A_i$. Cartesian product
+$Dom(A_1)\times Dom(A_2)\times \dots \times Dom(A_n)$ is an $n$-dimensional
+space of all values for all Database attributes. Data constraints bound this
+space to some set of points that represents a set of available Database
+states.
+
+In our example with University Study plan, the $\mathcal{A}$ can be the
+following:
+
+\begin{multline*}
+\mathcal{A} = Dom(\text{Stud\_ID})\times Dom(\text{Stud\_Name}) \times
+Dom(\text{Group}) \times Dom(\text{Room\_ID}) \times\\
+\times Dom(\text{Course}) \times Dom(\text{Score}) = \{205, 315, 461\} \times
+\{\text{Rachel Davis, Noam Angrist},\\
+\text{Cameron McCord}\} \times\{\text{M10, M11}\} \times \{100, 101, 102, 103\}
+\times \{\text{Physics, Chemistry}\} \times\\ \times \{70, 80, 90\}
+\end{multline*}
+
+Obviously, without constraints this set represents more states than DB can have.
+For example, each student has his/her own ID, whereas there are 3 corresponding
+IDs for each student in $\mathcal{A}$: $\{205, 315, 461\}\times \{\text{Rachel
+Davis, Noam Angrist, Cameron McCord}\}$.
+
+\begin{note}
+Dimension of formula $F$ can be smaller than dimension of $\mathcal{A}$. In this
+case, we consider the equivalent form of the formula that has all other
+attributes taking any values in their domains.
+\end{note}
+
+Looking back to our Example 1, we see that the formula in Query 1 contains only
+two attributes: $F_1 = (\text{Stud\_ID} > 210\ \&\ \text{Course} =
+\text{Physics})$, in other words $\<F> = 2$. The equivalent representation that
+we will use is the following:
+
+\begin{multline*}
+F_1 = (\text{Stud\_ID} > 210\ \&\ \text{Course} = \text{Physics}\ \&\
+\text{Stud\_Name}\ \textit{IN}\ \{\text{Rachel Davis, Noam}\\
+\text{Angrist, Cameron McCord}\}\ \&\ \text{Group}\ \textit{IN}\ \{\text{M10, M11}\}\ \&\
+\text{Room\_ID}\ \textit{IN} \{100, 101, 102,\\
+103\}\ \&\ \text{Score}\ \textit{IN}\ \{70, 80, 90\})
+\end{multline*}
+
+The motivation behind this transformation is to allow us comparing truth spaces
+of formulas defined on different attributes.
+
+\begin{definition}
+Truth space of logical formula $F$, defined by (\ref{def_F_1}),
+(\ref{def_F_2}), (\ref{def_F_3}), is a set $M (F) = \{a \in \mathcal{A} \mid
+F(a) = \n {TRUE}\}$.
+\end{definition}
+
+So, the truth space of our formula $F_1$ will be the following subset of
+$\mathcal{A}$: $M (F) = $ \{(315, Rachel Davis, M10, 100, Physics, 70), (315,
+Noam Angrist, M10, 100, Physics, 70), \dots (461, Cameron McCord, M10, 100,
+Physics, 90)\}
+
+$M (F)$ for a given formula $F$, written in DNF, is nothing but a union of Truth
+spaces of distinct conjunctive clauses. Truth space of a single conjunctive
+clause is an intersection of Truth spaces of it's predicates.
+
+\begin{note}
+The complexity of $\n{Expr}$, $S$ and $\n{Str}$ predicates is defined by the
+software's ability to compute Truth spaces of formulas, as it is shown in
+example 1.
+\end{note}
+
+\begin{definition}
+Given a logical formula $F$, defined by (\ref{def_F_1}), (\ref{def_F_2}),
+(\ref{def_F_3}), the projection of $F$ on the $X$ attribute set is a logical
+formula $F[X], \<F[X]> = X$, that has all its predicates with $R_i^F.A_i^F
+\notin X$ replaced with trivial predicate $\n{TRUE}$.
+\label{projection}
+\end{definition}
+
+So, the projection of $F_1$ on the attribute set $X = \{\text{Stud\_ID}\}$ will be
+$F_1[\text{Stud\_ID}] = (\text{Stud\_ID} > 210\ \&\ \text{TRUE}) = (\text{Stud\_ID} >
+210)$ 
+
+\begin{statement}[Inclusion property]
+$\forall X \subseteq \<F> \quad M(F) \subseteq M(F[X])$
+\label{proj_property_of_inclusion}
+\end{statement}
+\begin{proof}
+If $X = \<F> $, then $F = F[X]$ and $M(F) = M(F[X])$. Assume $X \subset \<F> $.
+Consider arbitrary point $a \in M(F)$, i.e. $F(a)=\n{TRUE}$. $F$ to $F[X]$
+transformation is made by replacing $T_j$ predicates that contain $A_j \in
+\<F> $ attribute, such that $A_j \notin X$ with $\n{TRUE}$ value. We get
+$F([X])=\n{TRUE}$ according to (\ref{def_F_1}) and (\ref{def_F_2}). Therefore,
+$a \in M(F[X])$.
+\end{proof}
+
+This property of logical formulas is used while building new data view from given
+IDVs.
+
+\section{Intermediate Data View properties research}
+
+We denote saved IDVs as $P$=$\{ P_1$, $P_2$, $\dots$, $P_m \}$, here $P_v$ is an
+IDV, $P_v = \pi_{X_v}(\sigma_{F_v} (R^v_1 \Join R^v_2 \Join \dots \Join
+R^v_{s(v)} ))$, $s(v)$ -- amount of relations in Database that were used while
+building $P_v$,
+$\pi_{X_v}$ -- projection on $X_v$ attributes, $\sigma_{F_v}$ -- selection
+with $F_v$ logical formula. Eventually we need to get the following view:
+$$P^{\ast} = \pi_{X^{\ast}}(\sigma_{F^{\ast}}
+(R^{\ast}_1 \Join R^{\ast}_2\Join\dots \Join R^{\ast}_l ))$$
+Let’s study the problem of building data view $P^{\ast}$ using existing $P_v$ IDVs.
+
+\input{theorem_1}
+
+The conditions given in the aforementioned theorem guarantee the data to build
+$P^{\ast}$ to be contained in $P_v$ IDV. However, there can be excess tuples that
+make $F^{\ast}$
+take $\n{TRUE}$ value. They appear because there are some relations in
+$R^{\ast}_1 \Join R^{\ast}_2\Join \dots \Join R^{\ast}_l $ that aren't
+presented in $R^v_1 \Join R^v_2 \Join \dots \Join R^v_{s(v)} $ and will be
+deleted if we join those missing relations. Using Truth spaces of logical
+formulas we can query DBMS to get a minimal required data set to define excess
+tuples.
+
+In the next theorem we describe the case of coinciding relation sets.
+
+\input{theorem_2}
+
+It is possible to use several IDVs to build a resulting representation. First,
+let's consider the following simple property of natural join.
+
+\begin{statement}
+Assume $\Re_1 = R_1 \Join \dots \Join R_k$ - natural join of some $k$ relations.
+Also assume $\Re_2 = R_1 \Join \dots \Join R_k \Join R_{k+1} \Join \dots \Join
+R_{n}$. Then $\Re_2 [\langle \Join_{i=1}^{k} R_i \rangle] \subseteq \Re_1$
+\label{join_property}
+\end{statement}
+\begin{proof}
+It is so indeed, because joining additional relations to $\Re_1$ can only
+remove some tuples that were presented there. After the projection, we will get
+the same relation $\Re_1$ if no tuples were deleted or some subset otherwise. The
+order of joins doesn't matter because of commutativity of this operation.
+\end{proof}
+
+\input{theorem_1_mult}
+
+Just like in the previous case, there are some additional conditions that allow
+us to get precise data presentation from IDVs.
+
+\input{theorem_2_mult}
+
+The conditions listed above aren't exceptional in any case. Many applications
+require repeat of data entry with slight modifications. For example,
+applications that
+work with multidimensional data. Hypercube dimensions do not change often, so
+that we can create new hypercubes from IDVs without frequent interaction with
+the database. 
+
+\section{Conclusion}
+The results obtained will be used in the technology of dynamic building of
+multidimensional data. In addition, they are intended to be used with graphic
+processors (GPU) to perform the intermediate filtering operations and compound
+of different data representations. Researches in this field show that the
+operations performed using GPU are much faster than using CPU for small amounts of
+data. Performance decreases with increasing amounts of data. The reason is
+obvious: as long as the data is put in fast memory of GPU the operations with
+them are performed fast. When increasing the amount of data, it is necessary to
+move the data to different type of memory, which reduces productivity. However,
+GPU
+manufacturers are constantly expanding fast memory. At the same time, dimensions
+of multidimensional data require relatively small memory, so GPUs are suitable
+in solving this problem.
+
+Multidimensional data building systems that use redundant data often face the
+problem of updating it. It is often solved by the periodic updating of the
+hypercube contents.
+A similar method can be used to update the views $P_v$. To reduce the update
+time it might be a good practice to use the change log on the database server
+and update only those views that have original data changed. However, it should
+be noted again that those dimensions don't change often.
+
+% Bibliography
+\bibliographystyle{ACM-Reference-Format-Journals}
+\bibliography{references}
+                             % Sample .bib file with references that match those in
+                             % the 'Specifications Document (V1.5)' as well containing
+                             % 'legacy' bibs and bibs with 'alternate codings'.
+                             % Gerry Murray - March 2012
+
+% History dates
+\received{February 2007}{March 2009}{June 2009}
+
+% Electronic Appendix
+\elecappendix
+
+\medskip
+
+
+\end{document}
+% End of v2-acmsmall-sample.tex (March 2012) - Gerry Murray, ACM
+
+
