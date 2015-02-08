@@ -1,21 +1,23 @@
 \begin{theorem}
-$P^{\ast} = \pi_{X^{\ast}} (P_{v})$, if:
+$P^{\ast} = \pi_{X^{\ast}} (\sigma_{F^{\ast}} (P_{v}))$, if:
 \\a) $X^{\ast} \subseteq X_{v}$
 \\b) $\{R^{v}_{1}, \ldots, R^{v}_{s(v)}\} = \{R^{\ast}_{1}, \ldots,
 R^{\ast}_{l}\}$
-\\c) $M (F^{\ast}) = M (F_{v}) $.
+\\c) $M (F^{\ast}) \subseteq M (F_{v}) $
+\\d) $ \<F^{\ast}> \subseteq X_{v} $.
 \label{th_base_eq}
 \end{theorem}
 \begin{proof}
 Conditions of the theorem are a special case of theorem \ref{th_base}, so
-inclusion $P^{\ast} \subseteq \pi_{X^{\ast}} (P_{v})$ is considered  to be
-proven. It is necessary to show that $\pi_{X^{\ast}} (P_{v}) \subseteq
-P^{\ast}$. Assume tuple $t_v \in \pi_{X^{\ast}} (P_{v})$. Let's show that $t_v
+inclusion $P^{\ast} \subseteq \pi_{X^{\ast}} (\sigma_{F^{\ast}} (P_{v}))$ is
+considered  to be proven. It is necessary to show that $\pi_{X^{\ast}}
+(\sigma_{F^{\ast}} (P_{v})) \subseteq P^{\ast}$. Assume tuple $t_v \in
+\pi_{X^{\ast}} (\sigma_{F^{\ast}} (P_{v}))$. Let's show that $t_v
 \in P^{\ast}$. From definition of tuple $t_v$, it follows that there is tuple
 $t' \in R^v_1 \Join R^v_2\Join\ldots \Join R^v_{s(v)}$ and $t_v = t'[X^{\ast}]$,
-$F_v(t')=\n{TRUE}$. According to the commutativity of natural join, $R^v_1 \Join
-R^v_2\Join\ldots \Join R^v_{s(v)} = R^{\ast}_1 \Join R^{\ast}_2\Join\ldots \Join
-R^{\ast}_l$. Therefore, $t' \in R^{\ast}_1 \Join R^{\ast}_2\Join\ldots \Join
-R^{\ast}_l$. From condition c) we have $F^{\ast} (t')=\n{TRUE}$. Hence, $t_v \in
-P^{\ast}$. The theorem has been proven.
+$F_v(t')=\n{TRUE}$, $F^{\ast}(t')=\n{TRUE}$. According to the commutativity of
+natural join, $R^v_1 \Join R^v_2\Join\ldots \Join R^v_{s(v)} = R^{\ast}_1 \Join
+R^{\ast}_2\Join\ldots \Join R^{\ast}_l$. Therefore, $t' \in R^{\ast}_1 \Join
+R^{\ast}_2\Join\ldots \Join R^{\ast}_l$. Hence, $t_v \in P^{\ast}$. The theorem
+has been proven.
 \end{proof}
