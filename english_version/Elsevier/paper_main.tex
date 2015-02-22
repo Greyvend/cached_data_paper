@@ -477,27 +477,21 @@ that we can create new hypercubes from IDVs without frequent interaction with
 the database. 
 
 \section{Conclusion}
-The results obtained will be used in the technology of dynamic building of
-multidimensional data. In addition, they are intended to be used with graphic
-processors (GPU) to perform the intermediate filtering operations and compound
-of different data representations. Researches in this field show that the
-operations performed using GPU are much faster than using CPU for small amounts of
-data. Performance decreases with increasing amounts of data. The reason is
-obvious: as long as the data is put in fast memory of GPU the operations with
-them are performed fast. When increasing the amount of data, it is necessary to
-move the data to different type of memory, which reduces productivity. However,
-GPU
-manufacturers are constantly expanding fast memory. At the same time, dimensions
-of multidimensional data require relatively small memory, so GPUs are suitable
-in solving this problem.
+The approach suggested in this paper is a theoretical base for a system
+interacting with Relational Database. Such system will be capable of defining
+cached data availability when executing consecutive queries. This solution is
+fresh and wasn't used before. The conditions stated in the theorems don't
+require hitting Database to be checked. Results obtained allow us to
+analitycally define data missing in cache and query only this data.
 
+The proposed solution will be used in dynamic building of multidimensional data.
 Multidimensional data building systems that use redundant data often face the
-problem of updating it. It is often solved by the periodic updating of the
+problem of updating it. It is sometimes solved by the periodic updating of the
 hypercube contents.
 A similar method can be used to update the views $P_v$. To reduce the update
 time it might be a good practice to use the change log on the database server
-and update only those views that have original data changed. However, it should
-be noted again that those dimensions don't change often.
+and update only those views that have original data changed. However, those
+dimensions don't change often.
 
 \section{Acknowledgements}
 This work is supported by the Russian Foundation for Basic Research under
