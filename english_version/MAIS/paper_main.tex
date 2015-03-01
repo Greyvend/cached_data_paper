@@ -11,8 +11,8 @@
 \selectlanguage{english}
 
 %%
-\date{April 15, }\ydate{2013}
-\firstpage{175}
+\date{March 1, }\ydate{2015}
+%\firstpage{175}
 
 \renewcommand{\refname}{References}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -52,8 +52,8 @@ of the Russian Academy of Sciences, \\Pevtsova str., 13, Omsk, 644043, Russia}
 %%%%
 \email{svmosin@gmail.com, szykin@mail.ru}
 \authorinform{
-\textbf{Мосин Сергей Владимирович},\\Омский филиал Федерального государственного бюджетного учреждения науки Института математики им. С.Л.~Соболева Сибирского отделения Российской академии наук, аспирант\\
-\textbf{Зыкин Сергей Владимирович},\\Омский филиал Федерального государственного бюджетного учреждения науки Института математики им. С.Л.~Соболева Сибирского отделения Российской академии наук, д-р техн. наук, профессор
+\textbf{Мосин Сергей Владимирович},\\Федеральное государственне бюджетное учреждение науки Институт математики им. С.Л.~Соболева Сибирского отделения Российской академии наук (Омский филиал), аспирант\\
+\textbf{Зыкин Сергей Владимирович},\\Федеральное государственне бюджетное учреждение науки Институт математики им. С.Л.~Соболева Сибирского отделения Российской академии наук (Омский филиал), д-р техн. наук, профессор
 }
 
 
@@ -447,7 +447,46 @@ dimensions don't change often.
 
 
 \renewcommand{\refname}{References}
-\bibliography{references}
+\begin{thebibliography}{1}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{zyk_pol}
+S.~Zykin, A.~Poluyanov, Multidimensional data building using intermediate
+  representations., Administration problems~(5) (2013) 54--59.
+
+\bibitem{chang}
+C.-S. Park, M.-H. Kim, Y.-J. Lee, Usability-based caching of query results in
+  olap systems., Journal of Systems and Software 68~(2) (2003) 103--119.
+
+\bibitem{baralis}
+E.~Baralis, S.~Paraboschi, E.~Teniente,
+  \href{http://dl.acm.org/citation.cfm?id=645923.671019}{Materialized views
+  selection in a multidimensional database}, in: Proceedings of the 23rd
+  International Conference on Very Large Data Bases, VLDB '97, Morgan Kaufmann
+  Publishers Inc., San Francisco, CA, USA, 1997, pp. 156--165.
+\newline\urlprefix\url{http://dl.acm.org/citation.cfm?id=645923.671019}
+
+\bibitem{kalnis}
+P.~Kalnis, D.~Papadias, Proxy-server architectures for olap., in: S.~Mehrotra,
+  T.~K. Sellis (Eds.), SIGMOD Conference, ACM, 2001, pp. 367--378.
+
+\bibitem{Afrati06}
+F.~N. Afrati, C.~Li, P.~Mitra, Rewriting queries using views in the presence of
+  arithmetic comparisons., Theor. Comput. Sci. 368~(1-2) (2006) 88--123.
+
+\bibitem{Keller96}
+A.~M. Keller, J.~Basu, A predicate-based caching scheme for client-server
+  database architectures, VLDB J. 5~(1) (1996) 35--47.
+
+\bibitem{shim}
+J.~Shim, P.~Scheuermann, R.~Vingralek, Dynamic caching of query results for
+  decision support systems., in: SSDBM, 1999, pp. 254--263.
+
+\end{thebibliography}
 
 
 \end{document}
