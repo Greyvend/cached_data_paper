@@ -1,58 +1,77 @@
-% This document is created with a help of
-% v2-acmsmall-sample.tex sample file, v1.3 - March 2012
-
-\documentclass[prodmode,acmtods]{acmsmall} % Aptara syntax
+\documentclass{maiseng}
 
 \author{Mosin Sergey, Zykin Sergey}
+
+\usepackage[cp1251]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage[T2A]{fontenc}
 \usepackage{amssymb,amsmath}
-%\usepackage{amsfonts}
-%\usepackage{algorithm}
-%\usepackage{xcolor}
-%\usepackage{textcomp}
+\usepackage{amsthm}
+
+\selectlanguage{english}
+
+%%
+\date{April 15, }\ydate{2013}
+\firstpage{175}
+
+\renewcommand{\refname}{References}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Macros used in the paper
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newtheorem{note}{Note}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
 \newtheorem{statement}{Statement}
 \def \eval #1#2{\left.#1\right\vert_{#2}}
 \def \<#1> {\langle #1 \rangle}
 \def \n #1{\mathit{#1}}
 
-% Package to generate and customize Algorithm as per ACM style
-\usepackage[ruled]{algorithm2e}
-\renewcommand{\algorithmcfname}{ALGORITHM}
-\SetAlFnt{\small}
-\SetAlCapFnt{\small}
-\SetAlCapNameFnt{\small}
-\SetAlCapHSkip{0pt}
-\IncMargin{-\parindent}
+\addto\captionsrussian{\renewcommand*{\proofname}{Proof}}
 
-% Metadata Information
-\acmVolume{9}
-\acmNumber{4}
-\acmArticle{39}
-\acmYear{2010}
-\acmMonth{3}
+%%%%%%%%%%%%%%%%%% end my macros %%%%%%%%%%%%%%%%%%%
 
-% Document starts
-\begin{document}
 
-% Page heads
-\markboth{S.~V. Mosin, S.~V. Zykin}{Truth space method for caching database
-queries}
-
-% Title portion
+%%
 \title{Truth space method for caching database queries}
-\author{SERGEY V. MOSIN
-\affil{Sobolev Institute of Mathematics of the Siberian Branch
-of the Russian Academy of Sciences}
-SERGEY V. ZYKIN
-\affil{Sobolev Institute of Mathematics of the Siberian Branch
-of the Russian Academy of Sciences}
+\author{Mosin~S.~V., Zykin~S.~V.\footnote{Supported by the Russian Foundation for Basic Research under
+grant \#12-07-00066-a.}}
+\authorcr{Mosin~S.~V., Zykin~S.~V.}
+\keywords{Relational databases, Caching, Truth space}
+\rutitle{Кэширование запросов к реляционной базе данных с использованием областей истинности}
+\ruauthor{Мосин С.В., Зыкин С.В.}
+
+\rukeywords{реляционная база данных, кэш, область истинности}
+
+
+\UDC{519.987} \shorttitle{Truth space method for caching database queries}
+\affiliation{\small Sobolev Institute of Mathematics of the Siberian Branch
+of the Russian Academy of Sciences, \\Pevtsova str., 13, Omsk, 644043, Russia}
+\ruaffiliation{\small Омский филиал Федерального государственного бюджетного учреждения науки Института математики им. С.Л.~Соболева Сибирского отделения Российской академии наук \\644043, Россия, г. Омск,
+ул. Певцова, 13,}
+%%%%
+\email{svmosin@gmail.com, szykin@mail.ru}
+\authorinform{
+\textbf{Мосин Сергей Владимирович},\\Омский филиал Федерального государственного бюджетного учреждения науки Института математики им. С.Л.~Соболева Сибирского отделения Российской академии наук, аспирант\\
+\textbf{Зыкин Сергей Владимирович},\\Омский филиал Федерального государственного бюджетного учреждения науки Института математики им. С.Л.~Соболева Сибирского отделения Российской академии наук, д-р техн. наук, профессор
 }
+
+
+
+\ruabstract{
+В данной статье предлагается новый метод кэширования запросов к реляционной базе данных
+для систем с центральным сервером и распределенными клиентами. Данные загружаются в
+клиентский кэш, основываясь на запросах, выполненных на сервере БД. Эти запросы имеют специальный вид, называемый "универсальный реляционный запрос". Большинство запросов может быть записано в этом виде. Кроме того, эта форма записи позволяет анализировать корректность запроса, проверяя свойство соединения без потери информации (СБПИ). Последовательные запросы могут исполняться на клиенте, используя кэш, если удастся определить, что результаты искомого запроса полностью содержатся в кэше. Для осуществления такой проверки анализируются области истинности логических ограничений искомого запроса и запросов, результаты которых уже содержатся в кэше. Этот метод может быть использован для определения недостающих в кэше данных и последующего запроса только на эти данные. Проблема актуализации данных не затрагивается в этой статье. Однако она может быть решена путем учета запросов на сервере и обновлении данных при помощи триггеров.}
+
+
+\begin{document}
+\maketitle
 
 \begin{abstract}
 We propose a new method of client-side data caching for relational databases
 with a central server and distant clients. Data is loaded into client cache
-based on queries executed on the central database at the server. These
-queries have a special form - "universal relational query". The majority of
+based on queries executed on the server. These
+queries have a special form called "universal relational query". The majority of
 search queries to database can be expressed in such form. Besides, this form
 allows us to analyze query correctness by checking lossless join property. A
 subsequent query may be executed in client's local cache if we can determine
@@ -65,31 +84,8 @@ solved by cataloging of queries on server and their serving by triggers in
 background mode.
 \end{abstract}
 
-\category{H.2.3, H.2.4}{Database Management}{Languages, Systems}
 
-\terms{Languages, Theory, Performance}
-
-\keywords{Relational database, Truth space, Intermediate Data View, Logical
-formula}
-
-\acmformat{Sergey V. Mosin and Sergey V. Zykin, 2014. Truth space method for
-caching database queries}
-
-\begin{bottomstuff}
-This work is supported by the Russian Foundation for Basic Research under
-grant \#12-07-00066-a.
-
-Author's addresses: S.V. Mosin, Laboratory of information transformation and
-representations methods, Sobolev Institute of Mathematics of the Siberian Branch
-of the Russian Academy of Sciences; S.V. Zykin, Laboratory of information
-transformation and representations methods, Sobolev Institute of Mathematics of
-the Siberian Branch of the Russian Academy of Sciences.
-\end{bottomstuff}
-
-\maketitle
-
-
-\section{Introduction}
+\section *{Introduction}
 In this paper we discuss the use of data views that are
 cached on the client's computer. We assume client-server environment with
 server based Relational Database (RDB). The cache stores query results in order
@@ -119,8 +115,7 @@ auxiliary properties and definitions that are used later.
 The main results are presented in Section 4. We research the possibility of
 using cached results of previous queries when performing a new one. The results
 are presented in the form of theorems.
-
-% Head 1
+ 
 \section{Existing solutions overview and comparison}
 One of the main research problems of queries optimization to database is the
 construction of an optimal query plan. Queries are transformed without content
@@ -167,7 +162,8 @@ he user's computer the following queries are cached:
 Query 1: List of students studying physics, whose ID is bigger than 210:
 $$P_1 = \pi_{X_1}(\sigma_{F_1} (R_1 \Join R_2)),$$
 where $\pi_{X_1}$ -- projection operation over the set of attributes
-$X_1 = \{\text{Stud\_ID}, \text{Stud\_Name}, \text{Group}, \text{Course}\}$,
+$X_1 = \{\text{Stud\_ID},\\
+\text{Stud\_Name}, \text{Group}, \text{Course}\}$,
 $\sigma$ -- selecting operation,
 $F_1$ -- logical formula: $(\text{Stud\_ID} > 210\ \&\ \text{Course} =
 \text{Physics})$, $\Join$ --natural join.
@@ -176,7 +172,8 @@ Query 2: Examination sheets of the group M10:
 $$P_2 = \pi_{X_2}(\sigma_{F_2} (R_1 \Join R_3)),$$
 where
 $X_2 = \{\text{Stud\_ID}, \text{Group}, \text{Course}, \text{Score}\}$, $F_2$
--- logical condition: $(\text{Group}=\text{M10})$.
+-- logical condition:\\
+$(\text{Group}=\text{M10})$.
 
 Let us assume that the user has requested information formalized with the
 following query:
@@ -190,7 +187,6 @@ $P^{\ast}$, we obtain that the query can be executed in the cache:
 $P^{\ast} =\pi_{X^{\ast}}(\sigma_{F_3} (P_1 \Join P_2 ))$, where $F_3$
 -- logical condition: $(\text{Stud\_ID} > 300)$. Requesting the server in this
 case is not required.
-
 
 \section{Logical constraint definition and properties}
 To simplify domain computations we will consider logical formulas in
@@ -290,17 +286,19 @@ following:
 
 \begin{multline*}
 \mathcal{A} = Dom(\text{Stud\_ID})\times Dom(\text{Stud\_Name}) \times
-Dom(\text{Group}) \times Dom(\text{Room\_ID}) \times\\
-\times Dom(\text{Course}) \times Dom(\text{Score}) = \{205, 315, 461\} \times
-\{\text{Rachel Davis, Noam Angrist},\\
-\text{Cameron McCord}\} \times\{\text{M10, M11}\} \times \{100, 101, 102, 103\}
-\times \{\text{Physics, Chemistry}\} \times\\ \times \{70, 80, 90\}
+Dom(\text{Group}) \times\\
+Dom(\text{Room\_ID}) \times Dom(\text{Course}) \times Dom(\text{Score}) =
+\{205, 315, 461\} \times \{\text{Rachel}\\
+\text{Davis, Noam Angrist}, \text{Cameron McCord}\} \times\{\text{M10, M11}\}
+\times \{100, 101, 102,\\
+103\} \times \{\text{Physics, Chemistry}\} \times \{70, 80, 90\}
 \end{multline*}
 
 Obviously, without constraints this set represents more states than DB can have.
 For example, each student has his/her own ID, whereas there are 3 corresponding
 IDs for each student in $\mathcal{A}$: $\{205, 315, 461\}\times \{\text{Rachel
-Davis, Noam Angrist, Cameron McCord}\}$.
+Davis},\\
+\text{Noam Angrist, Cameron McCord}\}$.
 
 \begin{note}
 Dimension of formula $F$ can be smaller than dimension of $\mathcal{A}$. In this
@@ -315,10 +313,9 @@ we will use is the following:
 
 \begin{multline*}
 F_1 = (\text{Stud\_ID} > 210\ \&\ \text{Course} = \text{Physics}\ \&\
-\text{Stud\_Name}\ \textit{IN}\ \{\text{Rachel Davis, Noam}\\
-\text{Angrist, Cameron McCord}\}\ \&\ \text{Group}\ \textit{IN}\ \{\text{M10, M11}\}\ \&\
-\text{Room\_ID}\ \textit{IN} \{100, 101, 102,\\
-103\}\ \&\ \text{Score}\ \textit{IN}\ \{70, 80, 90\})
+\text{Stud\_Name}\ \textit{IN}\ \{\text{Rachel Davis},\\
+\text{Noam Angrist, Cameron McCord}\}\ \&\ \text{Group}\ \textit{IN}\ \{\text{M10, M11}\}\ \&\
+\text{Room\_ID}\ \textit{IN}\\ \{100, 101, 102, 103\}\ \&\ \text{Score}\ \textit{IN}\ \{70, 80, 90\})
 \end{multline*}
 
 The motivation behind this transformation is to allow us comparing truth spaces
@@ -383,7 +380,7 @@ $\pi_{X_v}$ -- projection on $X_v$ attributes, $\sigma_{F_v}$ -- selection
 with $F_v$ logical formula. Eventually we need to get the following view:
 $$P^{\ast} = \pi_{X^{\ast}}(\sigma_{F^{\ast}}
 (R^{\ast}_1 \Join R^{\ast}_2\Join\dots \Join R^{\ast}_l ))$$
-LetвЂ™s study the problem of building data view $P^{\ast}$ using existing $P_v$ IDVs.
+Let’s study the problem of building data view $P^{\ast}$ using existing $P_v$ IDVs.
 
 \input{theorem_1}
 
@@ -432,37 +429,26 @@ that we can create new hypercubes from IDVs without frequent interaction with
 the database. 
 
 \section{Conclusion}
-The results obtained will be used in the technology of dynamic building of
-multidimensional data. In addition, they are intended to be used with graphic
-processors (GPU) to perform the intermediate filtering operations and compound
-of different data representations. Researches in this field show that the
-operations performed using GPU are much faster than using CPU for small amounts of
-data. Performance decreases with increasing amounts of data. The reason is
-obvious: as long as the data is put in fast memory of GPU the operations with
-them are performed fast. When increasing the amount of data, it is necessary to
-move the data to different type of memory, which reduces productivity. However,
-GPU
-manufacturers are constantly expanding fast memory. At the same time, dimensions
-of multidimensional data require relatively small memory, so GPUs are suitable
-in solving this problem.
+The approach suggested in this paper is a theoretical base for a system
+interacting with Relational Database. Such system will be capable of defining
+cached data availability when executing consecutive queries. This solution is
+fresh and wasn't used before. The conditions stated in the theorems don't
+require hitting Database to be checked. Results obtained allow us to
+analitycally define data missing in cache and query only this data.
 
+The proposed solution will be used in dynamic building of multidimensional data.
 Multidimensional data building systems that use redundant data often face the
-problem of updating it. It is often solved by the periodic updating of the
+problem of updating it. It is sometimes solved by the periodic updating of the
 hypercube contents.
 A similar method can be used to update the views $P_v$. To reduce the update
 time it might be a good practice to use the change log on the database server
-and update only those views that have original data changed. However, it should
-be noted again that those dimensions don't change often.
+and update only those views that have original data changed. However, those
+dimensions don't change often.
 
-% Bibliography
-\bibliographystyle{ACM-Reference-Format-Journals}
+
+\renewcommand{\refname}{References}
 \bibliography{references}
-                             % Sample .bib file with references that match those in
-                             % the 'Specifications Document (V1.5)' as well containing
-                             % 'legacy' bibs and bibs with 'alternate codings'.
-                             % Gerry Murray - March 2012
 
-% History dates
-\received{February 2007}{March 2009}{June 2009}
 
 \end{document}
+\endinput
