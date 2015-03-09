@@ -52,16 +52,14 @@ of the Russian Academy of Sciences, \\Pevtsova str., 13, Omsk, 644043, Russia}
 %%%%
 \email{svmosin@gmail.com, szykin@mail.ru}
 \authorinform{
-\textbf{Мосин Сергей Владимирович},\\Федеральное государственне бюджетное учреждение науки Институт математики им. С.Л.~Соболева Сибирского отделения Российской академии наук (Омский филиал), аспирант\\
-\textbf{Зыкин Сергей Владимирович},\\Федеральное государственне бюджетное учреждение науки Институт математики им. С.Л.~Соболева Сибирского отделения Российской академии наук (Омский филиал), д-р техн. наук, профессор
+\textbf{Мосин Сергей Владимирович},\\Федеральное государственне бюджетное учреждение науки Институт математики им. С.Л.~Соболева Сибирского отделения Российской академии наук (Омский филиал), аспирант, ORCID 0000-0001-5459-5853\\
+\textbf{Зыкин Сергей Владимирович},\\Федеральное государственне бюджетное учреждение науки Институт математики им. С.Л.~Соболева Сибирского отделения Российской академии наук (Омский филиал), д-р техн. наук, профессор, ORCID 0000-0002-0576-2149
 }
 
 
 
 \ruabstract{
-В данной статье предлагается новый метод кэширования запросов к реляционной базе данных
-для систем с центральным сервером и распределенными клиентами. Данные загружаются в
-клиентский кэш, основываясь на запросах, выполненных на сервере БД. Эти запросы имеют специальный вид, называемый "универсальный реляционный запрос". Большинство запросов может быть записано в этом виде. Кроме того, эта форма записи позволяет анализировать корректность запроса, проверяя свойство соединения без потери информации (СБПИ). Последовательные запросы могут исполняться на клиенте, используя кэш, если удастся определить, что результаты искомого запроса полностью содержатся в кэше. Для осуществления такой проверки анализируются области истинности логических ограничений искомого запроса и запросов, результаты которых уже содержатся в кэше. Этот метод может быть использован для определения недостающих в кэше данных и последующего запроса только на эти данные. Проблема актуализации данных не затрагивается в этой статье. Однако она может быть решена путем учета запросов на сервере и обновлении данных при помощи триггеров.}
+В данной статье предлагается новый метод кэширования запросов к реляционной базе данных для систем с центральным сервером и распределенными клиентами. Данные загружаются в клиентский кэш, основываясь на запросах, выполненных на сервере БД. Каждому запросу ставится в соответствие таблица – результат выполнения запроса. Эти запросы имеют специальный вид, называемый "универсальный реляционный запрос", основанный на трех базисных операциях реляционной алгебры: селекции, проекции естественном соединении (natural join). Следует отметить, что такая форма запроса наиболее близка к естественному языку и большинство запросов может быть записано в этом виде. Кроме того, эта форма записи позволяет анализировать корректность запроса, проверяя свойство соединения без потери информации (СБПИ). Последовательные запросы могут исполняться на клиенте, используя кэш, если удастся определить, что результаты искомого запроса полностью содержатся в кэше. Для осуществления такой проверки анализируются области истинности логических ограничений искомого запроса и запросов, результаты которых уже содержатся в кэше. Требуемые операции могут быть проведены аналитически, без необходимости дополнительных запросов к базе банных. Предложенный метод может быть использован для определения недостающих в кэше данных и последующего запроса только на эти данные. Для этого также используются аналитические вычисления, что является принципиальным отличием данной статьи от существующих технологий. Для этой цели в статье представлено четыре теоремы. В первой и третьей теореме получены условия, позволяющие определить наличие необходимых данных, а во второй и четвертой получены условия вычисления данных только с использованием кэша. Проблема актуализации данных не затрагивается в этой статье. Однако она может быть решена путем учета запросов на сервере и обновлении данных при помощи триггеров.}
 
 
 \begin{document}
@@ -70,16 +68,16 @@ of the Russian Academy of Sciences, \\Pevtsova str., 13, Omsk, 644043, Russia}
 \begin{abstract}
 We propose a new method of client-side data caching for relational databases
 with a central server and distant clients. Data is loaded into client cache
-based on queries executed on the server. These
-queries have a special form called "universal relational query". The majority of
-search queries to database can be expressed in such form. Besides, this form
+based on queries executed on the server. Every query has corresponding DB table - the result of the query execution. These
+queries have a special form called "universal relational query" based on three fundamental Relational Algebra operations: selection, projection and natural join. We have to mention that such a form is the closest one to the natural language and the majority of database
+search queries can be expressed this way. Besides, this form
 allows us to analyze query correctness by checking lossless join property. A
 subsequent query may be executed in client's local cache if we can determine
 that the query result is entirely contained in the cache. For this we compare
 truth spaces of the logical restrictions in new user's query and results of
-the queries execution in cache. This method may be used to define lacking data
-in cache and execute the query on server for this data only. Problem of data
-actualizations in cache is not discussed in this paper. However, it can be
+the queries execution in cache. Such comparison can be performed analytically , without need in additional Database queries. This method may be used to define lacking data
+in cache and execute the query on server for this data only. Analyical approach is also used for this, what distinguishes our paper from existing technologies. We propose four theorems for testing the required conditions. The first and the third theorems' conditions allow us to define the existence of required data in cache. The second and the fourth theorems state conditions to execute queries with cache only. Problem of cache data
+actualizations is not discussed in this paper. However, it can be
 solved by cataloging of queries on server and their serving by triggers in
 background mode.
 \end{abstract}
@@ -115,6 +113,8 @@ auxiliary properties and definitions that are used later.
 The main results are presented in Section 4. We research the possibility of
 using cached results of previous queries when performing a new one. The results
 are presented in the form of theorems.
+
+One of the directions of further researches is combining this technology with efficient data manipulations approaches. Those can be performed with a help of Graphical Processors. GPUs gain serious attention for big data processing \cite{owens, bakkum, govin, yang}. Such processor architectures have big potential in multitasking and can reach enormous speeds compared to CPUs, especialy if the operations are performed similarly on different parts of data.
  
 \section{Existing solutions overview and comparison}
 One of the main research problems of queries optimization to database is the
@@ -141,7 +141,15 @@ the results obtained differ because of stated factors. In particular, there is
 no need to create any algorithms of data selection in our work, as they are
 replaced by Relational Algebra.
 
-In papers \cite{Keller96}, \cite{shim} similar problem is discussed. In our paper we
+Another set of works describes processing scheme for event-driven continuous queries \cite{wata, yates}. In the proposed approach, query result caching is introduced to achieve a flexible way to share common operators among queries activated by unpredictable events. When a query is activated, an intermediate result generated for the query is stored into the cache area if it is expected to be reused by other queries. When other queries including the same operator are activated, they reuse the cached result if the cache includes reusable data.
+
+The work \cite{andrade} proposes methodology for functionally decomposing complex queries in terms of primitives so that multiple reuse sites are exposed to the query optimizer, to increase the amount of reuse.
+
+In \cite{mershad, abbani} queries are separated into subqueries that can yield results from cached nodes. Then query result can be combined from several subqueries.
+
+Using cloud storages one can afford a lot of computational resources for a short time to execute complicated queries effectively on large data with a help of virtual machine clusters \cite{doker, beran, meij, aranda}. A set of reliable heuristic algorithms is used. Finally the authors carry out a series of experiments that show that their optimizations speed up the federated query evaluation process.
+
+In papers \cite{Keller96}, \cite{shim} similar to our problem is discussed. In this paper we
 make correspondence between cache contents and predicates. Cached data usage
 problem is resolved in terms of truth spaces. We compute the truth spaces of
 query results in the cache. It allows us to define records in IDV that can be
@@ -447,7 +455,7 @@ dimensions don't change often.
 
 
 \renewcommand{\refname}{References}
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 \expandafter\ifx\csname url\endcsname\relax
   \def\url#1{\texttt{#1}}\fi
 \expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
@@ -457,6 +465,37 @@ dimensions don't change often.
 \bibitem{zyk_pol}
 S.~Zykin, A.~Poluyanov, Multidimensional data building using intermediate
   representations., Administration problems~(5) (2013) 54--59.
+
+\bibitem{owens}
+J.~D. Owens, D.~Luebke, N.~Govindaraju, M.~Harris, J.~Kr??ger, A.~Lefohn, T.~J.
+  Purcell,
+  \href{http://www.blackwell-synergy.com/doi/pdf/10.1111/j.1467-8659.2007.01012.x}{A
+  survey of general-purpose computation on graphics hardware}, Computer
+  Graphics Forum 26~(1) (2007) 80--113.
+\newline\urlprefix\url{http://www.blackwell-synergy.com/doi/pdf/10.1111/j.1467-8659.2007.01012.x}
+
+\bibitem{bakkum}
+P.~Bakkum, K.~Skadron,
+  \href{http://dblp.uni-trier.de/db/conf/asplos/gpgpu2010.html}{Accelerating
+  sql database operations on a gpu with cuda.}, in: D.~R. Kaeli, M.~Leeser
+  (Eds.), GPGPU, Vol. 425 of ACM International Conference Proceeding Series,
+  ACM, 2010, pp. 94--103.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/conf/asplos/gpgpu2010.html}
+
+\bibitem{govin}
+N.~K. Govindaraju, B.~Lloyd, W.~W. 0010, M.~C. Lin, D.~Manocha,
+  \href{http://dblp.uni-trier.de/db/conf/sigmod/sigmod2004.html}{Fast
+  computation of database operations using graphics processors.}, in:
+  G.~Weikum, A.~C. K?¶nig, S.~De??loch (Eds.), SIGMOD Conference, ACM, 2004,
+  pp. 215--226.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/conf/sigmod/sigmod2004.html}
+
+\bibitem{yang}
+B.~He, K.~Yang, R.~Fang, M.~Lu, N.~K. Govindaraju, Q.~Luo, P.~V. Sander,
+  \href{http://dblp.uni-trier.de/db/conf/sigmod/sigmod2008.html}{Relational
+  joins on graphics processors.}, in: J.~T.-L. Wang (Ed.), SIGMOD Conference,
+  ACM, 2008, pp. 511--524.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/conf/sigmod/sigmod2008.html}
 
 \bibitem{chang}
 C.-S. Park, M.-H. Kim, Y.-J. Lee, Usability-based caching of query results in
@@ -477,6 +516,67 @@ P.~Kalnis, D.~Papadias, Proxy-server architectures for olap., in: S.~Mehrotra,
 \bibitem{Afrati06}
 F.~N. Afrati, C.~Li, P.~Mitra, Rewriting queries using views in the presence of
   arithmetic comparisons., Theor. Comput. Sci. 368~(1-2) (2006) 88--123.
+
+\bibitem{wata}
+Y.~Watanabe, H.~Kitagawa,
+  \href{http://dblp.uni-trier.de/db/journals/is/is35.html\#WatanabeK10}{Query
+  result caching for multiple event-driven continuous queries.}, Inf. Syst.
+  35~(1) (2010) 94--110.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/journals/is/is35.html\#WatanabeK10}
+
+\bibitem{yates}
+D.~J. Yates, E.~M. Nahum, J.~F. Kurose, P.~Shenoy,
+  \href{http://dblp.uni-trier.de/db/conf/percom/percom2008.html\#YatesNKS08}{Data
+  quality and query cost in pervasive sensing systems.}, in: PerCom, IEEE
+  Computer Society, 2008, pp. 195--205.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/conf/percom/percom2008.html\#YatesNKS08}
+
+\bibitem{andrade}
+H.~Andrade, T.~M. Kur?§, A.~Sussman, J.~H. Saltz,
+  \href{http://dblp.uni-trier.de/db/journals/pc/pc33.html\#AndradeKSS07}{Active
+  semantic caching to optimize multidimensional data analysis in parallel and
+  distributed environments.}, Parallel Computing 33~(7-8) (2007) 497--520.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/journals/pc/pc33.html\#AndradeKSS07}
+
+\bibitem{mershad}
+K.~W. Mershad, H.~Artail,
+  \href{http://dblp.uni-trier.de/db/journals/jpdc/jpdc71.html\#MershadA11}{Codisc:
+  Collaborative and distributed semantic caching for maximizing cache
+  effectiveness in wireless networks.}, J. Parallel Distrib. Comput. 71~(3)
+  (2011) 495--511.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/journals/jpdc/jpdc71.html\#MershadA11}
+
+\bibitem{abbani}
+H.~A. Noor~Abbani, Protecting data flow anonymity in mobile ad hoc networks
+  that employ cooperative caching, Ad Hoc Networks 26 (2015) 69--87.
+
+\bibitem{doker}
+A.~C. Tansel~Dokeroglu, Murat Ali~Bayir, Robust heuristic algorithms for
+  exploiting the common tasks of relational cloud database queries, Applied
+  Soft Computing.
+
+\bibitem{beran}
+P.~P. Beran, W.~Mach, E.~Schikuta, R.~Vigne,
+  \href{http://dblp.uni-trier.de/db/journals/procedia/procedia4.html\#BeranMSV11}{A
+  multi-staged blackboard query optimization framework for world-spanning
+  distributed database resources.}, in: M.~Sato, S.~Matsuoka, P.~M.~A. Sloot,
+  G.~D. van Albada, J.~Dongarra (Eds.), ICCS, Vol.~4 of Procedia Computer
+  Science, Elsevier, 2011, pp. 156--165.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/journals/procedia/procedia4.html\#BeranMSV11}
+
+\bibitem{meij}
+E.~Meij, M.~Bron, L.~Hollink, B.~Huurnink, M.~de~Rijke,
+  \href{http://dblp.uni-trier.de/db/journals/ws/ws9.html\#MeijBHHR11}{Mapping
+  queries to the linking open data cloud: A case study using dbpedia.}, J. Web
+  Sem. 9~(4) (2011) 418--433.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/journals/ws/ws9.html\#MeijBHHR11}
+
+\bibitem{aranda}
+C.~B. Aranda, M.~Arenas, ?.~Corcho, A.~Polleres,
+  \href{http://dblp.uni-trier.de/db/journals/ws/ws18.html\#ArandaACP13}{Federating
+  queries in sparql 1.1: Syntax, semantics and evaluation.}, J. Web Sem. 18~(1)
+  (2013) 1--17.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/journals/ws/ws18.html\#ArandaACP13}
 
 \bibitem{Keller96}
 A.~M. Keller, J.~Basu, A predicate-based caching scheme for client-server
