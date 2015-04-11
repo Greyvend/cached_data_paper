@@ -1,45 +1,7 @@
-%% 
-%% Copyright 2007, 2008, 2009 Elsevier Ltd
-%% 
-%% This file is part of the 'Elsarticle Bundle'.
-%% ---------------------------------------------
-%% 
-%% It may be distributed under the conditions of the LaTeX Project Public
-%% License, either version 1.2 of this license or (at your option) any
-%% later version.  The latest version of this license is in
-%%    http://www.latex-project.org/lppl.txt
-%% and version 1.2 or later is part of all distributions of LaTeX
-%% version 1999/12/01 or later.
-%% 
-%% The list of all files belonging to the 'Elsarticle Bundle' is
-%% given in the file `manifest.txt'.
-%% 
-
-%% Template article for Elsevier's document class `elsarticle'
-%% with numbered style bibliographic references
-%% SP 2008/03/01
-
 \documentclass{article}
 
-%% Use the option review to obtain double line spacing
-%% \documentclass[authoryear,preprint,review,12pt]{elsarticle}
-
-%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
-%% for a journal layout:
-%% \documentclass[final,1p,times]{elsarticle}
-%% \documentclass[final,1p,times,twocolumn]{elsarticle}
-%% \documentclass[final,3p,times]{elsarticle}
-%% \documentclass[final,3p,times,twocolumn]{elsarticle}
-%% \documentclass[final,5p,times]{elsarticle}
-%% \documentclass[final,5p,times,twocolumn]{elsarticle}
-
-%% For including figures, graphicx.sty has been loaded in
-%% elsarticle.cls. If you prefer to use the old commands
-%% please give \usepackage{epsfig}
-
-%% The amssymb package provides various useful mathematical symbols
 \author{Mosin Sergey, Zykin Sergey}
-\title{Truth space method for caching database queries}
+\title{Using logical formulas for caching uniform RDB queries}
 
 \usepackage{amssymb,amsmath}
 \usepackage{amsthm}
@@ -51,13 +13,6 @@
 \def \eval #1#2{\left.#1\right\vert_{#2}}
 \def \<#1> {\langle #1 \rangle}
 \def \n #1{\mathit{#1}}
-%% The amsthm package provides extended theorem environments
-%% \usepackage{amsthm}
-
-%% The lineno packages adds line numbers. Start line numbering with
-%% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
-%% for the whole article with \linenumbers.
-%% \usepackage{lineno}
 
 \begin{document}
 
@@ -90,7 +45,6 @@ Keywords: Relational databases, Caching, Truth space
 %% \linenumbers
 
 %% main text
-\section{Introduction}
 In this paper we discuss the use of data views that are
 cached on the client's computer. We assume client-server environment with
 server based Relational Database (RDB). The cache stores query results in order
@@ -121,7 +75,8 @@ The main results are presented in Section 4. We research the possibility of
 using cached results of previous queries when performing a new one. The results
 are presented in the form of theorems.
 
-% Head 1
+One of the directions of further researches is combining this technology with efficient data manipulations approaches. Those can be performed with a help of Graphical Processors. GPUs gain serious attention for big data processing \cite{owens, bakkum, govin, yang}. Such processor architectures have big potential in multitasking and can reach enormous speeds compared to CPUs, especialy if the operations are performed similarly on different parts of data.
+ 
 \section{Existing solutions overview and comparison}
 One of the main research problems of queries optimization to database is the
 construction of an optimal query plan. Queries are transformed without content
@@ -147,7 +102,15 @@ the results obtained differ because of stated factors. In particular, there is
 no need to create any algorithms of data selection in our work, as they are
 replaced by Relational Algebra.
 
-In papers \cite{Keller96}, \cite{shim} similar problem is discussed. In our paper we
+Another set of works describes processing scheme for event-driven continuous queries \cite{wata, yates}. In the proposed approach, query result caching is introduced to achieve a flexible way to share common operators among queries activated by unpredictable events. When a query is activated, an intermediate result generated for the query is stored into the cache area if it is expected to be reused by other queries. When other queries including the same operator are activated, they reuse the cached result if the cache includes reusable data.
+
+The work \cite{andrade} proposes methodology for functionally decomposing complex queries in terms of primitives so that multiple reuse sites are exposed to the query optimizer, to increase the amount of reuse.
+
+In \cite{mershad, abbani} queries are separated into subqueries that can yield results from cached nodes. Then query result can be combined from several subqueries.
+
+Using cloud storages one can afford a lot of computational resources for a short time to execute complicated queries effectively on large data with a help of virtual machine clusters \cite{doker, beran, meij, aranda}. A set of reliable heuristic algorithms is used. Finally the authors carry out a series of experiments that show that their optimizations speed up the federated query evaluation process.
+
+In papers \cite{Keller96}, \cite{shim} similar to our problem is discussed. In this paper we
 make correspondence between cache contents and predicates. Cached data usage
 problem is resolved in terms of truth spaces. We compute the truth spaces of
 query results in the cache. It allows us to define records in IDV that can be
@@ -443,7 +406,7 @@ This work is supported by the Russian Foundation for Basic Research under
 grant \#12-07-00066-a.
 
 
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 \expandafter\ifx\csname url\endcsname\relax
   \def\url#1{\texttt{#1}}\fi
 \expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
@@ -453,6 +416,37 @@ grant \#12-07-00066-a.
 \bibitem{zyk_pol}
 S.~Zykin, A.~Poluyanov, Multidimensional data building using intermediate
   representations., Administration problems~(5) (2013) 54--59.
+
+\bibitem{owens}
+J.~D. Owens, D.~Luebke, N.~Govindaraju, M.~Harris, J.~Kr??ger, A.~Lefohn, T.~J.
+  Purcell,
+  \href{http://www.blackwell-synergy.com/doi/pdf/10.1111/j.1467-8659.2007.01012.x}{A
+  survey of general-purpose computation on graphics hardware}, Computer
+  Graphics Forum 26~(1) (2007) 80--113.
+\newline\urlprefix\url{http://www.blackwell-synergy.com/doi/pdf/10.1111/j.1467-8659.2007.01012.x}
+
+\bibitem{bakkum}
+P.~Bakkum, K.~Skadron,
+  \href{http://dblp.uni-trier.de/db/conf/asplos/gpgpu2010.html}{Accelerating
+  sql database operations on a gpu with cuda.}, in: D.~R. Kaeli, M.~Leeser
+  (Eds.), GPGPU, Vol. 425 of ACM International Conference Proceeding Series,
+  ACM, 2010, pp. 94--103.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/conf/asplos/gpgpu2010.html}
+
+\bibitem{govin}
+N.~K. Govindaraju, B.~Lloyd, W.~W. 0010, M.~C. Lin, D.~Manocha,
+  \href{http://dblp.uni-trier.de/db/conf/sigmod/sigmod2004.html}{Fast
+  computation of database operations using graphics processors.}, in:
+  G.~Weikum, A.~C. K?¶nig, S.~De??loch (Eds.), SIGMOD Conference, ACM, 2004,
+  pp. 215--226.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/conf/sigmod/sigmod2004.html}
+
+\bibitem{yang}
+B.~He, K.~Yang, R.~Fang, M.~Lu, N.~K. Govindaraju, Q.~Luo, P.~V. Sander,
+  \href{http://dblp.uni-trier.de/db/conf/sigmod/sigmod2008.html}{Relational
+  joins on graphics processors.}, in: J.~T.-L. Wang (Ed.), SIGMOD Conference,
+  ACM, 2008, pp. 511--524.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/conf/sigmod/sigmod2008.html}
 
 \bibitem{chang}
 C.-S. Park, M.-H. Kim, Y.-J. Lee, Usability-based caching of query results in
@@ -473,6 +467,67 @@ P.~Kalnis, D.~Papadias, Proxy-server architectures for olap., in: S.~Mehrotra,
 \bibitem{Afrati06}
 F.~N. Afrati, C.~Li, P.~Mitra, Rewriting queries using views in the presence of
   arithmetic comparisons., Theor. Comput. Sci. 368~(1-2) (2006) 88--123.
+
+\bibitem{wata}
+Y.~Watanabe, H.~Kitagawa,
+  \href{http://dblp.uni-trier.de/db/journals/is/is35.html\#WatanabeK10}{Query
+  result caching for multiple event-driven continuous queries.}, Inf. Syst.
+  35~(1) (2010) 94--110.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/journals/is/is35.html\#WatanabeK10}
+
+\bibitem{yates}
+D.~J. Yates, E.~M. Nahum, J.~F. Kurose, P.~Shenoy,
+  \href{http://dblp.uni-trier.de/db/conf/percom/percom2008.html\#YatesNKS08}{Data
+  quality and query cost in pervasive sensing systems.}, in: PerCom, IEEE
+  Computer Society, 2008, pp. 195--205.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/conf/percom/percom2008.html\#YatesNKS08}
+
+\bibitem{andrade}
+H.~Andrade, T.~M. Kur?§, A.~Sussman, J.~H. Saltz,
+  \href{http://dblp.uni-trier.de/db/journals/pc/pc33.html\#AndradeKSS07}{Active
+  semantic caching to optimize multidimensional data analysis in parallel and
+  distributed environments.}, Parallel Computing 33~(7-8) (2007) 497--520.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/journals/pc/pc33.html\#AndradeKSS07}
+
+\bibitem{mershad}
+K.~W. Mershad, H.~Artail,
+  \href{http://dblp.uni-trier.de/db/journals/jpdc/jpdc71.html\#MershadA11}{Codisc:
+  Collaborative and distributed semantic caching for maximizing cache
+  effectiveness in wireless networks.}, J. Parallel Distrib. Comput. 71~(3)
+  (2011) 495--511.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/journals/jpdc/jpdc71.html\#MershadA11}
+
+\bibitem{abbani}
+H.~A. Noor~Abbani, Protecting data flow anonymity in mobile ad hoc networks
+  that employ cooperative caching, Ad Hoc Networks 26 (2015) 69--87.
+
+\bibitem{doker}
+A.~C. Tansel~Dokeroglu, Murat Ali~Bayir, Robust heuristic algorithms for
+  exploiting the common tasks of relational cloud database queries, Applied
+  Soft Computing.
+
+\bibitem{beran}
+P.~P. Beran, W.~Mach, E.~Schikuta, R.~Vigne,
+  \href{http://dblp.uni-trier.de/db/journals/procedia/procedia4.html\#BeranMSV11}{A
+  multi-staged blackboard query optimization framework for world-spanning
+  distributed database resources.}, in: M.~Sato, S.~Matsuoka, P.~M.~A. Sloot,
+  G.~D. van Albada, J.~Dongarra (Eds.), ICCS, Vol.~4 of Procedia Computer
+  Science, Elsevier, 2011, pp. 156--165.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/journals/procedia/procedia4.html\#BeranMSV11}
+
+\bibitem{meij}
+E.~Meij, M.~Bron, L.~Hollink, B.~Huurnink, M.~de~Rijke,
+  \href{http://dblp.uni-trier.de/db/journals/ws/ws9.html\#MeijBHHR11}{Mapping
+  queries to the linking open data cloud: A case study using dbpedia.}, J. Web
+  Sem. 9~(4) (2011) 418--433.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/journals/ws/ws9.html\#MeijBHHR11}
+
+\bibitem{aranda}
+C.~B. Aranda, M.~Arenas, ?.~Corcho, A.~Polleres,
+  \href{http://dblp.uni-trier.de/db/journals/ws/ws18.html\#ArandaACP13}{Federating
+  queries in sparql 1.1: Syntax, semantics and evaluation.}, J. Web Sem. 18~(1)
+  (2013) 1--17.
+\newline\urlprefix\url{http://dblp.uni-trier.de/db/journals/ws/ws18.html\#ArandaACP13}
 
 \bibitem{Keller96}
 A.~M. Keller, J.~Basu, A predicate-based caching scheme for client-server
