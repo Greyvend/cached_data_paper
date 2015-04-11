@@ -4,3 +4,7 @@
 *.blg
 *.pdf
 *.spl
+*.nav
+*.out
+*.snm
+*.toc
